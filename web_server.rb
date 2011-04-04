@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'httparty'
 require 'uuid'
+require 'haml'
 
 configure do
   set :port, 3000
@@ -66,7 +67,7 @@ get %r{/players/([\w]+)} do |uuid|
 end
 
 get '/players' do
-  File.read('players.html')
+  haml :add_player
 end
 
 Thread.abort_on_exception = true
@@ -75,5 +76,5 @@ post '/players' do
   player = Player.new(params)
   Thread.new { Shopper.new(player, $scoreboard).start }
   $players << player
-  "thanks, view your personal page at http://localhost:3000/players/#{player.uuid}"
+  haml :player_added, :locals => { :url => "http://localhost:3000/players/#{player.uuid}" }
 end
