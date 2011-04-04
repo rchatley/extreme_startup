@@ -1,0 +1,25 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    crack (0.1.8)
+    daemons (1.1.2)
+    eventmachine (0.12.10)
+    httparty (0.7.4)
+      crack (= 0.1.8)
+    rack (1.2.2)
+    sinatra (1.2.1)
+      rack (~> 1.1)
+      tilt (>= 1.2.2, < 2.0)
+    thin (1.2.11)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    tilt (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  httparty
+  sinatra
+  thin
