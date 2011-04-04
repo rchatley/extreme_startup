@@ -1,12 +1,15 @@
 require 'rubygems'
 require 'sinatra'
 require 'httparty'
+require 'uuid'
 
 configure do
   set :port, 3000
 end
 
 $players = []
+
+$uuid = UUID.new
 
 class Scoreboard
   attr_reader :scores
@@ -15,8 +18,8 @@ class Scoreboard
     @scores = Hash.new { 0 }
   end
   
-  def increment_score_for(player_name)
-    @scores[player_name] += 1
+  def increment_score_for(player_uuid)
+    @scores[player_uuid] += 1
   end
 end
 
@@ -31,7 +34,7 @@ class Shopper
   def start
     while true
       response = HTTParty.get(@player.url)
-      @scoreboard.increment_score_for(@player.name)
+      @scoreboard.increment_score_for(@player.uuid)
       puts "player #{@player.name} said #{response}"
       sleep 5
     end
@@ -39,11 +42,12 @@ class Shopper
 end
 
 class Player
-  attr_reader :name, :url
+  attr_reader :name, :url, :uuid
   
   def initialize(params)
     @name = params['name']
     @url = params['url']
+    @uuid = $uuid.generate.to_s[0..7]
   end
   
   def to_s
@@ -53,8 +57,12 @@ end
 
 get '/' do 
   $players.map do |player|
-    "#{player} : #{$scoreboard.scores[player.name]}"
+    "#{player} : #{$scoreboard.scores[player.uuid]}"
   end.join("<br/>")
+end
+
+get %r{/players/([\w]+)} do |uuid|
+  "Hello, #{uuid}! Your score is #{$scoreboard.scores[uuid]}" 
 end
 
 get '/players' do
@@ -67,5 +75,5 @@ post '/players' do
   player = Player.new(params)
   Thread.new { Shopper.new(player, $scoreboard).start }
   $players << player
-  'thanks'
+  "thanks, view your personal page at http://localhost:3000/players/#{player.uuid}"
 end
