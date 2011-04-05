@@ -1,0 +1,7 @@
+%html
+  %head
+  %body
+    %h1 Leaderboard 
+    %ul
+      - leaderboard.each do |entry| 
+        %li= "#{players[entry[0]].name}  #{entry[1]}"
