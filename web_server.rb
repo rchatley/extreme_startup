@@ -3,6 +3,7 @@ require 'sinatra'
 require 'httparty'
 require 'uuid'
 require 'haml'
+require_relative 'ip'
 
 configure do
   set :port, 3000
@@ -76,5 +77,8 @@ post '/players' do
   player = Player.new(params)
   Thread.new { Shopper.new(player, $scoreboard).start }
   $players << player
-  haml :player_added, :locals => { :url => "http://localhost:3000/players/#{player.uuid}" }
+  
+  personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
+  
+  haml :player_added, :locals => { :url => personal_page }
 end
