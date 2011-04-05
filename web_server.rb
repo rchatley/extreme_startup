@@ -9,10 +9,6 @@ configure do
   set :port, 3000
 end
 
-$players = []
-
-$uuid = UUID.new
-
 class Scoreboard
   attr_reader :scores
   
@@ -23,9 +19,11 @@ class Scoreboard
   def increment_score_for(player_uuid)
     @scores[player_uuid] += 1
   end
+  
+  def leaderboard
+    @scores.sort{|a,b| a[1]<=>b[1]}.reverse
+  end
 end
-
-$scoreboard = Scoreboard.new
 
 class Shopper
   def initialize(player, scoreboard)
@@ -49,7 +47,7 @@ class Player
   def initialize(params)
     @name = params['name']
     @url = params['url']
-    @uuid = $uuid.generate.to_s[0..7]
+    @uuid = $uuid_generator.generate.to_s[0..7]
   end
   
   def to_s
@@ -57,14 +55,16 @@ class Player
   end
 end
 
+$uuid_generator = UUID.new
+$players = Hash.new
+$scoreboard = Scoreboard.new
+
 get '/' do 
-  $players.map do |player|
-    "#{player} : #{$scoreboard.scores[player.uuid]}"
-  end.join("<br/>")
+  haml :leaderboard, :locals => { :leaderboard => $scoreboard.leaderboard, :players => $players  }
 end
 
 get %r{/players/([\w]+)} do |uuid|
-  "Hello, #{uuid}! Your score is #{$scoreboard.scores[uuid]}" 
+  haml :personal_page, :locals => { :name => $players[uuid].name, :score => $scoreboard.scores[uuid] }
 end
 
 get '/players' do
@@ -76,7 +76,7 @@ Thread.abort_on_exception = true
 post '/players' do
   player = Player.new(params)
   Thread.new { Shopper.new(player, $scoreboard).start }
-  $players << player
+  $players[player.uuid] = player
   
   personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
   
