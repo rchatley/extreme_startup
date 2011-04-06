@@ -2,5 +2,5 @@ require 'rubygems'
 require 'sinatra'
 
 get '/' do
-  "hi there #{Time.now}"
+  "6"
 end

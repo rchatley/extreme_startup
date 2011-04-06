@@ -16,8 +16,12 @@ class Scoreboard
     @scores = Hash.new { 0 }
   end
   
-  def increment_score_for(player_uuid)
-    @scores[player_uuid] += 1
+  def increment_score_for(player)
+    @scores[player.uuid] += 1
+  end
+  
+  def new_player(player)
+    @scores[player.uuid] = 0
   end
   
   def leaderboard
@@ -25,18 +29,50 @@ class Scoreboard
   end
 end
 
+class Question
+  def initialize(text)
+    @text = text
+  end
+  
+  def answered_correctly(answer) 
+    correct_answer = eval(@text)
+    return correct_answer.to_s.strip == answer.to_s.strip
+  end
+  
+  def to_s
+    return @text
+  end
+end
+
+class QuestionFactory
+  def next_question
+    return Question.new("#{rand(5)}+#{rand(5)}")
+  end
+end
+
 class Shopper
   def initialize(player, scoreboard)
     @player = player
     @scoreboard = scoreboard
+    @question_factory = QuestionFactory.new
   end
   
   def start
     while true
-      response = HTTParty.get(@player.url)
-      @scoreboard.increment_score_for(@player.uuid)
+      question = @question_factory.next_question
+      url = @player.url + '?q=' + question.to_s
+      puts "GET:" + url
+      response = HTTParty.get(url)
+      puts "question was " + question.to_s
       puts "player #{@player.name} said #{response}"
-      sleep 5
+      if (question.answered_correctly(response)) then
+        puts "player #{@player.name} was correct"
+        @scoreboard.increment_score_for(@player)
+        sleep 5
+      else
+        puts "player #{@player.name} was wrong"
+        sleep 10
+      end
     end
   end
 end
@@ -75,10 +111,11 @@ Thread.abort_on_exception = true
 
 post '/players' do
   player = Player.new(params)
-  Thread.new { Shopper.new(player, $scoreboard).start }
+  $scoreboard.new_player(player)
   $players[player.uuid] = player
+
+  Thread.new { Shopper.new(player, $scoreboard).start }
   
-  personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
-  
+  personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"  
   haml :player_added, :locals => { :url => personal_page }
 end

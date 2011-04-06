@@ -6,5 +6,5 @@ configure do
 end
 
 get '/' do
-  "hi there from Y #{Time.now}"
+  "4"
 end
