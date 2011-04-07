@@ -30,23 +30,24 @@ class Scoreboard
 end
 
 class Question
-  def initialize(text)
-    @text = text
+  def initialize(a,b)
+    @n1 = a
+    @n2 = b
   end
   
   def answered_correctly(answer) 
-    correct_answer = eval(@text)
+    correct_answer = @n1 + @n2
     return correct_answer.to_s.strip == answer.to_s.strip
   end
   
   def to_s
-    return @text
+    return "what is #{@n1} plus #{@n2}"
   end
 end
 
 class QuestionFactory
   def next_question
-    return Question.new("#{rand(5)}+#{rand(5)}")
+    return Question.new(rand(5), rand(5))
   end
 end
 
@@ -60,7 +61,7 @@ class Shopper
   def start
     while true
       question = @question_factory.next_question
-      url = @player.url + '?q=' + question.to_s
+      url = @player.url + '?q=' + question.to_s.gsub(' ', '%20')
       puts "GET:" + url
       response = HTTParty.get(url)
       puts "question was " + question.to_s
