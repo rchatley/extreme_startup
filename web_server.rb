@@ -75,8 +75,8 @@ class Shopper
           puts "player #{@player.name} was wrong"
           sleep 10
         end
-      rescue
-        puts "player #{@player.name} was down - try again later"
+      rescue => exception
+        puts "player #{@player.name} was down - try again later #{exception}"
         sleep 20
       end
     end
