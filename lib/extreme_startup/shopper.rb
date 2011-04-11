@@ -2,10 +2,10 @@ require_relative 'question_factory'
 
 module ExtremeStartup
   class Shopper
-    def initialize(player, scoreboard)
+    def initialize(player, scoreboard, question_factory)
       @player = player
       @scoreboard = scoreboard
-      @question_factory = QuestionFactory.new
+      @question_factory = question_factory
     end
   
     def start

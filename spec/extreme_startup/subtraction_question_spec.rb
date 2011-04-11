@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'extreme_startup/subtraction_question'
+require 'extreme_startup/question_factory'
 
 module ExtremeStartup
   describe SubtractionQuestion do

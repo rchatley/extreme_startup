@@ -3,14 +3,12 @@ require 'sinatra/base'
 require 'httparty'
 require 'uuid'
 require 'haml'
-require_relative 'ip'
+require "socket"
 require_relative 'lib/extreme_startup/scoreboard'
 require_relative 'lib/extreme_startup/player'
 require_relative 'lib/extreme_startup/shopper'
 
 Thread.abort_on_exception = true
-
-
 
 module ExtremeStartup
   class WebServer < Sinatra::Base
@@ -18,15 +16,8 @@ module ExtremeStartup
     set :port, 3000
     set :players,    Hash.new
     set :scoreboard, Scoreboard.new
+    set :question_factory, QuestionFactory.new
     
-    def players
-      settings.players
-    end
-
-    def scoreboard
-      settings.scoreboard
-    end
-
     get '/' do 
       haml :leaderboard, :locals => { 
           :leaderboard => scoreboard.leaderboard, 
@@ -40,17 +31,39 @@ module ExtremeStartup
     get '/players' do
       haml :add_player
     end
+    
+    get '/advance_round' do
+      question_factory.advance_round
+      redirect to('/round')
+    end
+
+    get '/round' do
+      question_factory.round.to_s
+    end
 
     post '/players' do
       player = Player.new(params)
       scoreboard.new_player(player)
       players[player.uuid] = player
 
-      Thread.new { Shopper.new(player, scoreboard).start }
+      Thread.new { Shopper.new(player, scoreboard, question_factory).start }
   
       personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
       haml :player_added, :locals => { :url => personal_page }
     end
+    
+  private
+    
+    def local_ip
+      UDPSocket.open {|s| s.connect("64.233.187.99", 1); s.addr.last}
+    end
+    
+    [:players, :scoreboard, :question_factory].each do |setting|
+      define_method(setting) do
+        settings.send(setting)
+      end
+    end
+    
   end
 end
 
