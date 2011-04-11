@@ -33,6 +33,16 @@ module ExtremeStartup
     end
   end
   
+  class MultiplicationQuestion < BinaryMathsQuestion 
+    def to_s
+      "what is #{@n1} multipled by #{@n2}"
+    end
+  private
+    def correct_answer
+      @n1 * @n2
+    end
+  end
+  
   class PowerQuestion < BinaryMathsQuestion 
     def to_s
       "what is #{@n1} to the power of #{@n2}"
@@ -48,7 +58,7 @@ module ExtremeStartup
     
     def initialize
       @round = 0
-      @question_types = [AdditionQuestion, SubtractionQuestion]
+      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion]
     end
     
     def next_question
