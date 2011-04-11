@@ -3,12 +3,21 @@ GEM
   specs:
     crack (0.1.8)
     daemons (1.1.2)
+    diff-lcs (1.1.2)
     eventmachine (0.12.10)
     haml (3.0.25)
     httparty (0.7.4)
       crack (= 0.1.8)
     macaddr (1.0.0)
     rack (1.2.2)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.1)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
     sinatra (1.2.1)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -26,6 +35,7 @@ PLATFORMS
 DEPENDENCIES
   haml
   httparty
+  rspec
   sinatra
   thin
   uuid

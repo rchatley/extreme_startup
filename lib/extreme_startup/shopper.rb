@@ -17,7 +17,7 @@ module ExtremeStartup
           response = HTTParty.get(url)
           puts "question was " + question.to_s
           puts "player #{@player.name} said #{response}"
-          if (question.answered_correctly(response)) then
+          if (question.answered_correctly?(response)) then
             puts "player #{@player.name} was correct"
             @scoreboard.increment_score_for(@player)
             sleep 5
