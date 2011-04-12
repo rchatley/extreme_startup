@@ -13,20 +13,6 @@ module ExtremeStartup
     end
   end
   
-  class UnaryMathsQuestion
-    def initialize(*numbers)
-      if numbers.any?
-        @n = *numbers.first
-      else
-        @n = rand(5)
-      end
-    end
-      
-    def answered_correctly?(answer) 
-      correct_answer.to_s.strip == answer.to_s.strip
-    end
-  end
-  
   class AdditionQuestion < BinaryMathsQuestion
     def to_s
       "what is #{@n1} plus #{@n2}"
@@ -86,7 +72,7 @@ module ExtremeStartup
     
     def initialize
       @round = 0
-      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion]
+      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion, FibonacciQuestion]
     end
     
     def next_question
