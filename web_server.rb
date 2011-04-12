@@ -6,7 +6,7 @@ require 'haml'
 require "socket"
 require_relative 'lib/extreme_startup/scoreboard'
 require_relative 'lib/extreme_startup/player'
-require_relative 'lib/extreme_startup/shopper'
+require_relative 'lib/extreme_startup/quiz_master'
 
 Thread.abort_on_exception = true
 
@@ -46,7 +46,7 @@ module ExtremeStartup
       scoreboard.new_player(player)
       players[player.uuid] = player
 
-      Thread.new { Shopper.new(player, scoreboard, question_factory).start }
+      Thread.new { QuizMaster.new(player, scoreboard, question_factory).start }
   
       personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
       haml :player_added, :locals => { :url => personal_page }
