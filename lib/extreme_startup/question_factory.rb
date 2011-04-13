@@ -74,7 +74,10 @@ module ExtremeStartup
       def question_bank
         [
           ["who is the Prime Minister of Great Britain", "David Cameron"],
-          ["what colour is a banana", "yellow"]
+          ["which city is the Eiffel tower in", "Paris"],
+          ["what is the standard unit of beer served in British pubs", "pint"],
+          ["what colour is a banana", "yellow"],
+          ["who played James Bond in the film Dr No", "Sean Connery"]
         ]
       end
     end
