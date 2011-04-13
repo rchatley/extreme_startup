@@ -1,15 +1,17 @@
 module ExtremeStartup
-  class BinaryMathsQuestion
+  class Question
+    def answered_correctly?(answer) 
+      correct_answer.to_s.downcase.strip == answer.to_s.downcase.strip
+    end
+  end
+  
+  class BinaryMathsQuestion < Question
     def initialize(*numbers)
       if numbers.any?
         @n1, @n2 = *numbers
       else
         @n1, @n2 = rand(5), rand(5)
       end
-    end
-      
-    def answered_correctly?(answer) 
-      correct_answer.to_s.strip == answer.to_s.strip
     end
   end
   
@@ -67,12 +69,37 @@ module ExtremeStartup
     end
   end
   
+  class GeneralKnowledgeQuestion < Question
+    class << self
+      def question_bank
+        [
+          ["who is the Prime Minister of Great Britain", "David Cameron"],
+          ["what colour is a banana", "yellow"]
+        ]
+      end
+    end
+    
+    def initialize
+      question = GeneralKnowledgeQuestion.question_bank.shuffle.first
+      @question = question[0]
+      @answer = question[1]
+    end
+    
+    def to_s
+      @question
+    end
+    
+    def correct_answer
+      @answer
+    end
+  end
+  
   class QuestionFactory
     attr_reader :round
     
     def initialize
       @round = 0
-      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion, FibonacciQuestion]
+      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion, FibonacciQuestion, GeneralKnowledgeQuestion]
     end
     
     def next_question
