@@ -1,7 +1,7 @@
 require_relative 'question_factory'
 
 module ExtremeStartup
-  class Shopper
+  class QuizMaster
     def initialize(player, scoreboard, question_factory)
       @player = player
       @scoreboard = scoreboard
