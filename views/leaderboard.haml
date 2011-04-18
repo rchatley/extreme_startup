@@ -3,5 +3,7 @@
   %body
     %h1 Leaderboard 
     %ul
-      - leaderboard.each do |entry| 
-        %li= "#{players[entry[0]].name}  #{entry[1]}"
+      - leaderboard.each do |entry|
+        %li.player
+          %span.name #{players[entry[0]].name}
+          %span.score #{entry[1]}
