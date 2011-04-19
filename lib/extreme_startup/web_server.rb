@@ -3,9 +3,9 @@ require 'httparty'
 require 'uuid'
 require 'haml'
 require "socket"
-require_relative 'lib/extreme_startup/scoreboard'
-require_relative 'lib/extreme_startup/player'
-require_relative 'lib/extreme_startup/quiz_master'
+require_relative 'scoreboard'
+require_relative 'player'
+require_relative 'quiz_master'
 
 Thread.abort_on_exception = true
 
