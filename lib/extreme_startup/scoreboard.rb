@@ -6,8 +6,8 @@ module ExtremeStartup
       @scores = Hash.new { 0 }
     end
   
-    def increment_score_for(player)
-      @scores[player.uuid] += 1
+    def increment_score_for(player, increment)
+      @scores[player.uuid] += increment
     end
   
     def new_player(player)

@@ -19,7 +19,7 @@ module ExtremeStartup
           puts "player #{@player.name} said #{response}"
           if (question.answered_correctly?(response)) then
             puts "player #{@player.name} was correct"
-            @scoreboard.increment_score_for(@player)
+            @scoreboard.increment_score_for(@player, question.points)
             sleep 5
           else
             puts "player #{@player.name} was wrong"

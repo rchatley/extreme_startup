@@ -3,6 +3,9 @@ module ExtremeStartup
     def answered_correctly?(answer) 
       correct_answer.to_s.downcase.strip == answer.to_s.downcase.strip
     end
+    def points
+      1
+    end
   end
   
   class BinaryMathsQuestion < Question
@@ -49,6 +52,9 @@ module ExtremeStartup
     def to_s
       "what is #{@n1} to the power of #{@n2}"
     end
+    def points
+      2
+    end
   private
     def correct_answer
       @n1 ** @n2
@@ -60,6 +66,9 @@ module ExtremeStartup
       n = @n1 + 4
       "what is the #{n}th number in the Fibonacci sequence"
     end
+    def points
+      5
+    end 
   private
     def correct_answer
       n = @n1 + 4
