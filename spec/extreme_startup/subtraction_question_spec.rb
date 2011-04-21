@@ -6,14 +6,14 @@ module ExtremeStartup
     let(:question) { SubtractionQuestion.new }
     
     it "converts to a string" do
-      question.to_s.should =~ /what is \d+ minus \d+/i
+      question.as_text.should =~ /what is \d+ minus \d+/i
     end
     
     context "when the numbers are known" do
       let(:question) { SubtractionQuestion.new(2,3) }
         
       it "converts to the right string" do
-        question.to_s.should =~ /what is 2 minus 3/i
+        question.as_text.should =~ /what is 2 minus 3/i
       end
       
       it "identifies a correct answer" do

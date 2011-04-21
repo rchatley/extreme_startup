@@ -6,14 +6,14 @@ module ExtremeStartup
     let(:question) { FibonacciQuestion.new }
     
     it "converts to a string" do
-      question.to_s.should =~ /what is the \d+th number in the Fibonacci sequence/i
+      question.as_text.should =~ /what is the \d+th number in the Fibonacci sequence/i
     end
     
     context "when the numbers are known" do
       let(:question) { FibonacciQuestion.new(2, nil) }
         
       it "converts to the right string" do
-        question.to_s.should =~ /what is the 6th number in the Fibonacci sequence/i
+        question.as_text.should =~ /what is the 6th number in the Fibonacci sequence/i
       end
       
       it "identifies a correct answer" do

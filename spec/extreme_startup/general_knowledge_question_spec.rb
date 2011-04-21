@@ -6,7 +6,7 @@ module ExtremeStartup
     let(:question) { GeneralKnowledgeQuestion.new }
     
     it "converts to a string" do
-      question.to_s.should =~ /wh.+/
+      question.as_text.should =~ /wh.+/
     end
   end
 end

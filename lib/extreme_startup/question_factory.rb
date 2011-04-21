@@ -1,8 +1,24 @@
 module ExtremeStartup
   class Question
+    class << self
+      def generate_uuid
+        @uuid_generator ||= UUID.new
+        @uuid_generator.generate.to_s[0..7]
+      end
+    end
+    
+    def id
+      @id ||= Question.generate_uuid
+    end
+    
+    def to_s
+      "#{id}: #{as_text}"
+    end
+    
     def answered_correctly?(answer) 
       correct_answer.to_s.downcase.strip == answer.to_s.downcase.strip
     end
+    
     def points
       1
     end
@@ -19,7 +35,7 @@ module ExtremeStartup
   end
   
   class AdditionQuestion < BinaryMathsQuestion
-    def to_s
+    def as_text
       "what is #{@n1} plus #{@n2}"
     end
   private  
@@ -29,7 +45,7 @@ module ExtremeStartup
   end
   
   class SubtractionQuestion < BinaryMathsQuestion 
-    def to_s
+    def as_text
       "what is #{@n1} minus #{@n2}"
     end
   private
@@ -39,7 +55,7 @@ module ExtremeStartup
   end
   
   class MultiplicationQuestion < BinaryMathsQuestion 
-    def to_s
+    def as_text
       "what is #{@n1} multipled by #{@n2}"
     end
   private
@@ -49,7 +65,7 @@ module ExtremeStartup
   end
   
   class PowerQuestion < BinaryMathsQuestion 
-    def to_s
+    def as_text
       "what is #{@n1} to the power of #{@n2}"
     end
     def points
@@ -62,7 +78,7 @@ module ExtremeStartup
   end
   
   class FibonacciQuestion < BinaryMathsQuestion 
-    def to_s
+    def as_text
       n = @n1 + 4
       "what is the #{n}th number in the Fibonacci sequence"
     end
@@ -97,7 +113,7 @@ module ExtremeStartup
       @answer = question[1]
     end
     
-    def to_s
+    def as_text
       @question
     end
     

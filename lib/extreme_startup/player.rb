@@ -16,8 +16,8 @@ module ExtremeStartup
       @log = []
     end
 
-    def log_result(msg, points)
-      @log.unshift(msg + ", points awarded : " + points.to_s)
+    def log_result(id, msg, points)
+      @log.unshift("#{id}:  #{msg}, points awarded : #{points}")
     end
 
     def to_s
