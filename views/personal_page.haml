@@ -6,3 +6,8 @@
     %p 
       Your score is 
       %strong #{score}
+      
+    %h2 Log:
+    %ul
+      - log.each do |logline|
+        %li #{logline}

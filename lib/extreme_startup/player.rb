@@ -1,6 +1,6 @@
 module ExtremeStartup
   class Player
-    attr_reader :name, :url, :uuid
+    attr_reader :name, :url, :uuid, :log
 
     class << self
       def generate_uuid
@@ -13,6 +13,11 @@ module ExtremeStartup
       @name = params['name']
       @url = params['url']
       @uuid = Player.generate_uuid
+      @log = []
+    end
+
+    def log_result(msg, points)
+      @log.unshift(msg + ", points awarded : " + points.to_s)
     end
 
     def to_s

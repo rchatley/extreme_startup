@@ -20,13 +20,18 @@ module ExtremeStartup
           if (question.answered_correctly?(response)) then
             puts "player #{@player.name} was correct"
             @scoreboard.increment_score_for(@player, question.points)
+            @player.log_result("correct", question.points)
             sleep 5
           else
             puts "player #{@player.name} was wrong"
+            @player.log_result("wrong", 0)
             sleep 10
           end
         rescue => exception
           puts "player #{@player.name} was down - try again later #{exception}"
+          penalty = -5
+          @scoreboard.increment_score_for(@player, penalty)
+          @player.log_result("no response", penalty)
           sleep 20
         end
       end
