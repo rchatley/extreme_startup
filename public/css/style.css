@@ -1,5 +1,7 @@
 h1 {color:blue}
 
+.score {color:blue}
+
 .logline {margin:2px; padding:3px; display:inline-block}
 .logline.id {width:100}
 .logline.result {width:150}
