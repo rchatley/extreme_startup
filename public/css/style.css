@@ -1,0 +1,6 @@
+h1 {color:blue}
+
+.logline {margin:4px}
+.logline.correct {background-color:#7cfc00}
+.logline.wrong {background-color:#eed5b7}
+.logline.no_response {background-color:#ff4500}

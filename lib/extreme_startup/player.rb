@@ -1,4 +1,18 @@
 module ExtremeStartup
+  
+  class LogLine
+    attr_reader :id, :result, :points
+    def initialize(id, result, points)
+      @id = id
+      @result = result
+      @points = points
+    end
+    
+    def to_s
+      "#{@id}: #{@result} - points awarded: #{@points}"
+    end
+  end
+  
   class Player
     attr_reader :name, :url, :uuid, :log
 
@@ -17,7 +31,7 @@ module ExtremeStartup
     end
 
     def log_result(id, msg, points)
-      @log.unshift("#{id}:  #{msg}, points awarded : #{points}")
+      @log.unshift(LogLine.new(id, msg, points))
     end
 
     def to_s

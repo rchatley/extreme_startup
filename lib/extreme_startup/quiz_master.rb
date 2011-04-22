@@ -31,7 +31,7 @@ module ExtremeStartup
           puts "player #{@player.name} was down - try again later #{exception}"
           penalty = -5
           @scoreboard.increment_score_for(@player, penalty)
-          @player.log_result(question.id, "no response", penalty)
+          @player.log_result(question.id, "no_response", penalty)
           sleep 20
         end
       end

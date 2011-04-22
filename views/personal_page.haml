@@ -1,5 +1,7 @@
 %html
   %head
+    %title Extreme Startup - #{name}
+    %link(rel="stylesheet" href="/css/style.css")
   %body
     %h1 Hello, #{name}! 
     
@@ -10,4 +12,5 @@
     %h2 Log:
     %ul
       - log.each do |logline|
-        %li #{logline}
+        %li 
+          %div{:class => ["logline", logline.result]} #{logline.to_s}
