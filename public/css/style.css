@@ -1,6 +1,9 @@
 h1 {color:blue}
 
-.logline {margin:4px}
+.logline {margin:2px; padding:3px; display:inline-block}
+.logline.id {width:100}
+.logline.result {width:150}
+.logline.points {width:200}
 .logline.correct {background-color:#7cfc00}
 .logline.wrong {background-color:#eed5b7}
 .logline.no_response {background-color:#ff4500}

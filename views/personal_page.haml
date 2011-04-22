@@ -13,4 +13,7 @@
     %ul
       - log.each do |logline|
         %li 
-          %div{:class => ["logline", logline.result]} #{logline.to_s}
+          %div{:class => ["logline", "id", logline.result]} #{logline.id}
+          %div{:class => ["logline", "result", logline.result]} result: #{logline.result}
+          %div{:class => ["logline", "points", logline.result]} points awarded: #{logline.points}
+          
