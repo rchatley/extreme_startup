@@ -18,6 +18,8 @@ module ExtremeStartup
     set :players,    Hash.new
     set :scoreboard, Scoreboard.new
     set :question_factory, QuestionFactory.new
+    # set :quizmaster_type, WarmupQuizMaster
+    set :quizmaster_type, QuizMaster
     
     get '/' do 
       haml :leaderboard, :locals => { 
@@ -41,13 +43,13 @@ module ExtremeStartup
     get '/round' do
       question_factory.round.to_s
     end
-
+    
     post '/players' do
       player = Player.new(params)
       scoreboard.new_player(player)
       players[player.uuid] = player
 
-      Thread.new { QuizMaster.new(player, scoreboard, question_factory).start }
+      Thread.new { settings.quizmaster_type.new(player, scoreboard, question_factory).start }
   
       personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
       haml :player_added, :locals => { :url => personal_page }

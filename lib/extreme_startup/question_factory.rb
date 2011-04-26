@@ -127,7 +127,14 @@ module ExtremeStartup
     
     def initialize
       @round = 0
-      @question_types = [AdditionQuestion, MultiplicationQuestion, SubtractionQuestion, PowerQuestion, FibonacciQuestion, GeneralKnowledgeQuestion]
+      @question_types = [
+        AdditionQuestion, 
+        MultiplicationQuestion, 
+        SubtractionQuestion, 
+        PowerQuestion, 
+        FibonacciQuestion, 
+        GeneralKnowledgeQuestion
+      ]
     end
     
     def next_question
