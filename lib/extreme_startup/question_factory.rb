@@ -1,3 +1,5 @@
+require 'set'
+
 module ExtremeStartup
   class Question
     class << self
@@ -30,6 +32,25 @@ module ExtremeStartup
         @n1, @n2 = *numbers
       else
         @n1, @n2 = rand(5), rand(5)
+      end
+    end
+  end
+  
+  class SelectFromListOfNumbersQuestion < Question
+    def initialize(*numbers)
+      if numbers.any?
+        @numbers = *numbers
+      else
+        size = rand(2)
+        @numbers = random_numbers[0..size].concat(candidate_numbers[0..size]).shuffle
+      end
+    end
+    
+    def random_numbers
+      randoms = Set.new
+      loop do
+        randoms << rand(1000)
+        return randoms.to_a if randoms.size >= 5
       end
     end
   end
@@ -75,6 +96,35 @@ module ExtremeStartup
     def correct_answer
       @n1 ** @n2
     end
+  end
+  
+  class SquareCubeQuestion < SelectFromListOfNumbersQuestion 
+    def as_text
+      "which of the following numbers is both a square and a cube: " + @numbers.join(', ')
+    end
+    def points
+      2
+    end
+  private
+    def correct_answer
+      @numbers.select do |x|
+        is_square(x) and is_cube(x)
+      end.join(', ')
+    end
+    
+    def candidate_numbers
+      [64, 729]
+    end
+    
+    def is_square(x)
+      (x % Math.sqrt(x)) == 0
+    end
+    
+    def is_cube(x)
+      (x % Math.cbrt(x)) == 0
+    end
+    
+    
   end
   
   class FibonacciQuestion < BinaryMathsQuestion 
