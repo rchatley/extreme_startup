@@ -103,7 +103,7 @@ module ExtremeStartup
       "which of the following numbers is both a square and a cube: " + @numbers.join(', ')
     end
     def points
-      2
+      4
     end
   private
     def correct_answer
@@ -179,6 +179,7 @@ module ExtremeStartup
       @round = 0
       @question_types = [
         AdditionQuestion, 
+        SquareCubeQuestion,
         MultiplicationQuestion, 
         SubtractionQuestion, 
         PowerQuestion, 
