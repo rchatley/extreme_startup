@@ -18,11 +18,11 @@ module ExtremeStartup
         factory.advance_round
       end
       
-      it "creates both AdditionQuestions and MultiplicationQuestions" do
+      it "creates both AdditionQuestions and SquareCubeQuestion" do
         questions = 10.times.map { factory.next_question }
         questions.any? { |q| q.is_a?(AdditionQuestion) }.should be_true
-        questions.any? { |q| q.is_a?(MultiplicationQuestion) }.should be_true
-        questions.all? { |q| [AdditionQuestion, MultiplicationQuestion].include? q.class }
+        questions.any? { |q| q.is_a?(SquareCubeQuestion) }.should be_true
+        questions.all? { |q| [AdditionQuestion, SquareCubeQuestion].include? q.class }
       end
     end
          

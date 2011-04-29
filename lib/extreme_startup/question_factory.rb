@@ -108,8 +108,12 @@ module ExtremeStartup
   private
     def correct_answer
       @numbers.select do |x|
-        is_square(x) and is_cube(x)
+        should_be_selected(x)
       end.join(', ')
+    end
+    
+    def should_be_selected(x)
+      is_square(x) and is_cube(x)
     end
     
     def candidate_numbers
