@@ -1,4 +1,5 @@
 require 'set'
+require 'prime'
 
 module ExtremeStartup
   class Question
@@ -42,7 +43,7 @@ module ExtremeStartup
         @numbers = *numbers
       else
         size = rand(2)
-        @numbers = random_numbers[0..size].concat(candidate_numbers[0..size]).shuffle
+        @numbers = random_numbers[0..size].concat(candidate_numbers.shuffle[0..size]).shuffle
       end
     end
     
@@ -53,6 +54,12 @@ module ExtremeStartup
         return randoms.to_a if randoms.size >= 5
       end
     end
+    
+    def correct_answer
+       @numbers.select do |x|
+         should_be_selected(x)
+       end.join(', ')
+     end
   end
   
   class AdditionQuestion < BinaryMathsQuestion
@@ -106,18 +113,12 @@ module ExtremeStartup
       4
     end
   private
-    def correct_answer
-      @numbers.select do |x|
-        should_be_selected(x)
-      end.join(', ')
-    end
-    
     def should_be_selected(x)
       is_square(x) and is_cube(x)
     end
     
     def candidate_numbers
-      [64, 729]
+        (1..100).map { |x| x ** 3 }.select{ |x| is_square(x) }
     end
     
     def is_square(x)
@@ -127,9 +128,24 @@ module ExtremeStartup
     def is_cube(x)
       (x % Math.cbrt(x)) == 0
     end
-    
-    
   end
+  
+  class PrimesQuestion < SelectFromListOfNumbersQuestion 
+     def as_text
+       "which of the following numbers are primes: " + @numbers.join(', ')
+     end
+     def points
+       4
+     end
+   private
+     def should_be_selected(x)
+       Prime.prime? x
+     end
+
+     def candidate_numbers
+       Prime.take(100)
+     end
+   end
   
   class FibonacciQuestion < BinaryMathsQuestion 
     def as_text
