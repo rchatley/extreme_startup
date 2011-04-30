@@ -32,7 +32,7 @@ module ExtremeStartup
       if numbers.any?
         @n1, @n2 = *numbers
       else
-        @n1, @n2 = rand(5), rand(5)
+        @n1, @n2 = rand(100), rand(100)
       end
     end
   end
@@ -201,15 +201,16 @@ module ExtremeStartup
         AdditionQuestion, 
         SquareCubeQuestion,
         MultiplicationQuestion, 
-        SubtractionQuestion, 
+        PrimesQuestion,
+        SubtractionQuestion,
+        FibonacciQuestion,  
         PowerQuestion, 
-        FibonacciQuestion, 
         GeneralKnowledgeQuestion
       ]
     end
     
     def next_question
-      available_question_types = @question_types[0..@round]
+      available_question_types = @question_types[0..((@round + 1) * 2)]
       available_question_types.shuffle.first.new
     end
     

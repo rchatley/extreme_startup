@@ -9,5 +9,5 @@
     %ul
       - leaderboard.each do |entry|
         %li.player
-          %span.name #{players[entry[0]].name}
-          %span.score #{entry[1]}
+          %div{:class => ["ranking", "name"]} #{players[entry[0]].name}
+          %div{:class => ["ranking", "points"]} #{entry[1]}
