@@ -84,7 +84,7 @@ module ExtremeStartup
   
   class MultiplicationQuestion < BinaryMathsQuestion 
     def as_text
-      "what is #{@n1} multipled by #{@n2}"
+      "what is #{@n1} multiplied by #{@n2}"
     end
   private
     def correct_answer
