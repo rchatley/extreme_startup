@@ -97,7 +97,7 @@ module ExtremeStartup
       "what is #{@n1} to the power of #{@n2}"
     end
     def points
-      2
+      3
     end
   private
     def correct_answer
@@ -110,7 +110,7 @@ module ExtremeStartup
       "which of the following numbers is both a square and a cube: " + @numbers.join(', ')
     end
     def points
-      4
+      6
     end
   private
     def should_be_selected(x)
@@ -135,7 +135,7 @@ module ExtremeStartup
        "which of the following numbers are primes: " + @numbers.join(', ')
      end
      def points
-       4
+       6
      end
    private
      def should_be_selected(x)
@@ -202,10 +202,10 @@ module ExtremeStartup
         SquareCubeQuestion,
         MultiplicationQuestion, 
         PrimesQuestion,
+        GeneralKnowledgeQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  
-        PowerQuestion, 
-        GeneralKnowledgeQuestion
+        PowerQuestion
       ]
     end
     
