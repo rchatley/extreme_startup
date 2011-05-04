@@ -196,7 +196,7 @@ module ExtremeStartup
     attr_reader :round
     
     def initialize
-      @round = 0
+      @round = 1
       @question_types = [
         AdditionQuestion, 
         SquareCubeQuestion,
@@ -210,7 +210,7 @@ module ExtremeStartup
     end
     
     def next_question
-      available_question_types = @question_types[0..((@round + 1) * 2)]
+      available_question_types = @question_types[0..(@round * 2 - 1)]
       available_question_types.shuffle.first.new
     end
     
