@@ -62,6 +62,23 @@ module ExtremeStartup
      end
   end
   
+  class MaximumQuestion < SelectFromListOfNumbersQuestion
+     def as_text
+        "which of the following numbers is the largest: " + @numbers.join(', ')
+      end
+      def points
+        5
+      end
+    private
+      def should_be_selected(x)
+        x == @numbers.max
+      end
+
+      def candidate_numbers
+          (1..100).to_a
+      end
+    end
+  
   class AdditionQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} plus #{@n2}"
@@ -170,7 +187,7 @@ module ExtremeStartup
         [
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
-          ["are you in favour of adopting AV for British elections", "yes"],
+          ["which way did/will you vote in the AV referendum", "yes"],
           ["what colour is a banana", "yellow"],
           ["who played James Bond in the film Dr No", "Sean Connery"]
         ]
@@ -203,6 +220,7 @@ module ExtremeStartup
         MultiplicationQuestion, 
         PrimesQuestion,
         GeneralKnowledgeQuestion,
+        MaximumQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  
         PowerQuestion
