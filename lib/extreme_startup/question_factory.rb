@@ -170,7 +170,7 @@ module ExtremeStartup
         [
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
-          ["what is the standard unit of beer served in British pubs", "pint"],
+          ["are you in favour of adopting AV for British elections", "yes"],
           ["what colour is a banana", "yellow"],
           ["who played James Bond in the film Dr No", "Sean Connery"]
         ]
