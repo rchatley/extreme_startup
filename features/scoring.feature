@@ -41,3 +41,17 @@ Feature: Scoring
       Then the scores should be:
         | player   | score |
         | charlie  | -2    |
+        
+    Scenario: Player causes error
+      Given a player "ernie" who plays like this:
+        """
+        get '/' do
+          1 / 0
+        end
+        """
+      And the correct answer to every question is '4'
+      When the player is entered
+      And the game is played for 1 second
+      Then the scores should be:
+        | player   | score |
+        | ernie    | -5    |

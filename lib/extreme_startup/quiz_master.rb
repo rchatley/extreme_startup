@@ -80,7 +80,13 @@ module ExtremeStartup
           response = HTTParty.get(url)
           puts "question was " + question.to_s
           puts "player #{@player.name} said #{response}"
-          if (player_passed?(response)) then
+          if (!response.success?) then
+             puts "player #{@player.name} had an error - try again later"
+              penalty = -5
+              @scoreboard.increment_score_for(@player, penalty)
+              @player.log_result(question.id, "error response", penalty)
+              sleep 20
+          elsif (player_passed?(response)) then
             puts "player #{@player.name} passed"
             @player.log_result(question.id, "pass", 0)
             sleep 10
@@ -98,7 +104,7 @@ module ExtremeStartup
           end
         rescue => exception
           puts "player #{@player.name} was down - try again later #{exception}"
-          penalty = -5
+          penalty = -2
           @scoreboard.increment_score_for(@player, penalty)
           @player.log_result(question.id, "no_response", penalty)
           sleep 20
