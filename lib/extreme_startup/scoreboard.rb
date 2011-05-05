@@ -8,6 +8,7 @@ module ExtremeStartup
   
     def increment_score_for(player, increment)
       @scores[player.uuid] += increment
+      puts "added #{increment} to player #{player.name}'s score. It is now #{@scores[player.uuid]}"
     end
   
     def new_player(player)
