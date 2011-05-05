@@ -32,7 +32,17 @@ module ExtremeStartup
       if numbers.any?
         @n1, @n2 = *numbers
       else
-        @n1, @n2 = rand(100), rand(100)
+        @n1, @n2 = rand(20), rand(20)
+      end
+    end
+  end
+  
+  class TernaryMathsQuestion < Question
+    def initialize(*numbers)
+      if numbers.any?
+        @n1, @n2, @n3 = *numbers
+      else
+        @n1, @n2, @n3 = rand(20), rand(20), rand(20)
       end
     end
   end
@@ -106,6 +116,45 @@ module ExtremeStartup
   private
     def correct_answer
       @n1 * @n2
+    end
+  end
+
+  class AdditionAdditionQuestion < TernaryMathsQuestion
+    def as_text
+      "what is #{@n1} plus #{@n2} plus {@n3}"
+    end
+    def points
+      3
+    end
+  private  
+    def correct_answer
+      @n1 + @n2 + @n3
+    end
+  end
+    
+  class AdditionMultiplicationQuestion < TernaryMathsQuestion
+    def as_text
+      "what is #{@n1} plus #{@n2} mutliplied by {@n3}"
+    end
+    def points
+      6
+    end
+  private  
+    def correct_answer
+      @n1 + @n2 * @n3
+    end
+  end
+  
+  class MultiplicationAdditionQuestion < TernaryMathsQuestion
+    def as_text
+      "what is #{@n1} multiplied by #{@n2} plus #{@n3}"
+    end
+    def points
+      5
+    end
+  private  
+    def correct_answer
+      @n1 * @n2 + @n3
     end
   end
   
@@ -223,7 +272,10 @@ module ExtremeStartup
         MaximumQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  
-        PowerQuestion
+        PowerQuestion,
+        AdditionAdditionQuestion,
+        AdditionMultiplicationQuestion,
+        MultiplicationAdditionQuestion
       ]
     end
     
