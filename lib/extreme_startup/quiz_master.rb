@@ -84,7 +84,7 @@ module ExtremeStartup
              puts "player #{@player.name} had an error - try again later"
               penalty = -5
               @scoreboard.increment_score_for(@player, penalty)
-              @player.log_result(question.id, "error response", penalty)
+              @player.log_result(question.id, "error_response", penalty)
               sleep 20
           elsif (player_passed?(response)) then
             puts "player #{@player.name} passed"

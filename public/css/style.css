@@ -7,8 +7,10 @@ h1 {color:blue}
 .logline.result {width:150}
 .logline.points {width:200}
 .logline.correct {background-color:#7cfc00}
-.logline.wrong {background-color:#eed5b7}
+.logline.pass {background-color:#eed5b7}
+.logline.wrong {background-color:#ff4500}
 .logline.no_response {background-color:#ff4500}
+.logline.error_response {background-color:#ff4500}
 
 
 .ranking {margin:2px; padding:3px; display:inline-block; background-color:#eed5b7}
