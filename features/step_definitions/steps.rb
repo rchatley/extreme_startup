@@ -6,6 +6,13 @@ Given /^the correct answer to every question is '(\d+)'$/ do |answer|
   stub_correct_answer_to_be answer
 end
 
+When /^the player is entered$/ do
+  players.each do |player|
+    player.start
+    enter_player player
+  end
+end
+
 When /^the two players are entered$/ do
   players.each do |player|
     player.start

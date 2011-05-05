@@ -66,6 +66,10 @@ module ExtremeStartup
       @scoreboard = scoreboard
       @question_factory = question_factory
     end
+    
+    def player_passed(response)
+      response.to_s.downcase.strip == "pass"
+    end
   
     def start
       while true
@@ -76,14 +80,18 @@ module ExtremeStartup
           response = HTTParty.get(url)
           puts "question was " + question.to_s
           puts "player #{@player.name} said #{response}"
-          if (question.answered_correctly?(response)) then
+          if (player_passed(response)) then
+            puts "player #{@player.name} passed"
+            @player.log_result(question.id, "pass", 0)
+            sleep 10
+          elsif (question.answered_correctly?(response)) then
             puts "player #{@player.name} was correct"
             @scoreboard.increment_score_for(@player, question.points)
             @player.log_result(question.id, "correct", question.points)
             sleep 5
           else
             puts "player #{@player.name} was wrong"
-            @player.log_result(question.id, "wrong", 0)
+            @player.log_result(question.id, "wrong", -2)
             sleep 10
           end
         rescue => exception

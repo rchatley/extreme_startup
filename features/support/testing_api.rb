@@ -68,7 +68,7 @@ module TestingApi
 
   def score_for(player_name)
     visit '/'
-    find('.player .name', :text => player_name).find(:xpath, '..').find('.score').text.to_i
+    find('.player .name', :text => player_name).find(:xpath, '..').find('.points').text.to_i
   end
 end
 

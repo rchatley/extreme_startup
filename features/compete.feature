@@ -1,10 +1,10 @@
-Feature: Complete
+Feature: Compete
 
   Scenario: One player plays another
     Given a player "dumbo" who plays like this:
       """
       get '/' do
-        'huh?'
+        'PASS'
       end
       """
     And a player "always-4" who plays like this:
@@ -18,5 +18,6 @@ Feature: Complete
     And the game is played for 1 second
     Then the scores should be:
       | player   | score |
-      | dumbo    | 0     |
       | always-4 | 1     |
+      | dumbo    | 0     |
+      
