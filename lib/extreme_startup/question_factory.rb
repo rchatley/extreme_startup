@@ -121,7 +121,7 @@ module ExtremeStartup
 
   class AdditionAdditionQuestion < TernaryMathsQuestion
     def as_text
-      "what is #{@n1} plus #{@n2} plus {@n3}"
+      "what is #{@n1} plus #{@n2} plus #{@n3}"
     end
     def points
       3
@@ -134,7 +134,7 @@ module ExtremeStartup
     
   class AdditionMultiplicationQuestion < TernaryMathsQuestion
     def as_text
-      "what is #{@n1} plus #{@n2} mutliplied by {@n3}"
+      "what is #{@n1} plus #{@n2} multiplied by #{@n3}"
     end
     def points
       6
