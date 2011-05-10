@@ -18,7 +18,7 @@ module ExtremeStartup
     set :players,    Hash.new
     set :scoreboard, Scoreboard.new
     set :question_factory, QuestionFactory.new
-    # set :quizmaster_type, WarmupQuizMaster
+   # set :quizmaster_type, WarmupQuizMaster
     set :quizmaster_type, QuizMaster
     
     get '/' do 

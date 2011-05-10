@@ -6,6 +6,10 @@ Given /^the correct answer to every question is '(\d+)'$/ do |answer|
   stub_correct_answer_to_be answer
 end
 
+Given /^the correct answer to every question is '(\d+)' worth (\d+) points$/ do |answer, points|
+  stub_correct_answer_to_be answer, points.to_i
+end
+
 When /^the player is entered$/ do
   players.each do |player|
     player.start

@@ -97,7 +97,7 @@ module ExtremeStartup
             sleep 5
           else
             puts "player #{@player.name} was wrong"
-            penalty = -2
+            penalty = -1 * (question.points.to_f / 10)
             @scoreboard.increment_score_for(@player, penalty)
             @player.log_result(question.id, "wrong", penalty)
             sleep 10

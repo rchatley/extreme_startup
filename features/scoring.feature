@@ -35,12 +35,12 @@ Feature: Scoring
           '2'
         end
         """
-      And the correct answer to every question is '4'
+      And the correct answer to every question is '4' worth 10 points
       When the player is entered
       And the game is played for 1 second
       Then the scores should be:
         | player   | score |
-        | charlie  | -2    |
+        | charlie  | -1    |
         
     Scenario: Player causes error
       Given a player "ernie" who plays like this:

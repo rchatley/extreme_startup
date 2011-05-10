@@ -58,7 +58,7 @@ module TestingApi
     post '/players', :name => player.name, :url => player.url 
   end
 
-  def stub_correct_answer_to_be(correct_answer)
+  def stub_correct_answer_to_be(correct_answer, points = 1)
     ::ExtremeStartup::AdditionQuestion.class_eval do
       define_method(:answered_correctly?) do |actual_answer|
         actual_answer.to_s == correct_answer
@@ -67,7 +67,7 @@ module TestingApi
     
     ::ExtremeStartup::AdditionQuestion.class_eval do
       define_method(:points) do 
-        1
+        points
       end
     end
     
@@ -79,7 +79,7 @@ module TestingApi
     
     ::ExtremeStartup::SquareCubeQuestion.class_eval do
       define_method(:points) do
-        1
+        points
       end
     end
   end
