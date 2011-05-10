@@ -72,7 +72,7 @@ module TestingApi
     end
     
     ::ExtremeStartup::SquareCubeQuestion.class_eval do
-      define_method(:answered_correctly) do |actual_answer|
+      define_method(:answered_correctly?) do |actual_answer|
         actual_answer.to_s == correct_answer
       end
     end
