@@ -8,7 +8,7 @@ h1 {color:blue}
 .logline.points {width:200}
 .logline.correct {background-color:#7cfc00}
 .logline.pass {background-color:#eed5b7}
-.logline.wrong {background-color:#ff4500}
+.logline.wrong {background-color:#ffaa00}
 .logline.no_response {background-color:#ff4500}
 .logline.error_response {background-color:#ff4500}
 
