@@ -23,7 +23,7 @@ module ExtremeStartup
     end
     
     def points
-      1
+      10
     end
   end
   
@@ -77,7 +77,7 @@ module ExtremeStartup
         "which of the following numbers is the largest: " + @numbers.join(', ')
       end
       def points
-        5
+        40
       end
     private
       def should_be_selected(x)
@@ -124,7 +124,7 @@ module ExtremeStartup
       "what is #{@n1} plus #{@n2} plus #{@n3}"
     end
     def points
-      3
+      30
     end
   private  
     def correct_answer
@@ -137,7 +137,7 @@ module ExtremeStartup
       "what is #{@n1} plus #{@n2} multiplied by #{@n3}"
     end
     def points
-      6
+      60
     end
   private  
     def correct_answer
@@ -150,7 +150,7 @@ module ExtremeStartup
       "what is #{@n1} multiplied by #{@n2} plus #{@n3}"
     end
     def points
-      5
+      50
     end
   private  
     def correct_answer
@@ -163,7 +163,7 @@ module ExtremeStartup
       "what is #{@n1} to the power of #{@n2}"
     end
     def points
-      3
+      20
     end
   private
     def correct_answer
@@ -176,7 +176,7 @@ module ExtremeStartup
       "which of the following numbers is both a square and a cube: " + @numbers.join(', ')
     end
     def points
-      6
+      60
     end
   private
     def should_be_selected(x)
@@ -201,7 +201,7 @@ module ExtremeStartup
        "which of the following numbers are primes: " + @numbers.join(', ')
      end
      def points
-       6
+       60
      end
    private
      def should_be_selected(x)
@@ -219,7 +219,7 @@ module ExtremeStartup
       "what is the #{n}th number in the Fibonacci sequence"
     end
     def points
-      5
+      50
     end 
   private
     def correct_answer
