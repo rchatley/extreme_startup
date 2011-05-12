@@ -184,7 +184,9 @@ module ExtremeStartup
     end
     
     def candidate_numbers
-        (1..100).map { |x| x ** 3 }.select{ |x| is_square(x) }
+        square_cubes = (1..100).map { |x| x ** 3 }.select{ |x| is_square(x) }
+        squares = (1..50).map { |x| x ** 2 }
+        square_cubes.concat(squares)
     end
     
     def is_square(x)
@@ -265,11 +267,11 @@ module ExtremeStartup
       @round = 1
       @question_types = [
         AdditionQuestion, 
-        SquareCubeQuestion,
-        MultiplicationQuestion, 
-        PrimesQuestion,
-        GeneralKnowledgeQuestion,
         MaximumQuestion,
+        MultiplicationQuestion, 
+        SquareCubeQuestion,
+        GeneralKnowledgeQuestion,
+        PrimesQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  
         PowerQuestion,
