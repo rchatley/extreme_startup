@@ -79,17 +79,13 @@ module ExtremeStartup
         begin
           response = HTTParty.get(url)
           puts "question was " + question.to_s
-          puts "player #{@player.name} said #{response}"
+          puts "player #{@player.name} said #{response}" unless $silence_logging
           if (!response.success?) then
              puts "player #{@player.name} had an error - try again later"
               penalty = -5
               @scoreboard.increment_score_for(@player, penalty)
               @player.log_result(question.id, "error_response", penalty)
               sleep 20
-          elsif (player_passed?(response)) then
-            puts "player #{@player.name} passed"
-            @player.log_result(question.id, "pass", 0)
-            sleep 10
           elsif (question.answered_correctly?(response)) then
             puts "player #{@player.name} was correct"
             @scoreboard.increment_score_for(@player, question.points)

@@ -13,3 +13,5 @@ module RackTestWorld
   end
 end
 World(RackTestWorld)
+
+$silence_logging = true
