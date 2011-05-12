@@ -236,7 +236,7 @@ module ExtremeStartup
         [
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
-          ["which way did/will you vote in the AV referendum", "yes"],
+          ["what currency did Spain use before the Euro", "peseta"],
           ["what colour is a banana", "yellow"],
           ["who played James Bond in the film Dr No", "Sean Connery"]
         ]
