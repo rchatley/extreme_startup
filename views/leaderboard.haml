@@ -11,3 +11,8 @@
         %li.player
           %div{:class => ["ranking", "name"]} #{players[entry[0]].name}
           %div{:class => ["ranking", "points"]} #{entry[1]}
+          
+    :javascript
+      refresh = function() { window.location.reload(); };
+      setTimeout(refresh, 10000);
+
