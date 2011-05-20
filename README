@@ -18,3 +18,5 @@ set :quizmaster_type, WarmupQuizMaster
 
 * Set a time limit so you know when to stop the game, declare the winner, and retrospect.
 
+-- Robert Chatley and Matt Wynne 2011.
+
