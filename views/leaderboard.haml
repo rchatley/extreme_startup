@@ -9,7 +9,7 @@
     %ul
       - leaderboard.each do |entry|
         %li.player
-          %div{:class => ["ranking", "name"]} #{players[entry[0]].name}
+          %div{:class => ["ranking", "name"]} #{html_escape(players[entry[0]].name)}
           %div{:class => ["ranking", "points"]} #{entry[1]}
           
     :javascript
