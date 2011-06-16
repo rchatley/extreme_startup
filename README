@@ -2,6 +2,14 @@ This is Extreme Startup. This software supports a workshop where teams can compe
 
 NB don't show the players the code for this project until after the workshop as otherwise they can cheat.
 
+Getting started
+* Install Ruby 1.9.2
+* (For Windows)
+  * Install Ruby DevKit fra : http://rubyinstaller.org/downloads/
+* gem install bundler
+* bundle install
+* ruby web_server.rb
+
 Notes for facilitators:
 
 * Run the server on your machine. It's a Sinatra app that by default runs on port 3000.
@@ -22,3 +30,4 @@ set :quizmaster_type, WarmupQuizMaster
 
 -- Robert Chatley and Matt Wynne 2011.
 
+  
