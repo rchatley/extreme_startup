@@ -19,18 +19,22 @@ module ExtremeStartup
     
     def ask(player)
       url = player.url + '?q=' + URI.escape(self.to_s)
-      puts "GET:" + url
+      puts "GET: " + url
       begin
-        response = HTTParty.get(url)
-        if (!response.success?) then
-          @result = "error_response"
-        else
+        response = get(url)
+        if (response.success?) then
           @result = "answered"
-          @answer = response.to_s
+          self.answer = response.to_s
+        else
+          @result = "error_response"
         end
       rescue => exception
         @result = "no_answer"
       end
+    end
+    
+    def get(url)
+      HTTParty.get(url)
     end
     
     def result
@@ -62,7 +66,7 @@ module ExtremeStartup
     end
     
     def display_result
-      "question: #{self.to_s}, result: #{result} answer: #{answer}"
+      "\tquestion: #{self.to_s}\n\tanswer: #{answer}\n\tresult: #{result}"
     end
     
     def id
@@ -73,6 +77,10 @@ module ExtremeStartup
       "#{id}: #{as_text}"
     end
     
+    def answer=(answer)
+      @answer = answer
+    end
+
     def answer
       @answer && @answer.downcase.strip
     end
@@ -329,22 +337,13 @@ module ExtremeStartup
       @session = get_session(player, spawn_rate)
     end
 
-    def ask(player)    
-      url = player.url + '?q=' + URI.escape(self.to_s)
-      puts "GET:" + url
-      begin
-        response = @session.get(url)
-        if (!response.success?) then
-          @result = "error_response"
-        else
-          @result = "answered"
-          @answer = response.to_s
-          @session.add_answer(@answer)
-        end
-      rescue => exception
-        puts exception
-        @result = "no_answer"
-      end
+    def get(url)
+      @session.get(url)
+    end
+    
+    def answer=(answer)
+      super.answer = answer
+      @session.add_answer(answer)
     end
 
     def answered_correctly?
@@ -452,7 +451,7 @@ module ExtremeStartup
     def initialize
       @round = 1
       @question_types = [
-        AdditionQuestion, 
+        AdditionQuestion,
         MaximumQuestion,
         MultiplicationQuestion, 
         SquareCubeQuestion,
