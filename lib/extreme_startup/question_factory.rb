@@ -91,7 +91,7 @@ module ExtremeStartup
   end
   
   class BinaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2 = *numbers
       else
@@ -101,7 +101,7 @@ module ExtremeStartup
   end
   
   class TernaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2, @n3 = *numbers
       else
@@ -111,7 +111,7 @@ module ExtremeStartup
   end
   
   class SelectFromListOfNumbersQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @numbers = *numbers
       else
