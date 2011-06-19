@@ -456,6 +456,8 @@ module ExtremeStartup
     def initialize
       @round = 1
       @question_types = [
+        #RememberMeQuestion,
+        #ExtremeStartup::Questions::WebshopQuestion,
         AdditionQuestion,
         MaximumQuestion,
         MultiplicationQuestion, 

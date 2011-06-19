@@ -1,4 +1,5 @@
 require_relative 'question_factory'
+require_relative 'questions/webshop_conversation'
 require 'uri'
 
 module ExtremeStartup
