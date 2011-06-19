@@ -397,6 +397,10 @@ module ExtremeStartup
     def answered_correctly?
       @answer && correct_answer.strip.to_s == @answer.strip.to_s
     end
+    
+    def score
+      answered_correctly? ? points : penalty
+    end
   
     def points
       10
