@@ -337,17 +337,14 @@ module ExtremeStartup
         if (!response.success?) then
           @result = "error_response"
         else
-          answer = response.to_s
+          @result = "answered"
+          @answer = response.to_s
+          @session.add_answer(@answer)
         end
       rescue => exception
         puts exception
         @result = "no_answer"
       end
-    end
-
-    def answer=(answer)
-      @result = "answered"
-      @session.add_answer(answer)
     end
 
     def answered_correctly?
@@ -407,7 +404,7 @@ module ExtremeStartup
     end
   
     def penalty
-      -1
+      - points / 10
     end
   end
   
@@ -437,12 +434,16 @@ module ExtremeStartup
     def correct_answer
       @name
     end
+
+    def points
+      30 + @attempts * 10
+    end
   end
-  
-  RememberMeQuestion = Class.new(ConversationalQuestion) do
+
+  class RememberMeQuestion < ConversationalQuestion
     def create_session
       RememberMeConversation.new
-    end    
+    end
   end
 
   class QuestionFactory
@@ -468,7 +469,7 @@ module ExtremeStartup
     
     def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
-      available_question_types.pick_one.new
+      available_question_types.pick_one.new(player)
     end
     
     def advance_round
