@@ -324,6 +324,124 @@ module ExtremeStartup
     end
   end
     
+  class StatefulQuestion < Question
+
+  end
+  
+  class RememberMeSession
+    def initialize
+      @name = %w(abe bob chuck dick evan fred george hob ivan jim pete ric).pick_one
+      @attempts = 0
+    end
+
+    def get(url)
+      response = HTTParty.get(url, :headers => headers)
+      return response unless response.success?
+      add_answer(response.to_s)
+      @cookie = response.headers['set-cookie'] || @cookie
+      return response
+    end
+
+    def headers
+      @cookie ? { "cookie" => @cookie } : {}
+    end
+
+    def add_answer(answer)
+      @answer = answer
+      @attempts += 1
+    end
+
+    def dead?
+      !answered_correctly? || @attempts > 10
+    end
+
+    def question
+      if answered_correctly?
+        return "what is my name"
+      else
+        return "my name is #{@name}. what is my name"
+      end
+    end
+
+    def correct_answer
+      @name
+    end
+
+    def answered_correctly?
+      @answer && @name.strip.to_s == @answer.strip.to_s
+    end
+
+    def points
+      10
+    end
+
+    def penalty
+      -1
+    end
+  end
+  
+  class RememberMeQuestion < StatefulQuestion
+    def initialize(player, spawn_rate = 80)
+      @session = get_session(player, spawn_rate)
+    end
+
+    def self.sessions
+      @sessions ||= {}
+    end
+
+    def get_session(player, spawn_rate)
+      sessions = (RememberMeQuestion.sessions[player] ||= [])
+      sessions.reject! { |session| session.dead? }
+      sessions << create_session if sessions.empty? || (rand(100) < spawn_rate)
+      RememberMeQuestion.sessions[player].pick_one
+    end
+
+    def create_session
+      RememberMeSession.new
+    end
+
+    def ask(player)    
+      url = player.url + '?q=' + URI.escape(self.to_s)
+      puts "GET:" + url
+      begin
+        response = @session.get(url)
+        if (!response.success?) then
+          @result = "error_response"
+        else
+          answer = response.to_s
+        end
+      rescue => exception
+        puts exception
+        @result = "no_answer"
+      end
+    end
+
+    def answer=(answer)
+      @result = "answered"
+      @session.add_answer(answer)
+    end
+    
+    def answered_correctly?
+      @session.answered_correctly?
+    end
+
+    def as_text
+      @session.question
+    end
+
+    def correct_answer
+      @session.correct_answer
+    end
+
+    def points
+      @session.points
+    end
+
+    def penalty
+      @session.penalty
+    end
+  end
+  
   class QuestionFactory
     attr_reader :round
     
