@@ -324,80 +324,9 @@ module ExtremeStartup
     end
   end
     
-  class StatefulQuestion < Question
-
-  end
-  
-  class RememberMeSession
-    def initialize
-      @name = %w(abe bob chuck dick evan fred george hob ivan jim pete ric).pick_one
-      @attempts = 0
-    end
-
-    def get(url)
-      response = HTTParty.get(url, :headers => headers)
-      return response unless response.success?
-      add_answer(response.to_s)
-      @cookie = response.headers['set-cookie'] || @cookie
-      return response
-    end
-
-    def headers
-      @cookie ? { "cookie" => @cookie } : {}
-    end
-
-    def add_answer(answer)
-      @answer = answer
-      @attempts += 1
-    end
-
-    def dead?
-      !answered_correctly? || @attempts > 10
-    end
-
-    def question
-      if answered_correctly?
-        return "what is my name"
-      else
-        return "my name is #{@name}. what is my name"
-      end
-    end
-
-    def correct_answer
-      @name
-    end
-
-    def answered_correctly?
-      @answer && @name.strip.to_s == @answer.strip.to_s
-    end
-
-    def points
-      10
-    end
-
-    def penalty
-      -1
-    end
-  end
-  
-  class RememberMeQuestion < StatefulQuestion
+  class ConversationalQuestion < Question
     def initialize(player, spawn_rate = 80)
       @session = get_session(player, spawn_rate)
-    end
-
-    def self.sessions
-      @sessions ||= {}
-    end
-
-    def get_session(player, spawn_rate)
-      sessions = (RememberMeQuestion.sessions[player] ||= [])
-      sessions.reject! { |session| session.dead? }
-      sessions << create_session if sessions.empty? || (rand(100) < spawn_rate)
-      RememberMeQuestion.sessions[player].pick_one
-    end
-
-    def create_session
-      RememberMeSession.new
     end
 
     def ask(player)    
@@ -420,7 +349,7 @@ module ExtremeStartup
       @result = "answered"
       @session.add_answer(answer)
     end
-    
+
     def answered_correctly?
       @session.answered_correctly?
     end
@@ -440,8 +369,78 @@ module ExtremeStartup
     def penalty
       @session.penalty
     end
+
+    def self.sessions
+      @sessions ||= {}
+    end
+
+    def get_session(player, spawn_rate)
+      sessions = (self.class.sessions[player] ||= [])
+      sessions.reject! { |session| session.dead? }
+      sessions << create_session if sessions.empty? || (rand(100) < spawn_rate)
+      self.class.sessions[player].pick_one
+    end
   end
   
+  class Conversation
+    def get(url)
+      response = HTTParty.get(url, :headers => headers)
+      return response unless response.success?
+      @cookie = response.headers['set-cookie'] || @cookie
+      return response
+    end    
+
+    def headers
+      @cookie ? { "cookie" => @cookie } : {}
+    end
+
+    def answered_correctly?
+      @answer && correct_answer.strip.to_s == @answer.strip.to_s
+    end
+  
+    def points
+      10
+    end
+  
+    def penalty
+      -1
+    end
+  end
+  
+  class RememberMeConversation < Conversation
+    def initialize
+      @name = %w(abe bob chuck dick evan fred george hob ivan jim pete ric).pick_one
+      @attempts = 0
+    end
+  
+    def add_answer(answer)
+      @answer = answer
+      @attempts += 1
+    end
+  
+    def dead?
+      !answered_correctly? || @attempts > 10
+    end
+  
+    def question
+      if answered_correctly?
+        return "what is my name"
+      else
+        return "my name is #{@name}. what is my name"
+      end
+    end
+  
+    def correct_answer
+      @name
+    end
+  end
+  
+  RememberMeQuestion = Class.new(ConversationalQuestion) do
+    def create_session
+      RememberMeConversation.new
+    end    
+  end
+
   class QuestionFactory
     attr_reader :round
     
