@@ -27,7 +27,7 @@ module ExtremeStartup
     end
     
     def result
-      if @result == "answered" && self.answered_correctly?(answer)
+      if @result == "answered" && self.answered_correctly?
         "correct"
       elsif @result == "answered"
         "wrong"
@@ -70,7 +70,7 @@ module ExtremeStartup
       @answer && @answer.downcase.strip
     end
     
-    def answered_correctly?(answer)
+    def answered_correctly?(answer = answer)
       correct_answer.to_s.downcase.strip == answer
     end
     
@@ -325,9 +325,9 @@ module ExtremeStartup
       @question_types = [
         AdditionQuestion, 
         MaximumQuestion,
-        GeneralKnowledgeQuestion,
         MultiplicationQuestion, 
         SquareCubeQuestion,
+        GeneralKnowledgeQuestion,
         PrimesQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  
@@ -338,7 +338,7 @@ module ExtremeStartup
       ]
     end
     
-    def next_question
+    def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
       available_question_types.shuffle.first.new
     end

@@ -1,3 +1,5 @@
+require 'uuid'
+
 module ExtremeStartup
   
   class LogLine
