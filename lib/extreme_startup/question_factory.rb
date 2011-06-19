@@ -10,6 +10,54 @@ module ExtremeStartup
       end
     end
     
+    def ask(player)
+      url = player.url + '?q=' + URI.escape(self.to_s)
+      puts "GET:" + url
+      begin
+        response = HTTParty.get(url)
+        if (!response.success?) then
+          @result = "error_response"
+        else
+          @result = "answered"
+          @answer = response.to_s
+        end
+      rescue => exception
+        @result = "no_answer"
+      end
+    end
+    
+    def result
+      if @result == "answered" && self.answered_correctly?(answer)
+        "correct"
+      elsif @result == "answered"
+        "wrong"
+      else
+        @result
+      end
+    end
+    
+    def score
+      case result
+        when "correct"        then points
+        when "wrong"          then penalty
+        when "error_response" then -5
+        when "no_answer"     then -20
+        else puts "!!!!! result #{result} in score"
+      end
+    end
+    
+    def delay_before_next
+      case result
+        when "correct"        then 5
+        when "wrong"          then 10
+        else 20
+      end
+    end
+    
+    def display_result
+      "question: #{self.to_s}, result: #{result} answer: #{answer}"
+    end
+    
     def id
       @id ||= Question.generate_uuid
     end
@@ -18,12 +66,20 @@ module ExtremeStartup
       "#{id}: #{as_text}"
     end
     
-    def answered_correctly?(answer) 
-      correct_answer.to_s.downcase.strip == answer.to_s.downcase.strip
+    def answer
+      @answer && @answer.downcase.strip
+    end
+    
+    def answered_correctly?(answer)
+      correct_answer.to_s.downcase.strip == answer
     end
     
     def points
       10
+    end
+    
+    def penalty
+      - points / 10
     end
   end
   
@@ -236,6 +292,7 @@ module ExtremeStartup
     class << self
       def question_bank
         [
+          ["what is the twitter id of the organizer of this dojo", "jhannes"],
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
           ["what currency did Spain use before the Euro", "peseta"],
@@ -259,7 +316,7 @@ module ExtremeStartup
       @answer
     end
   end
-  
+    
   class QuestionFactory
     attr_reader :round
     
@@ -268,9 +325,9 @@ module ExtremeStartup
       @question_types = [
         AdditionQuestion, 
         MaximumQuestion,
+        GeneralKnowledgeQuestion,
         MultiplicationQuestion, 
         SquareCubeQuestion,
-        GeneralKnowledgeQuestion,
         PrimesQuestion,
         SubtractionQuestion,
         FibonacciQuestion,  

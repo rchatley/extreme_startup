@@ -74,37 +74,11 @@ module ExtremeStartup
     def start
       while true
         question = @question_factory.next_question
-        url = @player.url + '?q=' + URI.escape(question.to_s)
-        puts "GET:" + url
-        begin
-          response = HTTParty.get(url)
-          puts "question was " + question.to_s
-          puts "player #{@player.name} said #{response}" unless $silence_logging
-          if (!response.success?) then
-             puts "player #{@player.name} had an error - try again later"
-              penalty = -5
-              @scoreboard.increment_score_for(@player, penalty)
-              @player.log_result(question.id, "error_response", penalty)
-              sleep 20
-          elsif (question.answered_correctly?(response)) then
-            puts "player #{@player.name} was correct"
-            @scoreboard.increment_score_for(@player, question.points)
-            @player.log_result(question.id, "correct", question.points)
-            sleep 5
-          else
-            puts "player #{@player.name} was wrong"
-            penalty = -1 * (question.points / 10)
-            @scoreboard.increment_score_for(@player, penalty)
-            @player.log_result(question.id, "wrong", penalty)
-            sleep 10
-          end
-        rescue => exception
-          puts "player #{@player.name} was down - try again later #{exception}"
-          penalty = -20
-          @scoreboard.increment_score_for(@player, penalty)
-          @player.log_result(question.id, "no_response", penalty)
-          sleep 20
-        end
+        question.ask(@player)
+        puts "For player #{@player} #{question.display_result}"
+        @scoreboard.increment_score_for(@player, question.score)
+        @player.log_result(question.id, question.result, question.score)
+        sleep question.delay_before_next
       end
     end
   end
