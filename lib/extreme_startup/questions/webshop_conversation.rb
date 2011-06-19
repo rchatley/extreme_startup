@@ -7,6 +7,10 @@ module ExtremeStartup::Questions
       @shopping_cart = shopping_cart
     end
     
+    def dead?
+      not answered_correctly? or @asked_for_total
+    end
+    
     def question
       @queried_product = @purchased_product = @asked_for_total = nil
       if !@product_list
@@ -36,8 +40,9 @@ module ExtremeStartup::Questions
     end
     
     def add_answer(answer)
-      if not @product_list 
-        @product_list = answer.split(",")
+      if not @product_list
+        @product_list = {} 
+        answer.split(",").each { |p| @product_list[p.strip] = nil }
       elsif @queried_product
         @price = Float(answer) rescue nil
         @product_list[@queried_product] = @price
@@ -77,9 +82,15 @@ module ExtremeStartup::Questions
     end
   end
   
-  WebshopQuestion = Class.new(ConversationalQuestion) do
+  class WebshopQuestion < ConversationalQuestion
     def create_session
-      WebshopConversation
+      WebshopConversation.new
     end    
+
+    def spawn?(sessions, spawn_rate)
+      return true if sessions.empty?
+      return false if sessions.length > 3
+      (rand(100) < spawn_rate)
+    end
   end
 end

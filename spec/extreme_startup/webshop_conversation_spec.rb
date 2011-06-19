@@ -51,7 +51,12 @@ module ExtremeStartup::Questions
       it "should reject a non-numeric answer" do
         conversation.add_answer "two dollars"
         conversation.score.should < 0
-      end      
+      end
+      
+      it "should kill clients who didn't get an answer" do
+        conversation.add_answer "two dollars"
+        conversation.dead?.should be_true
+      end
     end
     
     context "client knows product prices" do
@@ -98,6 +103,12 @@ module ExtremeStartup::Questions
         conversation.question
         conversation.add_answer("10")
         conversation.score.should < 0
+      end
+      
+      it "ends session when it gets correct total" do
+        conversation.question
+        conversation.add_answer((12*4 + 10*8).to_s)
+        conversation.dead?.should be_true        
       end
     end
   end
