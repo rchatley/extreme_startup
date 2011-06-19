@@ -1,11 +1,12 @@
 require 'set'
 require 'prime'
 
+# TODO: This really should be somewhere better
+#  but I don't know how to best set up the require's for that
 class Array
   def pick_one
     self[Kernel.rand(self.length)]
   end
-
 end
 
 module ExtremeStartup
@@ -23,13 +24,13 @@ module ExtremeStartup
       begin
         response = get(url)
         if (response.success?) then
-          @result = "answered"
           self.answer = response.to_s
         else
-          @result = "error_response"
+          @problem = "error_response"
         end
       rescue => exception
-        @result = "no_answer"
+        puts exception
+        @problem = "no_answer"
       end
     end
     
@@ -38,12 +39,12 @@ module ExtremeStartup
     end
     
     def result
-      if @result == "answered" && self.answered_correctly?
+      if @answer && self.answered_correctly?
         "correct"
-      elsif @result == "answered"
+      elsif @answer
         "wrong"
       else
-        @result
+        @problem
       end
     end
     
@@ -342,7 +343,7 @@ module ExtremeStartup
     end
     
     def answer=(answer)
-      super.answer = answer
+      @answer = answer
       @session.add_answer(answer)
     end
 
@@ -351,7 +352,7 @@ module ExtremeStartup
     end
 
     def as_text
-      @session.question
+      @question ||= @session.question
     end
 
     def correct_answer
@@ -373,8 +374,12 @@ module ExtremeStartup
     def get_session(player, spawn_rate)
       sessions = (self.class.sessions[player] ||= [])
       sessions.reject! { |session| session.dead? }
-      sessions << create_session if sessions.empty? || (rand(100) < spawn_rate)
+      sessions << create_session if spawn?(sessions, spawn_rate)
       self.class.sessions[player].pick_one
+    end
+    
+    def spawn?(sessions, spawn_rate)
+      sessions.empty? || (rand(100) < spawn_rate)
     end
   end
   
@@ -435,7 +440,7 @@ module ExtremeStartup
     end
 
     def points
-      30 + @attempts * 10
+      30 # + @attempts * 10
     end
   end
 
