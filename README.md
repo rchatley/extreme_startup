@@ -8,7 +8,7 @@ Getting started
 ---------------
 * Install Ruby 1.9.2 and rubygems
 * (For Windows)
-  * Install [Ruby DevKit](http://rubyinstaller.org/downloads/ rubyinstaller)
+  * Install [Ruby DevKit](http://rubyinstaller.org/downloads/)
   * Extract to (e.g.) c:\devkit
   * cd c:\devkit
   * ruby dk.rb init
