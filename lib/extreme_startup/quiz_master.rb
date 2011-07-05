@@ -1,4 +1,5 @@
 require_relative 'question_factory'
+require_relative 'questions/webshop_conversation'
 require 'uri'
 
 module ExtremeStartup
@@ -75,9 +76,9 @@ module ExtremeStartup
       while true
         load "#{File::dirname(__FILE__)}/question_factory.rb" unless $cache_questions
 
-        question = @question_factory.next_question(player)
+        question = @question_factory.next_question(@player)
         question.ask(@player)
-        puts "For player #{@player} #{question.display_result}"
+        puts "For player #{@player}\n#{question.display_result}"
         @scoreboard.increment_score_for(@player, question.score)
         @player.log_result(question.id, question.result, question.score)
         sleep question.delay_before_next

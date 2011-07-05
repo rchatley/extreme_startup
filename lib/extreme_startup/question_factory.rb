@@ -1,11 +1,12 @@
 require 'set'
 require 'prime'
 
+# TODO: This really should be somewhere better
+#  but I don't know how to best set up the require's for that
 class Array
   def pick_one
     self[Kernel.rand(self.length)]
   end
-
 end
 
 module ExtremeStartup
@@ -19,27 +20,31 @@ module ExtremeStartup
     
     def ask(player)
       url = player.url + '?q=' + URI.escape(self.to_s)
-      puts "GET:" + url
+      puts "GET: " + url
       begin
-        response = HTTParty.get(url)
-        if (!response.success?) then
-          @result = "error_response"
+        response = get(url)
+        if (response.success?) then
+          self.answer = response.to_s
         else
-          @result = "answered"
-          @answer = response.to_s
+          @problem = "error_response"
         end
       rescue => exception
-        @result = "no_answer"
+        puts exception
+        @problem = "no_answer"
       end
     end
     
+    def get(url)
+      HTTParty.get(url)
+    end
+    
     def result
-      if @result == "answered" && self.answered_correctly?
+      if @answer && self.answered_correctly?
         "correct"
-      elsif @result == "answered"
+      elsif @answer
         "wrong"
       else
-        @result
+        @problem
       end
     end
     
@@ -62,7 +67,7 @@ module ExtremeStartup
     end
     
     def display_result
-      "question: #{self.to_s}, result: #{result} answer: #{answer}"
+      "\tquestion: #{self.to_s}\n\tanswer: #{answer}\n\tresult: #{result}"
     end
     
     def id
@@ -73,6 +78,10 @@ module ExtremeStartup
       "#{id}: #{as_text}"
     end
     
+    def answer=(answer)
+      @answer = answer
+    end
+
     def answer
       @answer && @answer.downcase.strip
     end
@@ -91,7 +100,7 @@ module ExtremeStartup
   end
   
   class BinaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2 = *numbers
       else
@@ -101,7 +110,7 @@ module ExtremeStartup
   end
   
   class TernaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2, @n3 = *numbers
       else
@@ -111,7 +120,7 @@ module ExtremeStartup
   end
   
   class SelectFromListOfNumbersQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @numbers = *numbers
       else
@@ -324,13 +333,132 @@ module ExtremeStartup
     end
   end
     
+  class ConversationalQuestion < Question
+    def initialize(player, spawn_rate = 80)
+      @session = get_session(player, spawn_rate)
+    end
+
+    def get(url)
+      @session.get(url)
+    end
+    
+    def answer=(answer)
+      @answer = answer
+      @session.add_answer(answer)
+    end
+
+    def answered_correctly?
+      @session.answered_correctly?
+    end
+
+    def as_text
+      @question ||= @session.question
+    end
+
+    def correct_answer
+      @session.correct_answer
+    end
+
+    def points
+      @session.points
+    end
+
+    def penalty
+      @session.penalty
+    end
+
+    def self.sessions
+      @sessions ||= {}
+    end
+
+    def get_session(player, spawn_rate)
+      sessions = (self.class.sessions[player] ||= [])
+      sessions.reject! { |session| session.dead? }
+      sessions << create_session if spawn?(sessions, spawn_rate)
+      self.class.sessions[player].pick_one
+    end
+    
+    def spawn?(sessions, spawn_rate)
+      sessions.empty? || (rand(100) < spawn_rate)
+    end
+  end
+  
+  class Conversation
+    def get(url)
+      response = HTTParty.get(url, :headers => headers)
+      return response unless response.success?
+      @cookie = response.headers['set-cookie'] || @cookie
+      return response
+    end    
+
+    def headers
+      @cookie ? { "cookie" => @cookie } : {}
+    end
+
+    def answered_correctly?
+      @answer && correct_answer.strip.to_s == @answer.strip.to_s
+    end
+    
+    def score
+      answered_correctly? ? points : penalty
+    end
+  
+    def points
+      10
+    end
+  
+    def penalty
+      - points / 10
+    end
+  end
+  
+  class RememberMeConversation < Conversation
+    def initialize
+      @name = %w(abe bob chuck dick evan fred george hob ivan jim pete ric).pick_one
+      @attempts = 0
+    end
+  
+    def add_answer(answer)
+      @answer = answer
+      @attempts += 1
+    end
+  
+    def dead?
+      !answered_correctly? || @attempts > 10
+    end
+  
+    def question
+      if answered_correctly?
+        return "what is my name"
+      else
+        return "my name is #{@name}. what is my name"
+      end
+    end
+  
+    def correct_answer
+      @name
+    end
+
+    def points
+      30 # + @attempts * 10
+    end
+  end
+
+  class RememberMeQuestion < ConversationalQuestion
+    def create_session
+      RememberMeConversation.new
+    end
+  end
+
   class QuestionFactory
     attr_reader :round
     
     def initialize
       @round = 1
       @question_types = [
-        AdditionQuestion, 
+        #RememberMeQuestion,
+        #ExtremeStartup::Questions::WebshopQuestion,
+        AdditionQuestion,
         MaximumQuestion,
         MultiplicationQuestion, 
         SquareCubeQuestion,
@@ -347,7 +475,7 @@ module ExtremeStartup
     
     def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
-      available_question_types.pick_one.new
+      available_question_types.pick_one.new(player)
     end
     
     def advance_round

@@ -25,7 +25,7 @@ module ExtremeStartup
       end
     end
 
-    def initialize(params)  
+    def initialize(params = {})  
       @name = params['name']
       @url = params['url']
       @uuid = Player.generate_uuid
