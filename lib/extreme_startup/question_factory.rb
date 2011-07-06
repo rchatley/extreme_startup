@@ -1,14 +1,6 @@
 require 'set'
 require 'prime'
 
-# TODO: This really should be somewhere better
-#  but I don't know how to best set up the require's for that
-class Array
-  def pick_one
-    self[Kernel.rand(self.length)]
-  end
-end
-
 module ExtremeStartup
   class Question
     class << self
@@ -319,7 +311,7 @@ module ExtremeStartup
     end
     
     def initialize
-      question = GeneralKnowledgeQuestion.question_bank.pick_one
+      question = GeneralKnowledgeQuestion.question_bank.sample
       @question = question[0]
       @answer = question[1]
     end
@@ -356,7 +348,7 @@ module ExtremeStartup
     
     def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
-      available_question_types.pick_one.new(player)
+      available_question_types.sample.new(player)
     end
     
     def advance_round
