@@ -14,6 +14,10 @@ module ExtremeStartup
     def new_player(player)
       @scores[player.uuid] = 0
     end
+    
+    def delete_player(uuid)
+      @scores.delete(uuid)
+    end
   
     def leaderboard
       @scores.sort{|a,b| a[1]<=>b[1]}.reverse
