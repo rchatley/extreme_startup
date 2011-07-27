@@ -16,6 +16,7 @@ module ExtremeStartup
     set :static, true 
     set :public, 'public'
     set :players,    Hash.new
+    set :players_threads, Hash.new
     set :scoreboard, Scoreboard.new
     set :question_factory, QuestionFactory.new
    # set :quizmaster_type, WarmupQuizMaster
@@ -44,12 +45,23 @@ module ExtremeStartup
       question_factory.round.to_s
     end
     
+    get %r{/withdraw/([\w]+)} do |uuid|
+      scoreboard.delete_player(uuid)
+      players.delete(uuid)
+      players_threads[uuid].kill
+      players_threads.delete(uuid)
+      redirect '/'
+    end
+    
     post '/players' do
       player = Player.new(params)
       scoreboard.new_player(player)
       players[player.uuid] = player
-
-      Thread.new { settings.quizmaster_type.new(player, scoreboard, question_factory).start }
+      
+      player_thread = Thread.new do
+        settings.quizmaster_type.new(player, scoreboard, question_factory).start
+      end
+      players_threads[player.uuid] = player_thread
   
       personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
       haml :player_added, :locals => { :url => personal_page }
@@ -61,7 +73,7 @@ module ExtremeStartup
       UDPSocket.open {|s| s.connect("64.233.187.99", 1); s.addr.last}
     end
     
-    [:players, :scoreboard, :question_factory].each do |setting|
+    [:players, :players_threads, :scoreboard, :question_factory].each do |setting|
       define_method(setting) do
         settings.send(setting)
       end
