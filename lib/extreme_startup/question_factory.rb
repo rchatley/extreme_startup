@@ -10,6 +10,58 @@ module ExtremeStartup
       end
     end
     
+    def ask(player)
+      url = player.url + '?q=' + URI.escape(self.to_s)
+      puts "GET: " + url
+      begin
+        response = get(url)
+        if (response.success?) then
+          self.answer = response.to_s
+        else
+          @problem = "error_response"
+        end
+      rescue => exception
+        puts exception
+        @problem = "no_answer"
+      end
+    end
+    
+    def get(url)
+      HTTParty.get(url)
+    end
+    
+    def result
+      if @answer && self.answered_correctly?
+        "correct"
+      elsif @answer
+        "wrong"
+      else
+        @problem
+      end
+    end
+    
+    def score
+      case result
+        when "correct"        then points
+        when "wrong"          then penalty
+        when "error_response" then -5
+        when "no_answer"     then -20
+        else puts "!!!!! result #{result} in score"
+      end
+    end
+    
+    def delay_before_next
+      case result
+        when "correct"        then 5
+        when "wrong"          then 10
+        else 20
+      end
+    end
+    
+    def display_result
+      "\tquestion: #{self.to_s}\n\tanswer: #{answer}\n\tresult: #{result}"
+    end
+    
     def id
       @id ||= Question.generate_uuid
     end
@@ -18,17 +70,29 @@ module ExtremeStartup
       "#{id}: #{as_text}"
     end
     
-    def answered_correctly?(answer) 
-      correct_answer.to_s.downcase.strip == answer.to_s.downcase.strip
+    def answer=(answer)
+      @answer = answer
+    end
+
+    def answer
+      @answer && @answer.downcase.strip
+    end
+    
+    def answered_correctly?(answer = answer)
+      correct_answer.to_s.downcase.strip == answer
     end
     
     def points
       10
     end
+    
+    def penalty
+      - points / 10
+    end
   end
   
   class BinaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2 = *numbers
       else
@@ -38,7 +102,7 @@ module ExtremeStartup
   end
   
   class TernaryMathsQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @n1, @n2, @n3 = *numbers
       else
@@ -48,7 +112,7 @@ module ExtremeStartup
   end
   
   class SelectFromListOfNumbersQuestion < Question
-    def initialize(*numbers)
+    def initialize(player, *numbers)
       if numbers.any?
         @numbers = *numbers
       else
@@ -236,6 +300,7 @@ module ExtremeStartup
     class << self
       def question_bank
         [
+          ["what is the twitter id of the organizer of this dojo", "jhannes"],
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
           ["what currency did Spain use before the Euro", "peseta"],
@@ -246,7 +311,7 @@ module ExtremeStartup
     end
     
     def initialize
-      question = GeneralKnowledgeQuestion.question_bank.shuffle.first
+      question = GeneralKnowledgeQuestion.question_bank.sample
       @question = question[0]
       @answer = question[1]
     end
@@ -266,7 +331,7 @@ module ExtremeStartup
     def initialize
       @round = 1
       @question_types = [
-        AdditionQuestion, 
+        AdditionQuestion,
         MaximumQuestion,
         MultiplicationQuestion, 
         SquareCubeQuestion,
@@ -281,9 +346,9 @@ module ExtremeStartup
       ]
     end
     
-    def next_question
+    def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
-      available_question_types.shuffle.first.new
+      available_question_types.sample.new(player)
     end
     
     def advance_round
