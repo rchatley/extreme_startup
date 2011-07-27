@@ -1,8 +1,26 @@
+Welcome
+=======
 This is Extreme Startup. This software supports a workshop where teams can compete to build a software product that satisfies market demand.
 
 NB don't show the players the code for this project until after the workshop as otherwise they can cheat.
 
-Notes for facilitators:
+Getting started
+---------------
+* Install Ruby 1.9.2 and rubygems
+* (For Windows)
+  * Install [Ruby DevKit](http://rubyinstaller.org/downloads/)
+  * Extract to (e.g.) c:\devkit
+  * cd c:\devkit
+  * ruby dk.rb init
+  * Edit the file config.yml (Add the locations where ruby is installed e.g. c:\Ruby192)
+  * ruby dk.rb install
+* cd ../<exstreme startup dir>
+* gem install bundler
+* bundle install
+* ruby web_server.rb
+
+Notes for facilitators
+----------------------
 
 * Run the server on your machine. It's a Sinatra app that by default runs on port 3000.
 * Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
@@ -22,3 +40,4 @@ set :quizmaster_type, WarmupQuizMaster
 
 -- Robert Chatley and Matt Wynne 2011.
 
+  
