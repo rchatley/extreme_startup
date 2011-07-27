@@ -2,7 +2,8 @@ require 'sinatra/base'
 require 'httparty'
 require 'uuid'
 require 'haml'
-require "socket"
+require 'socket'
+require 'json'
 require_relative 'scoreboard'
 require_relative 'player'
 require_relative 'quiz_master'
@@ -24,10 +25,52 @@ module ExtremeStartup
     
     get '/' do 
       haml :leaderboard, :locals => { 
-          :leaderboard => scoreboard.leaderboard, 
+          :leaderboard => LeaderBoard.new(scoreboard, players), 
           :players => players  }
     end
+    
+    get '/scores' do 
+      LeaderBoard.new(scoreboard, players).to_json
+    end
+    
+    class LeaderBoard
+      def initialize(scoreboard, players)
+        @entries = []
+        scoreboard.leaderboard.each do |entry| 
+          @entries << LeaderBoardEntry.new(entry[0], players[entry[0]], entry[1])
+        end
+      end
+      
+      def each(&block)
+        @entries.each &block
+      end
+      
+      def to_json(*a)
+        @entries.to_json(*a)
+      end
+    end
+    
+    class LeaderBoardEntry
+      attr_reader :playerid, :playername, :score
+      def initialize(id, name, score)
+        @playerid = id;
+        @playername = name;
+        @score=score;
+      end
+      
+      def to_json(*a)
+        {
+          'playerid'   => playerid,
+          'playername' => playername,
+          'score' => score
+        }.to_json(*a)
+      end
+    end
 
+    get '/graph' do 
+      haml :scores
+    end
+    
     get %r{/players/([\w]+)} do |uuid|
       haml :personal_page, :locals => { :name => players[uuid].name, :score => scoreboard.scores[uuid], :log => players[uuid].log[0..25] }
     end
@@ -46,7 +89,7 @@ module ExtremeStartup
     end
     
     get %r{/withdraw/([\w]+)} do |uuid|
-      scoreboard.delete_player(uuid)
+      scoreboard.delete_player(players[uuid])
       players.delete(uuid)
       players_threads[uuid].kill
       players_threads.delete(uuid)

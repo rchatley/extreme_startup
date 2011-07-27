@@ -1,0 +1,46 @@
+%html
+  %head
+    %title Extreme Startup - Score Graph
+    %link(rel="stylesheet" href="/css/style.css")
+    %script{:type => "text/javascript", :src  => "/js/smoothie.js"}
+    %script{:type => "text/javascript", :src  => "/js/jquery-1.6.2.min.js"}
+
+  %body
+    %canvas{:id => "mycanvas", :width => 800, :height => 500 }
+    :javascript
+    
+      var randomRgbValue = function () {
+        return Math.floor(Math.random() * 156 + 99);
+      }
+      
+      var randomColour = function () {
+        return 'rgb(' + [randomRgbValue(), randomRgbValue(), randomRgbValue()].join(',') + ')';
+      }
+    
+      var smoothie = new SmoothieChart({millisPerPixel: 500});
+      smoothie.streamTo(document.getElementById("mycanvas"), 1000); 
+    
+      var timeSeries = {};
+  
+      // Add a random value to each line every second
+      setInterval(function() {
+        $.ajax({
+          url: '/scores',
+          success: function( data ) {
+            var leaderboard = JSON.parse(data);
+            
+            for (var i=0; i < leaderboard.length; i += 1) {
+              var entry = leaderboard[i];
+              var series = timeSeries[entry.playerid];
+             
+              if (!series) {
+                series = timeSeries[entry.playerid] = new TimeSeries();
+                smoothie.addTimeSeries(series, { strokeStyle:randomColour(), lineWidth:3 });
+              }
+              series.append(new Date().getTime(), entry.score);
+            }
+          }
+        });
+      }, 1000);
+      
+

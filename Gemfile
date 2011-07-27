@@ -11,4 +11,5 @@ gem 'rspec'
 gem 'cucumber'
 gem 'rack-test'
 gem 'capybara'
+gem 'json'
 

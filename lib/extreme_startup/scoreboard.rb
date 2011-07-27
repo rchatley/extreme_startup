@@ -15,8 +15,8 @@ module ExtremeStartup
       @scores[player.uuid] = 0
     end
     
-    def delete_player(uuid)
-      @scores.delete(uuid)
+    def delete_player(player)
+      @scores.delete(player.uuid)
     end
   
     def leaderboard

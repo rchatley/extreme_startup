@@ -9,9 +9,9 @@
     %ul
       - leaderboard.each do |entry|
         %li.player
-          %div{:class => ["ranking", "name"]} #{html_escape(players[entry[0]].name)}
-          %div{:class => ["ranking", "points"]} #{entry[1]}
-          %a{ :href => "/withdraw/#{players[entry[0]].uuid}" }
+          %div{:class => ["ranking", "name"]} #{html_escape(entry.playername)}
+          %div{:class => ["ranking", "points"]} #{entry.score}
+          %a{ :href => "/withdraw/#{entry.playerid}" }
             Withdraw
           
     :javascript
