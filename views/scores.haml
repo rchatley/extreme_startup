@@ -9,36 +9,38 @@
     %canvas{:id => "mycanvas", :width => 800, :height => 500 }
     :javascript
     
-      var randomRgbValue = function () {
-        return Math.floor(Math.random() * 156 + 99);
-      }
-      
-      var randomColour = function () {
-        return 'rgb(' + [randomRgbValue(), randomRgbValue(), randomRgbValue()].join(',') + ')';
-      }
-    
-      var smoothie = new SmoothieChart({millisPerPixel: 500});
-      smoothie.streamTo(document.getElementById("mycanvas"), 1000); 
-    
-      var timeSeries = {};
-  
+        var Graph = function(canvas) {
+        var timeSeries = {};
+        var smoothie = new SmoothieChart({millisPerPixel: 500});
+        smoothie.streamTo(canvas, 1000); 
+        var randomRgbValue = function () {
+          return Math.floor(Math.random() * 156 + 99);
+        }
+        var randomColour = function () {
+          return 'rgb(' + [randomRgbValue(), randomRgbValue(), randomRgbValue()].join(',') + ')';
+        }
+        this.updateWith = function (leaderboard) {
+          for (var i=0; i < leaderboard.length; i += 1) {
+            var entry = leaderboard[i];
+            var series = timeSeries[entry.playerid];
+            if (!series) {
+              series = timeSeries[entry.playerid] = new TimeSeries();
+              smoothie.addTimeSeries(series, { strokeStyle:randomColour(), lineWidth:3 });
+            }
+            series.append(new Date().getTime(), entry.score);
+          }
+        }
+      }    
+        
+      var graph = new Graph(document.getElementById("mycanvas"));
+
       // Add a random value to each line every second
       setInterval(function() {
         $.ajax({
           url: '/scores',
           success: function( data ) {
             var leaderboard = JSON.parse(data);
-            
-            for (var i=0; i < leaderboard.length; i += 1) {
-              var entry = leaderboard[i];
-              var series = timeSeries[entry.playerid];
-             
-              if (!series) {
-                series = timeSeries[entry.playerid] = new TimeSeries();
-                smoothie.addTimeSeries(series, { strokeStyle:randomColour(), lineWidth:3 });
-              }
-              series.append(new Date().getTime(), entry.score);
-            }
+            graph.updateWith(leaderboard);
           }
         });
       }, 1000);
