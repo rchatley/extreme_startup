@@ -31,7 +31,7 @@ module ExtremeStartup
     end
     
     def result
-      if @answer && self.answered_correctly?
+      if @answer && self.answered_correctly?(answer)
         "correct"
       elsif @answer
         "wrong"
@@ -78,7 +78,7 @@ module ExtremeStartup
       @answer && @answer.downcase.strip
     end
     
-    def answered_correctly?(answer = answer)
+    def answered_correctly?(answer)
       correct_answer.to_s.downcase.strip == answer
     end
     
@@ -137,12 +137,12 @@ module ExtremeStartup
   end
   
   class MaximumQuestion < SelectFromListOfNumbersQuestion
-     def as_text
-        "which of the following numbers is the largest: " + @numbers.join(', ')
-      end
-      def points
-        40
-      end
+    def as_text
+      "which of the following numbers is the largest: " + @numbers.join(', ')
+    end
+    def points
+      40
+    end
     private
       def should_be_selected(x)
         x == @numbers.max

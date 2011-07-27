@@ -73,8 +73,6 @@ module ExtremeStartup
   
     def start
       while true
-        load "#{File::dirname(__FILE__)}/question_factory.rb" unless $cache_questions
-
         question = @question_factory.next_question(@player)
         question.ask(@player)
         puts "For player #{@player}\n#{question.display_result}"

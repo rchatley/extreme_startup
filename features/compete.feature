@@ -13,11 +13,11 @@ Feature: Compete
         '4'
       end
       """
-    And the correct answer to every question is '4'
+    And the correct answer to every question is '4' worth 10 points
     When the two players are entered
     And the game is played for 1 second
     Then the scores should be:
       | player   | score |
-      | always-4 | 1     |
-      | dumbo    | 0     |
+      | always-4 | 10    |
+      | dumbo    | -1    |
       
