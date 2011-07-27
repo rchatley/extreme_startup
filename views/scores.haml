@@ -9,7 +9,7 @@
     %canvas{:id => "mycanvas", :width => 800, :height => 500 }
     :javascript
     
-        var Graph = function(canvas) {
+      var Graph = function(canvas) {
         var timeSeries = {};
         var smoothie = new SmoothieChart({millisPerPixel: 500});
         smoothie.streamTo(canvas, 1000); 
