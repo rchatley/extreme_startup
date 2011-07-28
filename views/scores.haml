@@ -7,6 +7,7 @@
 
   %body
     %canvas{:id => "mycanvas", :width => 800, :height => 500 }
+    %h1 Leader Board
     %ul{:id => "scoreboard" }
     :javascript
 
@@ -39,17 +40,22 @@
       
         var ScoreBoard = function(div) {
           this.updateWith = function (leaderboard) {
-            var listContent = "";
+            var list = $('<ul id="scoreboard"></ul>');            
             for (var i=0; i < leaderboard.length; i += 1) {
               var entry = leaderboard[i];
-              listContent += '<li class="player"><div class="ranking name" style="background-color:' + colourTable[entry.playerid] + '">' + entry.playername + '</div><div class="ranking points" style="background-color:' + colourTable[entry.playerid] + '">' + entry.score + '</div><a href="/withdraw/#' + entry.playerid + '">Withdraw</a></li>';
+              list.append(
+                $('<div/>').append(
+                  $('<li/>', {class: "player"})
+                    .append($('<div>' + entry.playername + '</div>').addClass("ranking name").css("background-color", colourTable[entry.playerid]))
+                    .append($('<div>' + entry.score + '</div>').addClass("ranking points").css("background-color", colourTable[entry.playerid]))
+                    .append($('<a>Withdraw</a>').attr("href", "/withdraw/" + entry.playerid))));
             }
-            $("#scoreboard").replaceWith($('<ul id="scoreboard"></ul>').html(listContent));
+            $("#scoreboard").replaceWith(list); 
           }
         }
         
-        var graph = new Graph(document.getElementById('mycanvas'));
-        var scoreboard = new ScoreBoard($("#scoreboard"));
+        var graph = new Graph($('#mycanvas')[0]);  // get DOM object from jQuery object
+        var scoreboard = new ScoreBoard($('#scoreboard'));
       
         setInterval(function() {
           $.ajax({
