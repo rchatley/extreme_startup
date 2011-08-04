@@ -36,7 +36,7 @@ module ExtremeStartup
           puts "question was " + question.to_s
           puts "player #{@player.name} said #{response}"
           
-          if (question.answered_correctly?(response)) then
+          if (question.answered_correctly?(response.to_s.downcase.strip)) then
             puts "player #{@player.name} was correct"
             
             if !got_the_hang_of_it
