@@ -310,7 +310,7 @@ module ExtremeStartup
       end
     end
     
-    def initialize
+    def initialize(player)
       question = GeneralKnowledgeQuestion.question_bank.sample
       @question = question[0]
       @answer = question[1]
