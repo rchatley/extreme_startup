@@ -36,8 +36,14 @@ set :quizmaster_type, WarmupQuizMaster
 
 * Set a time limit so you know when to stop the game, declare the winner, and retrospect.
 
-* If you run this workshop, please let us know how it goes.
 
 -- Robert Chatley and Matt Wynne 2011.
 
+People Who've Run Extreme Startup Sessions
+------------------------------------------
+
+* http://chatley.com/posts/05-27-2011/extreme-startup/
+* http://johannesbrodwall.com/2011/06/22/real-time-coding-competition-with-extreme-startup/
+* http://www.nilswloka.com/2011/08/17/code-dojo-extreme.html
   
+If you run this workshop, please write it up on the internet and send us a link to add to this list.
