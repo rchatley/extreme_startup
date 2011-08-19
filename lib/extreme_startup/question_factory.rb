@@ -346,6 +346,40 @@ module ExtremeStartup
     end
   end
 
+  class ScrabbleQuestion < Question
+    def as_text
+      "what is the english scrabble score of #{@word}"
+    end
+
+    def initialize(player, word=nil)
+      if word
+        @word = word
+      else
+        @word = ["banana", "september", "cloud", "zoo", "ruby", "buzzword"].sample
+      end
+    end
+
+    def correct_answer
+      @word.chars.inject(0) do |score, letter|
+        score += scrabble_scores[letter.downcase]
+      end
+    end
+
+    private
+
+    def scrabble_scores
+      scores = {}
+      %w{e a i o n r t l s u}.each  {|l| scores[l] = 1 }
+      %w{d g}.each                  {|l| scores[l] = 2 }
+      %w{b c m p}.each              {|l| scores[l] = 3 }
+      %w{f h v w y}.each            {|l| scores[l] = 4 }
+      %w{k}.each                    {|l| scores[l] = 5 }
+      %w{j x}.each                  {|l| scores[l] = 8 }
+      %w{q, z}.each                 {|l| scores[l] = 10 }
+      return scores
+    end
+  end
+
   class QuestionFactory
     attr_reader :round
 
@@ -364,7 +398,8 @@ module ExtremeStartup
         AdditionAdditionQuestion,
         AdditionMultiplicationQuestion,
         MultiplicationAdditionQuestion,
-        AnagramQuestion
+        AnagramQuestion,
+        ScrabbleQuestion
       ]
     end
 
