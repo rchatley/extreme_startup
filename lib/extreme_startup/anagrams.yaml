@@ -1,0 +1,8 @@
+---
+-
+  anagram: listen
+  correct: inlets
+  incorrect:
+  - enlists
+  - google
+  - banana
