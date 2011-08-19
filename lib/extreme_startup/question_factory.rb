@@ -9,7 +9,7 @@ module ExtremeStartup
         @uuid_generator.generate.to_s[0..7]
       end
     end
-    
+
     def ask(player)
       url = player.url + '?q=' + URI.escape(self.to_s)
       puts "GET: " + url
@@ -25,11 +25,11 @@ module ExtremeStartup
         @problem = "no_answer"
       end
     end
-    
+
     def get(url)
       HTTParty.get(url)
     end
-    
+
     def result
       if @answer && self.answered_correctly?(answer)
         "correct"
@@ -39,7 +39,7 @@ module ExtremeStartup
         @problem
       end
     end
-    
+
     def score
       case result
         when "correct"        then points
@@ -49,7 +49,7 @@ module ExtremeStartup
         else puts "!!!!! result #{result} in score"
       end
     end
-    
+
     def delay_before_next
       case result
         when "correct"        then 5
@@ -57,19 +57,19 @@ module ExtremeStartup
         else 20
       end
     end
-    
+
     def display_result
       "\tquestion: #{self.to_s}\n\tanswer: #{answer}\n\tresult: #{result}"
     end
-    
+
     def id
       @id ||= Question.generate_uuid
     end
-    
+
     def to_s
       "#{id}: #{as_text}"
     end
-    
+
     def answer=(answer)
       @answer = answer
     end
@@ -77,20 +77,20 @@ module ExtremeStartup
     def answer
       @answer && @answer.downcase.strip
     end
-    
+
     def answered_correctly?(answer)
       correct_answer.to_s.downcase.strip == answer
     end
-    
+
     def points
       10
     end
-    
+
     def penalty
       - points / 10
     end
   end
-  
+
   class BinaryMathsQuestion < Question
     def initialize(player, *numbers)
       if numbers.any?
@@ -100,7 +100,7 @@ module ExtremeStartup
       end
     end
   end
-  
+
   class TernaryMathsQuestion < Question
     def initialize(player, *numbers)
       if numbers.any?
@@ -110,7 +110,7 @@ module ExtremeStartup
       end
     end
   end
-  
+
   class SelectFromListOfNumbersQuestion < Question
     def initialize(player, *numbers)
       if numbers.any?
@@ -120,7 +120,7 @@ module ExtremeStartup
         @numbers = random_numbers[0..size].concat(candidate_numbers.shuffle[0..size]).shuffle
       end
     end
-    
+
     def random_numbers
       randoms = Set.new
       loop do
@@ -128,14 +128,14 @@ module ExtremeStartup
         return randoms.to_a if randoms.size >= 5
       end
     end
-    
+
     def correct_answer
        @numbers.select do |x|
          should_be_selected(x)
        end.join(', ')
      end
   end
-  
+
   class MaximumQuestion < SelectFromListOfNumbersQuestion
     def as_text
       "which of the following numbers is the largest: " + @numbers.join(', ')
@@ -152,18 +152,18 @@ module ExtremeStartup
           (1..100).to_a
       end
     end
-  
+
   class AdditionQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} plus #{@n2}"
     end
-  private  
+  private
     def correct_answer
       @n1 + @n2
     end
   end
-  
-  class SubtractionQuestion < BinaryMathsQuestion 
+
+  class SubtractionQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} minus #{@n2}"
     end
@@ -172,8 +172,8 @@ module ExtremeStartup
       @n1 - @n2
     end
   end
-  
-  class MultiplicationQuestion < BinaryMathsQuestion 
+
+  class MultiplicationQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} multiplied by #{@n2}"
     end
@@ -190,12 +190,12 @@ module ExtremeStartup
     def points
       30
     end
-  private  
+  private
     def correct_answer
       @n1 + @n2 + @n3
     end
   end
-    
+
   class AdditionMultiplicationQuestion < TernaryMathsQuestion
     def as_text
       "what is #{@n1} plus #{@n2} multiplied by #{@n3}"
@@ -203,12 +203,12 @@ module ExtremeStartup
     def points
       60
     end
-  private  
+  private
     def correct_answer
       @n1 + @n2 * @n3
     end
   end
-  
+
   class MultiplicationAdditionQuestion < TernaryMathsQuestion
     def as_text
       "what is #{@n1} multiplied by #{@n2} plus #{@n3}"
@@ -216,13 +216,13 @@ module ExtremeStartup
     def points
       50
     end
-  private  
+  private
     def correct_answer
       @n1 * @n2 + @n3
     end
   end
-  
-  class PowerQuestion < BinaryMathsQuestion 
+
+  class PowerQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} to the power of #{@n2}"
     end
@@ -234,8 +234,8 @@ module ExtremeStartup
       @n1 ** @n2
     end
   end
-  
-  class SquareCubeQuestion < SelectFromListOfNumbersQuestion 
+
+  class SquareCubeQuestion < SelectFromListOfNumbersQuestion
     def as_text
       "which of the following numbers is both a square and a cube: " + @numbers.join(', ')
     end
@@ -246,23 +246,23 @@ module ExtremeStartup
     def should_be_selected(x)
       is_square(x) and is_cube(x)
     end
-    
+
     def candidate_numbers
         square_cubes = (1..100).map { |x| x ** 3 }.select{ |x| is_square(x) }
         squares = (1..50).map { |x| x ** 2 }
         square_cubes.concat(squares)
     end
-    
+
     def is_square(x)
       (x % Math.sqrt(x)) == 0
     end
-    
+
     def is_cube(x)
       (x % Math.cbrt(x)) == 0
     end
   end
-  
-  class PrimesQuestion < SelectFromListOfNumbersQuestion 
+
+  class PrimesQuestion < SelectFromListOfNumbersQuestion
      def as_text
        "which of the following numbers are primes: " + @numbers.join(', ')
      end
@@ -278,15 +278,15 @@ module ExtremeStartup
        Prime.take(100)
      end
    end
-  
-  class FibonacciQuestion < BinaryMathsQuestion 
+
+  class FibonacciQuestion < BinaryMathsQuestion
     def as_text
       n = @n1 + 4
       "what is the #{n}th number in the Fibonacci sequence"
     end
     def points
       50
-    end 
+    end
   private
     def correct_answer
       n = @n1 + 4
@@ -295,7 +295,7 @@ module ExtremeStartup
       Integer(0.5 + phi**n/root5)
     end
   end
-  
+
   class GeneralKnowledgeQuestion < Question
     class << self
       def question_bank
@@ -309,51 +309,73 @@ module ExtremeStartup
         ]
       end
     end
-    
+
     def initialize(player)
       question = GeneralKnowledgeQuestion.question_bank.sample
       @question = question[0]
       @correct_answer = question[1]
     end
-    
+
     def as_text
       @question
     end
-    
+
     def correct_answer
       @correct_answer
     end
   end
-  
+
+  class AnagramQuestion < Question
+    def as_text
+      possible_words = [@anagram["correct"]] + @anagram["incorrect"]
+      %Q{which of the following is an anagram of "#{@anagram["anagram"]}": #{possible_words.shuffle.join(", ")}}
+    end
+
+    def initialize(player, *words)
+      if words.any?
+        @anagram = {}
+        @anagram["anagram"], @anagram["correct"], *@anagram["incorrect"] = words
+      else
+        anagrams = YAML.load_file(File.join(File.dirname(__FILE__), "anagrams.yaml"))
+        @anagram = anagrams.sample
+      end
+    end
+
+    def correct_answer
+      @anagram["correct"]
+    end
+  end
+
   class QuestionFactory
     attr_reader :round
-    
+
     def initialize
       @round = 1
       @question_types = [
         AdditionQuestion,
         MaximumQuestion,
-        MultiplicationQuestion, 
+        MultiplicationQuestion,
         SquareCubeQuestion,
         GeneralKnowledgeQuestion,
         PrimesQuestion,
         SubtractionQuestion,
-        FibonacciQuestion,  
+        FibonacciQuestion,
         PowerQuestion,
         AdditionAdditionQuestion,
         AdditionMultiplicationQuestion,
-        MultiplicationAdditionQuestion
+        MultiplicationAdditionQuestion,
+        AnagramQuestion
       ]
     end
-    
+
     def next_question(player)
       available_question_types = @question_types[0..(@round * 2 - 1)]
       available_question_types.sample.new(player)
     end
-    
+
     def advance_round
       @round += 1
     end
-    
+
   end
 end
