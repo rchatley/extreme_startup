@@ -1,4 +1,4 @@
-Feature: Scoring
+Feature: Basic Scoring
 
    Scenario: Player is correct
      Given a player "bob" who plays like this:

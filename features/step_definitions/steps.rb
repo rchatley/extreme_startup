@@ -10,14 +10,7 @@ Given /^the correct answer to every question is '(\d+)' worth (\d+) points$/ do 
   stub_correct_answer_to_be answer, points.to_i
 end
 
-When /^the player is entered$/ do
-  players.each do |player|
-    player.start
-    enter_player player
-  end
-end
-
-When /^the two players are entered$/ do
+When /^the (?:player is|players are) entered$/ do
   players.each do |player|
     player.start
     enter_player player
