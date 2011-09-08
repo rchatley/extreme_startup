@@ -76,10 +76,11 @@ module ExtremeStartup
         question = @question_factory.next_question(@player)
         question.ask(@player)
         puts "For player #{@player}\n#{question.display_result}"
-        @scoreboard.increment_score_for(@player, question.score)
-        @player.log_result(question.id, question.result, question.score)
+        @scoreboard.increment_score_for(@player, question)
         sleep question.delay_before_next
       end
     end
+    
+   
   end
 end

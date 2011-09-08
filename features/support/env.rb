@@ -15,3 +15,15 @@ end
 World(RackTestWorld)
 
 $silence_logging = true
+
+Before do
+  app.players = Hash.new
+  app.players_threads = Hash.new
+  app.scoreboard = ExtremeStartup::Scoreboard.new
+end
+
+After do
+  app.players_threads.each do |uuid, thread|
+    thread.exit
+  end
+end

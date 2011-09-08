@@ -40,16 +40,6 @@ module ExtremeStartup
       end
     end
 
-    def score
-      case result
-        when "correct"        then points
-        when "wrong"          then penalty
-        when "error_response" then -5
-        when "no_answer"     then -20
-        else puts "!!!!! result #{result} in score"
-      end
-    end
-
     def delay_before_next
       case result
         when "correct"        then 5
@@ -84,10 +74,6 @@ module ExtremeStartup
 
     def points
       10
-    end
-
-    def penalty
-      - points / 10
     end
   end
 
@@ -325,6 +311,7 @@ module ExtremeStartup
     end
   end
 
+  require 'yaml'
   class AnagramQuestion < Question
     def as_text
       possible_words = [@anagram["correct"]] + @anagram["incorrect"]
