@@ -29,7 +29,7 @@ Notes for facilitators
 * Warmup round: use the WarmupQuizmaster - configure this by changing the code in lib/extreme_startup/web_server.rb around line 20(ish).
 set :quizmaster_type, WarmupQuizMaster
 
-* In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly.
+* In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly. @bodil has provided some [nice sample players in different languages](https://github.com/bodil/extreme_startup_servers).
 
 * Real game: revert to using the full QuizMaster, and restart the server. This will clear any registered players, but that's ok.
 * As the game progresses, you can introduce new question types by moving to the next round (hit the /advance_round url). Do this when you feel like some of the teams are making good progress in the current round. Typically we've found this to be about every 10 mins. But you can go faster/slower as you like. There are 6 rounds available.
