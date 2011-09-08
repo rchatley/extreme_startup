@@ -11,8 +11,6 @@
         %li.player
           %div{:class => ["ranking", "name"]} #{html_escape(entry.playername)}
           %div{:class => ["ranking", "points"]} #{entry.score}
-          %a{ :href => "/withdraw/#{entry.playerid}" }
-            Withdraw
           
     :javascript
       refresh = function() { window.location.reload(); };

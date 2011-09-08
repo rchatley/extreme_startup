@@ -42,7 +42,8 @@ Then /^the game master should start sending me question$/ do
 end
 
 When /^I withdraw$/ do
-  visit '/'
+  player_uuid = app.players.keys.first
+  visit "/players/#{player_uuid}"
   click_link 'Withdraw'
 end
 
