@@ -17,13 +17,17 @@ Getting started
 
 * Install dependencies:
 
-    cd ../<exstreme startup dir>
-    gem install bundler
-    bundle
+````
+cd ../<exstreme startup dir>
+gem install bundler
+bundle
+````
 
 * Start the game server
 
-    ruby web_server.rb
+````
+ruby web_server.rb
+````
 
 Notes for facilitators
 ----------------------
@@ -34,7 +38,9 @@ Notes for facilitators
 
 * Warmup round: run the web server with the `WARMUP` environment variable set:
 
-    $ WARMUP=1 ruby web_server.rb
+````
+$ WARMUP=1 ruby web_server.rb
+````
 
 * In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly. @bodil has provided some [nice sample players in different languages](https://github.com/bodil/extreme_startup_servers).
 
