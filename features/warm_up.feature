@@ -15,3 +15,5 @@ Feature: Warm up
      Then the scores should be:
        | player   | score |
        | bob      | 10    |
+      And the log for bob should show:
+        | result: correct | points awarded: 10 |

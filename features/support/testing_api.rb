@@ -5,6 +5,7 @@ module TestingApi
 
   class TestablePlayer
     attr_reader :url, :name
+    attr_accessor :personal_page
 
     def initialize(name, content)
       @name, @content = name, content
@@ -58,6 +59,9 @@ module TestingApi
 
   def enter_player(player)
     post '/players', :name => player.name, :url => player.url 
+    doc = Nokogiri.parse(last_response.body)
+    personal_page_link = doc.css('a').first
+    player.personal_page = personal_page_link['href']
   end
 
   def stub_correct_answer_to_be(correct_answer, points_awarded = 1)
