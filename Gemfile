@@ -1,5 +1,4 @@
 source :rubygems
-source 'http://localhost:8808'
 
 gem 'eventmachine', '1.0.0.beta.3'
 gem 'thin'

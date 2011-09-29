@@ -7,11 +7,11 @@ module ExtremeStartup
       def initialize(player)
         @player = player
       end
-      
+
       def correct_answer
         @player.name
       end
-      
+
       def as_text
         "what is your name"
       end
@@ -24,36 +24,27 @@ module ExtremeStartup
     
     def start
       got_the_hang_of_it = false
-      
+
       while true
         question = WarmupQuestion.new(@player)
         url = @player.url + '?q=' + URI.escape(question.to_s)
         puts "GET:" + url
-        
+
         begin
-          response = HTTParty.get(url)
-          
-          puts "question was " + question.to_s
-          puts "player #{@player.name} said #{response}"
-          
-          if (question.answered_correctly?(response.to_s.downcase.strip)) then
+          question.ask(@player)
+
+          if (question.answered_correctly?(question.answer)) then
             puts "player #{@player.name} was correct"
-            
+
             if !got_the_hang_of_it
-              @scoreboard.increment_score_for(@player, question.points)
-              @player.log_result(question.id, "correct", question.points)
+              @scoreboard.increment_score_for(@player, question)
               got_the_hang_of_it = true
-            else
-              @player.log_result(question.id, "correct again", 0)
             end
-            
           else
             puts "player #{@player.name} was wrong"
-            @player.log_result(question.id, "wrong", 0)
           end
         rescue => exception
-          puts "player #{@player.name} was down - try again later #{exception}"
-          @player.log_result(question.id, "no_response", 0)
+          puts "player #{@player.name} was down - try again later #{exception}, #{exception.backtrace}"
         end
         sleep 5
       end

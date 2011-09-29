@@ -51,7 +51,9 @@ module TestingApi
 
   def create_player(name, content)
     @players ||= []
-    @players << TestablePlayer.new(name, content)
+    player = TestablePlayer.new(name, content)
+    @players << player
+    player
   end
 
   def enter_player(player)

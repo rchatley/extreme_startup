@@ -20,15 +20,14 @@ module ExtremeStartup
     set :players_threads, Hash.new
     set :scoreboard, Scoreboard.new
     set :question_factory, QuestionFactory.new
-   # set :quizmaster_type, WarmupQuizMaster
-    set :quizmaster_type, QuizMaster
-    
+    set :quiz_master_type, ENV['WARMUP'] ? WarmupQuizMaster : QuizMaster
+
     get '/' do 
       haml :leaderboard, :locals => { 
           :leaderboard => LeaderBoard.new(scoreboard, players), 
           :players => players  }
     end
-    
+
     get '/scores' do 
       LeaderBoard.new(scoreboard, players).to_json
     end
@@ -102,7 +101,7 @@ module ExtremeStartup
       players[player.uuid] = player
       
       player_thread = Thread.new do
-        settings.quizmaster_type.new(player, scoreboard, question_factory).start
+        settings.quiz_master_type.new(player, scoreboard, question_factory).start
       end
       players_threads[player.uuid] = player_thread
   

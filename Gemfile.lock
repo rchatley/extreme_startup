@@ -1,6 +1,5 @@
 GEM
   remote: http://rubygems.org/
-  remote: http://localhost:8808/
   specs:
     builder (3.0.0)
     capybara (1.0.0)
