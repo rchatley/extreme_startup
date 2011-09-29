@@ -14,10 +14,16 @@ Getting started
   * ruby dk.rb init
   * Edit the file config.yml (Add the locations where ruby is installed e.g. c:\Ruby192)
   * ruby dk.rb install
-* cd ../<exstreme startup dir>
-* gem install bundler
-* bundle install
-* ruby web_server.rb
+
+* Install dependencies:
+
+    cd ../<exstreme startup dir>
+    gem install bundler
+    bundle
+
+* Start the game server
+
+    ruby web_server.rb
 
 Notes for facilitators
 ----------------------
@@ -26,8 +32,9 @@ Notes for facilitators
 * Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
 * We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
 
-* Warmup round: use the WarmupQuizmaster - configure this by changing the code in lib/extreme_startup/web_server.rb around line 20(ish).
-set :quizmaster_type, WarmupQuizMaster
+* Warmup round: run the web server with the `WARMUP` environment variable set:
+
+    $ WARMUP=1 ruby web_server.rb
 
 * In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly. @bodil has provided some [nice sample players in different languages](https://github.com/bodil/extreme_startup_servers).
 
