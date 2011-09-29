@@ -26,5 +26,5 @@ After do
   app.players_threads.each do |uuid, thread|
     thread.exit
   end
-  app.quiz_master_type = ExtremeStartup::QuizMaster
+  app.question_factory = ExtremeStartup::QuestionFactory.new
 end

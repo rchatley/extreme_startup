@@ -401,4 +401,29 @@ module ExtremeStartup
     end
 
   end
+
+  class WarmupQuestion < Question
+    def initialize(player)
+      @player = player
+    end
+
+    def correct_answer
+      @player.name
+    end
+
+    def as_text
+      "what is your name"
+    end
+  end
+
+  class WarmupQuestionFactory
+    def next_question(player)
+      WarmupQuestion.new(player)
+    end
+
+    def advance_round
+      raise("please just restart the server")
+    end
+  end
+
 end
