@@ -5,8 +5,7 @@ h1 {color:blue}
 .left { float: left; width: 500px; }
 .right{ float: right; width: 500px; }
 
-li { display: block }
-ul { padding: 0 } 
+li { display: block; }
 
 .logline {margin:2px; padding:3px; display:inline-block}
 .logline.id {width:100}
@@ -15,7 +14,7 @@ ul { padding: 0 }
 .logline.correct {background-color:#7cfc00}
 .logline.pass {background-color:#eed5b7}
 .logline.wrong {background-color:#ffaa00}
-.logline.no_response {background-color:#ff4500}
+.logline.no_answer {background-color:#ff4500}
 .logline.error_response {background-color:#ff4500}
 
 .ranking {margin:2px; padding:3px; display:inline-block; background-color:#eed5b7}
