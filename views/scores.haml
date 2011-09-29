@@ -7,6 +7,8 @@
     %script{:type => "text/javascript", :src  => "/js/leaderboard.js"}
 
   %body
-    %canvas{:id => "mycanvas", :width => 800, :height => 500 }
-    %h1 Leader Board
-    %ul{:id => "scoreboard" }
+    .left
+      %canvas{:id => "mycanvas", :width => 500, :height => 500 }
+    .right
+      %h1 Leader Board
+      %ul{:id => "scoreboard" }
