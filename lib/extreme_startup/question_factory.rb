@@ -276,9 +276,9 @@ module ExtremeStartup
   private
     def correct_answer
       n = @n1 + 4
-      root5 = Math.sqrt(5)
-      phi = 0.5 + root5/2
-      Integer(0.5 + phi**n/root5)
+      a, b = 0, 1
+      (0...n).each { |_| a, b = b, a + b }
+      a
     end
   end
 
