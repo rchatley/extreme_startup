@@ -277,7 +277,7 @@ module ExtremeStartup
     def correct_answer
       n = @n1 + 4
       a, b = 0, 1
-      (0...n).each { |_| a, b = b, a + b }
+      n.times { a, b = b, a + b }
       a
     end
   end
