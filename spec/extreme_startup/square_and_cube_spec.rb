@@ -26,6 +26,14 @@ module ExtremeStartup
       end
     end
     
+    context "if one of the numbers is zero" do
+      let(:question) { SquareCubeQuestion.new(Player.new, 0, 64) }
+       
+      it "doesn't crash with divide by zero" do
+        question.answered_correctly?("0").should be_false
+      end
+    end
+    
     context "when there are multiple numbers in the answer" do
       let(:question) { SquareCubeQuestion.new(Player.new, 64, 65, 729) }
 

@@ -240,10 +240,16 @@ module ExtremeStartup
     end
 
     def is_square(x)
+      if (x ==0)
+        return true
+      end
       (x % Math.sqrt(x)) == 0
     end
 
     def is_cube(x)
+      if (x ==0)
+        return true
+      end
       (x % Math.cbrt(x)) == 0
     end
   end
