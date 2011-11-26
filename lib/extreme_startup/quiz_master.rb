@@ -1,21 +1,34 @@
 require_relative 'question_factory'
 require 'uri'
+require 'bigdecimal'
 
 module ExtremeStartup
 
   class RateController
+    
+    def initialize
+      @delay = BigDecimal.new("5")
+    end
+    
     def wait_for_next_request(question)
       sleep delay_before_next_request(question)
     end
     
     def delay_before_next_request(question)
-      if (question.was_answered_correctly)
-        return 5
+      if (question.was_answered_correctly)        
+        if (@delay > 1)
+          @delay = @delay - BigDecimal.new("0.1")
+        end
+      elsif (question.was_answered_wrongly)
+        if (@delay < 20)
+          @delay = @delay + BigDecimal.new("0.1")
+        end
+      else
+        #error response
+        return BigDecimal.new("20")
       end
-      if (question.was_answered_wrongly)
-        return 10
-      end
-      return 20
+      @prev_question = question
+      @delay.to_f
     end
   end
 
