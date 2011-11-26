@@ -47,6 +47,14 @@ module ExtremeStartup
         else 20
       end
     end
+    
+    def was_answered_correctly
+      result == "correct"
+    end
+    
+    def was_answered_wrongly
+      result == "wrong"
+    end
 
     def display_result
       "\tquestion: #{self.to_s}\n\tanswer: #{answer}\n\tresult: #{result}"

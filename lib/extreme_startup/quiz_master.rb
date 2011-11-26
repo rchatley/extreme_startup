@@ -5,7 +5,17 @@ module ExtremeStartup
 
   class RateController
     def wait_for_next_request(question)
-      sleep question.delay_before_next
+      sleep delay_before_next_request(question)
+    end
+    
+    def delay_before_next_request(question)
+      if (question.was_answered_correctly)
+        return 5
+      end
+      if (question.was_answered_wrongly)
+        return 10
+      end
+      return 20
     end
   end
 
