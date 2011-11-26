@@ -6,21 +6,21 @@ module ExtremeStartup
     let(:controller) { SlashdotRateController.new }
         
     it "makes the inter-request delay very small" do
-      controller.delay_before_next_request(FakeAnswer.new(:correct)).should == 0.01
+      controller.delay_before_next_request(FakeAnswer.new(:correct)).should == 0.02
     end
     
     it "increases the delay slightly with each request, up to 5 seconds" do
       old_delay = 0
-      600.times do 
+      200.times do 
         delay = controller.delay_before_next_request(FakeAnswer.new(:correct))
-        delay.should be < 5
+        delay.should be < 4
         delay.should be > old_delay
         old_delay = delay 
       end
     end
     
     it "reverts to standard RateController once spike subsides" do
-      650.times do 
+      500.times do 
         delay = controller.delay_before_next_request(FakeAnswer.new(:correct))
       end
       controller.update_algorithm_based_on_score(1).should be_instance_of RateController

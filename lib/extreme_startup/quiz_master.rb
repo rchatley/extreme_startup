@@ -31,6 +31,9 @@ module ExtremeStartup
         end
       else
         #error response
+        if (@delay < 10)
+          @delay = BigDecimal.new("10")
+        end
         return BigDecimal.new("20")
       end
       @prev_question = question
@@ -42,7 +45,7 @@ module ExtremeStartup
     end
     
     def update_algorithm_based_on_score(score)
-      if (score > SLASHDOT_THRESHOLD_SCORE && rand(10000) < slashdot_probability_percent * 100)
+      if (score > SLASHDOT_THRESHOLD_SCORE && (rand(1000) < (10 * slashdot_probability_percent)))
         return SlashdotRateController.new
       end
       self
@@ -52,17 +55,17 @@ module ExtremeStartup
   class SlashdotRateController < RateController
     
     def initialize
-      @delay = BigDecimal.new("0.01")
+      @delay = BigDecimal.new("0.02")
     end
         
     def delay_before_next_request(question)
       result = @delay.to_f
-      @delay = @delay * BigDecimal.new("1.01")
+      @delay = @delay * BigDecimal.new("1.022")
       result
     end
     
     def update_algorithm_based_on_score(score)
-      if (@delay > 5)
+      if (@delay > 3.5)
         return RateController.new
       end
       self
