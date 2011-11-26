@@ -20,6 +20,10 @@ module ExtremeStartup
     def delete_player(player)
       @scores.delete(player.uuid)
     end
+    
+    def current_score(player)
+      @scores[player.uuid]
+    end
   
     def leaderboard
       @scores.sort{|a,b| b[1]<=>a[1]}

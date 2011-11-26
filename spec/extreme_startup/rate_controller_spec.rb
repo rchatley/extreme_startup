@@ -33,6 +33,17 @@ module ExtremeStartup
       controller.delay_before_next_request(FakeAnswer.new(:error)).should == 20
     end
     
+    it "occasionally switches a SlashdotRateController if score is above 1000" do
+      class ExtremeStartup::RateController
+        def slashdot_probability_percent 
+          100 
+        end
+      end
+      controller.update_algorithm_based_on_score(100).should == controller
+      controller.update_algorithm_based_on_score(1001).should be_instance_of SlashdotRateController
+      
+    end
+    
   end
   
   class FakeAnswer

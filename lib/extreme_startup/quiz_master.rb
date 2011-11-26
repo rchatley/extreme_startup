@@ -6,6 +6,12 @@ module ExtremeStartup
 
   class RateController
     
+    MIN_REQUEST_INTERVAL_SECS = BigDecimal.new("1")
+    MAX_REQUEST_INTERVAL_SECS = BigDecimal.new("20")
+    REQUEST_DELTA_SECS = BigDecimal.new("0.1")
+    
+    SLASHDOT_THRESHOLD_SCORE = 1000
+    
     def initialize
       @delay = BigDecimal.new("5")
     end
@@ -16,12 +22,12 @@ module ExtremeStartup
     
     def delay_before_next_request(question)
       if (question.was_answered_correctly)        
-        if (@delay > 1)
-          @delay = @delay - BigDecimal.new("0.1")
+        if (@delay > MIN_REQUEST_INTERVAL_SECS)
+          @delay = @delay - REQUEST_DELTA_SECS
         end
       elsif (question.was_answered_wrongly)
-        if (@delay < 20)
-          @delay = @delay + BigDecimal.new("0.1")
+        if (@delay < MAX_REQUEST_INTERVAL_SECS)
+          @delay = @delay + REQUEST_DELTA_SECS
         end
       else
         #error response
@@ -29,6 +35,37 @@ module ExtremeStartup
       end
       @prev_question = question
       @delay.to_f
+    end
+    
+    def slashdot_probability_percent
+      0.1
+    end
+    
+    def update_algorithm_based_on_score(score)
+      if (score > SLASHDOT_THRESHOLD_SCORE && rand(10000) < slashdot_probability_percent * 100)
+        return SlashdotRateController.new
+      end
+      self
+    end
+  end
+
+  class SlashdotRateController < RateController
+    
+    def initialize
+      @delay = BigDecimal.new("0.01")
+    end
+        
+    def delay_before_next_request(question)
+      result = @delay.to_f
+      @delay = @delay * BigDecimal.new("1.01")
+      result
+    end
+    
+    def update_algorithm_based_on_score(score)
+      if (@delay > 5)
+        return RateController.new
+      end
+      self
     end
   end
 
@@ -51,6 +88,7 @@ module ExtremeStartup
         puts "For player #{@player}\n#{question.display_result}"
         @scoreboard.increment_score_for(@player, question)
         @rate_controller.wait_for_next_request(question)
+        @rate_controller = @rate_controller.update_algorithm_based_on_score(@scoreboard.current_score(@player))
       end
     end
 
