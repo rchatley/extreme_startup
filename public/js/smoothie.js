@@ -1,6 +1,6 @@
 // MIT License:
 //
-// Copyright (c) 2010, Joe Walnes
+// Copyright (c) 2010-2011, Joe Walnes
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,10 @@
  * v1.2: fps (frames per second) option, by Mathias Petterson
  * v1.3: Fix for divide by zero, by Paul Nikitochkin
  * v1.4: Set minimum, top-scale padding, remove timeseries, add optional timer to reset bounds, by Kelley Reynolds
+ * v1.5: Set default frames per second to 50... smoother.
+ *       .start(), .stop() methods for conserving CPU, by Dmitry Vyal
+ *       options.iterpolation = 'bezier' or 'line', by Dmitry Vyal
+ *       options.maxValue to fix scale, by Dmitry Vyal
  */
 
 function TimeSeries(options) {
@@ -68,10 +72,12 @@ function SmoothieChart(options) {
   options = options || {};
   options.grid = options.grid || { fillStyle:'#000000', strokeStyle: '#777777', lineWidth: 1, millisPerLine: 1000, verticalSections: 2 };
   options.millisPerPixel = options.millisPerPixel || 20;
-  options.fps = options.fps || 20;
+  options.fps = options.fps || 50;
   options.maxValueScale = options.maxValueScale || 1;
   options.minValue = options.minValue;
-  options.labels = options.labels || { fillStyle:'#ffffff' }
+  options.maxValue = options.maxValue;
+  options.labels = options.labels || { fillStyle:'#ffffff' };
+  options.interpolation = options.interpolation || "bezier";
   this.options = options;
   this.seriesSet = [];
 }
@@ -86,10 +92,23 @@ SmoothieChart.prototype.removeTimeSeries = function(timeSeries) {
 
 SmoothieChart.prototype.streamTo = function(canvas, delay) {
   var self = this;
-  (function render() {
+  this.render_on_tick = function() {
     self.render(canvas, new Date().getTime() - (delay || 0));
-    setTimeout(render, 1000/self.options.fps);
-  })()
+  };
+
+  this.start();
+};
+
+SmoothieChart.prototype.start = function() {
+  if (!this.timer)
+    this.timer = setInterval(this.render_on_tick, 1000/this.options.fps);
+};
+
+SmoothieChart.prototype.stop = function() {
+  if (this.timer) {
+    clearInterval(this.timer);
+    this.timer = undefined;
+  }
 };
 
 SmoothieChart.prototype.render = function(canvas, time) {
@@ -172,12 +191,15 @@ SmoothieChart.prototype.render = function(canvas, time) {
   }
 
   // Scale the maxValue to add padding at the top if required
-  maxValue = maxValue * options.maxValueScale;
+  if (options.maxValue != null)
+    maxValue = options.maxValue;
+  else
+    maxValue = maxValue * options.maxValueScale;
   // Set the minimum if we've specified one
   if (options.minValue != null)
     minValue = options.minValue;
   var valueRange = maxValue - minValue;
-  
+
   // For each data set...
   for (var d = 0; d < this.seriesSet.length; d++) {
     canvasContext.save();
@@ -227,10 +249,18 @@ SmoothieChart.prototype.render = function(canvas, time) {
       // so adjacent curves appear to flow as one.
       //
       else {
-        canvasContext.bezierCurveTo( // startPoint (A) is implicit from last iteration of loop
-          Math.round((lastX + x) / 2), lastY, // controlPoint1 (P)
-          Math.round((lastX + x)) / 2, y, // controlPoint2 (Q)
-          x, y); // endPoint (B)
+        switch (options.interpolation) {
+        case "line":
+          canvasContext.lineTo(x,y);
+          break;
+        case "bezier":
+        default:
+          canvasContext.bezierCurveTo( // startPoint (A) is implicit from last iteration of loop
+            Math.round((lastX + x) / 2), lastY, // controlPoint1 (P)
+            Math.round((lastX + x)) / 2, y, // controlPoint2 (Q)
+            x, y); // endPoint (B)
+          break;
+        }
       }
 
       lastX = x, lastY = y;
