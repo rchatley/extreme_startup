@@ -21,8 +21,12 @@ $(document).ready(function() {
 					smoothie.addTimeSeries(series, { strokeStyle:colourTable[entry.playerid], lineWidth:3 });
 				}
 				series.append(new Date().getTime(), entry.score);
+				smoothie.start();
 			}
 		};
+		this.pause = function() {
+			smoothie.stop();
+		}
 	};  
 
 	var ScoreBoard = function(div) {
@@ -49,8 +53,12 @@ $(document).ready(function() {
 				url: '/scores',
 				success: function( data ) {
 					var leaderboard = JSON.parse(data);
-					graph.updateWith(leaderboard);
-					scoreboard.updateWith(leaderboard);
+					if (leaderboard.inplay) {
+						graph.updateWith(leaderboard.entries);
+						scoreboard.updateWith(leaderboard.entries);
+					} else {
+						graph.pause();
+					}
 				}
 			});
 		}, 1000);

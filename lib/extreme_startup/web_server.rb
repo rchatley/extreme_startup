@@ -26,20 +26,21 @@ module ExtremeStartup
 
     get '/' do 
       haml :leaderboard, :locals => { 
-          :leaderboard => LeaderBoard.new(scoreboard, players), 
+          :leaderboard => LeaderBoard.new(scoreboard, players, game_state), 
           :players => players  }
     end
 
     get '/scores' do 
-      LeaderBoard.new(scoreboard, players).to_json
+      LeaderBoard.new(scoreboard, players, game_state).to_json
     end
         
     class LeaderBoard
-      def initialize(scoreboard, players)
+      def initialize(scoreboard, players, game_state)
         @entries = []
         scoreboard.leaderboard.each do |entry| 
           @entries << LeaderBoardEntry.new(entry[0], players[entry[0]], entry[1])
         end
+        @inplay = game_state.is_running?;
       end
       
       def each(&block)
@@ -47,7 +48,7 @@ module ExtremeStartup
       end
       
       def to_json(*a)
-        @entries.to_json(*a)
+        {'entries' => @entries, 'inplay' => @inplay }.to_json(*a)
       end
     end
     
