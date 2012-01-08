@@ -4,6 +4,7 @@ require 'uuid'
 require 'haml'
 require 'socket'
 require 'json'
+require_relative 'game_state'
 require_relative 'scoreboard'
 require_relative 'player'
 require_relative 'quiz_master'
@@ -11,6 +12,7 @@ require_relative 'quiz_master'
 Thread.abort_on_exception = true
 
 module ExtremeStartup
+    
   class WebServer < Sinatra::Base
 
     set :port, 3000
@@ -20,6 +22,7 @@ module ExtremeStartup
     set :players_threads, Hash.new
     set :scoreboard, Scoreboard.new
     set :question_factory, ENV['WARMUP'] ? WarmupQuestionFactory.new : QuestionFactory.new
+    set :game_state, GameState.new
 
     get '/' do 
       haml :leaderboard, :locals => { 
@@ -30,7 +33,7 @@ module ExtremeStartup
     get '/scores' do 
       LeaderBoard.new(scoreboard, players).to_json
     end
-    
+        
     class LeaderBoard
       def initialize(scoreboard, players)
         @entries = []
@@ -69,6 +72,13 @@ module ExtremeStartup
       haml :scores
     end
 
+    get '/controlpanel' do 
+      haml :controlpanel, :locals => {
+        :game_state => game_state,
+        :round => question_factory.round.to_s
+      }
+    end
+    
     get %r{/players/([\w]+)} do |uuid|
       haml :personal_page, :locals => { 
         :name => players[uuid].name, 
@@ -81,13 +91,16 @@ module ExtremeStartup
       haml :add_player
     end
     
-    get '/advance_round' do
+    post '/advance_round' do
       question_factory.advance_round
-      redirect to('/round')
     end
-
-    get '/round' do
-      question_factory.round.to_s
+ 
+    post '/pause' do
+      game_state.pause
+    end
+    
+    post '/resume' do
+      game_state.resume
     end
     
     get %r{/withdraw/([\w]+)} do |uuid|
@@ -104,7 +117,7 @@ module ExtremeStartup
       players[player.uuid] = player
       
       player_thread = Thread.new do
-        QuizMaster.new(player, scoreboard, question_factory).start
+        QuizMaster.new(player, scoreboard, question_factory, game_state).start
       end
       players_threads[player.uuid] = player_thread
   
@@ -118,7 +131,7 @@ module ExtremeStartup
       UDPSocket.open {|s| s.connect("64.233.187.99", 1); s.addr.last}
     end
     
-    [:players, :players_threads, :scoreboard, :question_factory].each do |setting|
+    [:players, :players_threads, :scoreboard, :question_factory, :game_state].each do |setting|
       define_method(setting) do
         settings.send(setting)
       end

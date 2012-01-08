@@ -73,10 +73,11 @@ module ExtremeStartup
   end
 
   class QuizMaster
-    def initialize(player, scoreboard, question_factory)
+    def initialize(player, scoreboard, question_factory, game_state)
       @player = player
       @scoreboard = scoreboard
       @question_factory = question_factory
+      @game_state = game_state
       @rate_controller = RateController.new
     end
 
@@ -86,12 +87,16 @@ module ExtremeStartup
 
     def start
       while true
-        question = @question_factory.next_question(@player)
-        question.ask(@player)
-        puts "For player #{@player}\n#{question.display_result}"
-        @scoreboard.increment_score_for(@player, question)
-        @rate_controller.wait_for_next_request(question)
-        @rate_controller = @rate_controller.update_algorithm_based_on_score(@scoreboard.current_score(@player))
+        if (@game_state.is_running?)
+          question = @question_factory.next_question(@player)
+          question.ask(@player)
+          puts "For player #{@player}\n#{question.display_result}"
+          @scoreboard.increment_score_for(@player, question)
+          @rate_controller.wait_for_next_request(question)
+          @rate_controller = @rate_controller.update_algorithm_based_on_score(@scoreboard.current_score(@player))
+        else
+          sleep 2
+        end
       end
     end
 

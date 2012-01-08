@@ -1,0 +1,15 @@
+%html
+  %head
+    %title Extreme Startup - Control Panel
+    %link(rel="stylesheet" href="/css/style.css")
+    %script{:type => "text/javascript", :src  => "/js/jquery-1.6.2.min.js"}
+    %script{:type => "text/javascript", :src  => "/js/controlpanel.js"}
+
+  %body
+    %h1 Current Round: #{round}
+    %form
+      %input#advance{:type => "button", :value => "Advance Round"}
+      - if (game_state.is_running?)
+        %input#pause{:type => "button", :value => "Pause Game"}
+      - else
+        %input#resume{:type => "button", :value => "Resume Game"}
