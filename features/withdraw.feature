@@ -7,4 +7,5 @@ Feature: A team can withdraw from the game
     Given I am playing
     When I withdraw
     Then my name should not be on the leaderboard anymore
+    And my player page should give a nice error
     And the game master should not send me anymore questions

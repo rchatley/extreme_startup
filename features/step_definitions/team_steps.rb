@@ -54,3 +54,8 @@ end
 Then /^the game master should not send me anymore questions$/ do
   app.players_threads.should be_empty
 end
+
+Then /^my player page should give a nice error$/ do
+    visit '/players/no-longer-exists'
+    page.should have_content("No player is registered with that id")
+end

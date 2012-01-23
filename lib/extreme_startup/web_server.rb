@@ -81,11 +81,15 @@ module ExtremeStartup
     end
     
     get %r{/players/([\w]+)} do |uuid|
-      haml :personal_page, :locals => { 
-        :name => players[uuid].name, 
-        :playerid => uuid, 
-        :score => scoreboard.scores[uuid], 
-        :log => players[uuid].log[0..25] }
+      if (players[uuid] == nil)
+        haml :no_such_player
+      else
+        haml :personal_page, :locals => { 
+          :name => players[uuid].name, 
+          :playerid => uuid, 
+          :score => scoreboard.scores[uuid], 
+          :log => players[uuid].log[0..25] }
+      end
     end
 
     get '/players' do
