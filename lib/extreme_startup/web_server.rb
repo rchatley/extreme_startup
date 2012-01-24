@@ -80,6 +80,14 @@ module ExtremeStartup
       }
     end
     
+    get %r{/players/([\w]+)/score} do |uuid|
+      if (players[uuid] == nil)
+        haml :no_such_player
+      else
+        return "#{scoreboard.scores[uuid]}"
+      end
+    end
+    
     get %r{/players/([\w]+)} do |uuid|
       if (players[uuid] == nil)
         haml :no_such_player
