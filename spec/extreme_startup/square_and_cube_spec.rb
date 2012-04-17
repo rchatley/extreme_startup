@@ -43,7 +43,7 @@ module ExtremeStartup
       end
 
       it "identifies an incorrect answer" do
-        question.answered_correctly?("64").should be_false
+        question.answered_correctly?("65").should be_false
       end
     end
       

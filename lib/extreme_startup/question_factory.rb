@@ -258,7 +258,7 @@ module ExtremeStartup
       if (x ==0)
         return true
       end
-      (x % Math.cbrt(x)) == 0
+      (x % Math.cbrt(x).truncate) == 0
     end
   end
 
@@ -304,7 +304,11 @@ module ExtremeStartup
           ["which city is the Eiffel tower in", "Paris"],
           ["what currency did Spain use before the Euro", "peseta"],
           ["what colour is a banana", "yellow"],
-          ["who played James Bond in the film Dr No", "Sean Connery"]
+          ["who played James Bond in the film Dr No", "Sean Connery"],
+          ["""what is the name of the narrator in Proust's 'La recherche du temps perdu'""", ""],
+          ["what is the capital city of Botswana", "Gaborone"],
+          ["what is the date of Bloom's Day", "16 June"],
+          ["what is the date of Bloom's Day in Dublin", "16 June"]
         ]
       end
     end
