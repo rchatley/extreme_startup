@@ -6,3 +6,27 @@
   - enlists
   - google
   - banana
+
+-
+  anagram: war
+  correct: raw
+  incorrect:
+  - wharf
+  - wary
+  - rave
+
+-
+  anagram: admirer
+  correct: married
+  incorrect:
+  - mirror
+  - admiter
+
+-
+  anagram: master
+  correct: 
+  - stream
+  - tamers
+  incorrect:
+  - raster
+  - sternum

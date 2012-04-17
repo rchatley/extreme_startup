@@ -305,10 +305,9 @@ module ExtremeStartup
           ["what currency did Spain use before the Euro", "peseta"],
           ["what colour is a banana", "yellow"],
           ["who played James Bond in the film Dr No", "Sean Connery"],
-          ["""what is the name of the narrator in Proust's 'La recherche du temps perdu'""", ""],
+          ["what is the name of the narrator in Proust's 'La recherche du temps perdu'", ""],
           ["what is the capital city of Botswana", "Gaborone"],
-          ["what is the date of Bloom's Day", "16 June"],
-          ["what is the date of Bloom's Day in Dublin", "16 June"]
+          ["what is the date of BloomsDay", "16 June"]
         ]
       end
     end
