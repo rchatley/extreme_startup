@@ -375,8 +375,8 @@ module ExtremeStartup
       %w{f h v w y}.each            {|l| scores[l] = 4 }
       %w{k}.each                    {|l| scores[l] = 5 }
       %w{j x}.each                  {|l| scores[l] = 8 }
-      %w{q, z}.each                 {|l| scores[l] = 10 }
-      return scores
+      %w{q z}.each                  {|l| scores[l] = 10 }
+      scores
     end
   end
 
