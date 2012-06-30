@@ -10,7 +10,7 @@ module ExtremeStartup
     MAX_REQUEST_INTERVAL_SECS = BigDecimal.new("20")
     REQUEST_DELTA_SECS = BigDecimal.new("0.1")
     
-    SLASHDOT_THRESHOLD_SCORE = 1000
+    SLASHDOT_THRESHOLD_SCORE = 2000
     
     def initialize
       @delay = BigDecimal.new("5")
