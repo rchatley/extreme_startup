@@ -133,9 +133,8 @@ module ExtremeStartup
         QuizMaster.new(player, scoreboard, question_factory, game_state).start
       end
       players_threads[player.uuid] = player_thread
-  
-      personal_page = "http://#{local_ip}:#{@env["SERVER_PORT"]}/players/#{player.uuid}"
-      haml :player_added, :locals => { :url => personal_page }
+
+      haml :player_added, :locals => { :playerid => player.uuid }
     end
     
   private
