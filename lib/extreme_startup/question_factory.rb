@@ -282,7 +282,13 @@ module ExtremeStartup
   class FibonacciQuestion < BinaryMathsQuestion
     def as_text
       n = @n1 + 4
-      "what is the #{n}th number in the Fibonacci sequence"
+      if (n > 20 && n % 10 == 1)
+        return "what is the #{n}st number in the Fibonacci sequence"
+      end
+      if (n > 20 && n % 10 == 2)
+        return "what is the #{n}nd number in the Fibonacci sequence"
+      end
+      return "what is the #{n}th number in the Fibonacci sequence"  
     end
     def points
       50
