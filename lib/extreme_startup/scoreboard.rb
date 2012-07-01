@@ -40,7 +40,7 @@ module ExtremeStartup
         when "correct"        then question.points
         when "wrong"          then penalty(question.points, leaderboard_position)
         when "error_response" then -5
-        when "no_answer"     then -20
+        when "no_server_response"     then -20
         else puts "!!!!! unrecognized result '#{question.result}' from #{question.inspect} in Scoreboard#score"
       end
     end

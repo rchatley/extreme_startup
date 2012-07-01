@@ -22,7 +22,7 @@ module ExtremeStartup
         end
       rescue => exception
         puts exception
-        @problem = "no_answer"
+        @problem = "no_server_response"
       end
     end
 
