@@ -38,7 +38,14 @@ module ExtremeStartup
     def score(question, leaderboard_position)
       case question.result
         when "correct"        then question.points
-        when "wrong"          then penalty(question.points, leaderboard_position)
+        when "wrong"          then begin
+          if (question.answer == "")
+            then
+              return 0
+            else
+              return penalty(question.points, leaderboard_position)
+            end
+          end
         when "error_response" then -5
         when "no_server_response"     then -20
         else puts "!!!!! unrecognized result '#{question.result}' from #{question.inspect} in Scoreboard#score"
