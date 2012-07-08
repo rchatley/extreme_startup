@@ -2,7 +2,8 @@ module ExtremeStartup
   class Scoreboard
     attr_reader :scores
   
-    def initialize
+    def initialize(lenient)
+      @lenient = lenient
       @scores = Hash.new { 0 }
     end
   
@@ -38,22 +39,19 @@ module ExtremeStartup
     def score(question, leaderboard_position)
       case question.result
         when "correct"        then question.points
-        when "wrong"          then begin
-          if (question.answer == "")
-            then
-              return 0
-            else
-              return penalty(question.points, leaderboard_position)
-            end
-          end
+        when "wrong"          then @lenient ? allow_passes(question, leaderboard_position) : penalty(question, leaderboard_position)
         when "error_response" then -5
         when "no_server_response"     then -20
         else puts "!!!!! unrecognized result '#{question.result}' from #{question.inspect} in Scoreboard#score"
       end
     end
     
-    def penalty(points, leaderboard_position)
-      -1 * points / leaderboard_position
+    def allow_passes(question, leaderboard_position)
+      (question.answer == "") ? 0 : penalty(question, leaderboard_position)
+    end
+    
+    def penalty(question, leaderboard_position)
+      -1 * question.points / leaderboard_position
     end
      
   end

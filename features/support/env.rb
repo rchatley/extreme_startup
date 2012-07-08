@@ -19,7 +19,7 @@ $silence_logging = true
 Before do
   app.players = Hash.new
   app.players_threads = Hash.new
-  app.scoreboard = ExtremeStartup::Scoreboard.new
+  app.scoreboard = ExtremeStartup::Scoreboard.new(false)
 end
 
 After do

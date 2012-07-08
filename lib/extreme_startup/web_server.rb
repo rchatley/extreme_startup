@@ -20,7 +20,7 @@ module ExtremeStartup
     set :public, 'public'
     set :players,    Hash.new
     set :players_threads, Hash.new
-    set :scoreboard, Scoreboard.new
+    set :scoreboard, Scoreboard.new(ENV['LENIENT'])
     set :question_factory, ENV['WARMUP'] ? WarmupQuestionFactory.new : QuestionFactory.new
     set :game_state, GameState.new
 
