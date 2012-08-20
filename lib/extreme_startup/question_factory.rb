@@ -69,7 +69,7 @@ module ExtremeStartup
     end
 
     def answer=(answer)
-      @answer = answer
+      @answer = answer.force_encoding("UTF-8")
     end
 
     def answer

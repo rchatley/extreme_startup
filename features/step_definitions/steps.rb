@@ -27,7 +27,7 @@ Then /^the scores should be:$/ do |table|
   end
 end
 
-Then /^the log for (\w+) should show:$/ do |player_name, table|
+Then /^the log for (.+) should show:$/ do |player_name, table|
   player = players.find{ |p| p.name == player_name }
   visit player.personal_page
   actual = page.all('li').map do |li|
