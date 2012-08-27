@@ -39,5 +39,9 @@ module ExtremeStartup
     def to_s
       "#{name} (#{url})"
     end
+
+    def can_withdraw(ip)
+      @url.include? ip
+    end
   end
 end

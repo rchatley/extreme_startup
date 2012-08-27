@@ -43,8 +43,23 @@ end
 
 When /^I withdraw$/ do
   player_uuid = app.players.keys.first
+  original_headers = page.driver.options[:headers]
+  page.driver.options[:headers] = {'REMOTE_ADDR' => "deathstar.local"}
   visit "/players/#{player_uuid}"
   click_link 'Withdraw'
+  page.driver.options[:headers] = original_headers
+end
+
+When /^someone else wants to withdraw for me$/ do
+  original_headers = page.driver.options[:headers]
+  page.driver.options[:headers] = {'REMOTE_ADDR' => "tatooine.local"}
+  player_uuid = app.players.keys.first
+  visit "/players/#{player_uuid}"
+  page.driver.options[:headers] = original_headers
+end
+
+Then /^it is impossible to withdraw$/ do
+  page.should_not have_link "Withdraw"
 end
 
 Then /^my name should not be on the leaderboard anymore$/ do

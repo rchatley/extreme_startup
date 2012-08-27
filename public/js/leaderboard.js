@@ -39,7 +39,7 @@ $(document).ready(function() {
 						$('<li/>', {class: "player"})
 						.append($('<div>' + entry.playername + '</div>').addClass("ranking name").css("background-color", colourTable[entry.playerid]))
 						.append($('<div>' + entry.score + '</div>').addClass("ranking points").css("background-color", colourTable[entry.playerid]))
-						.append($('<a>Withdraw</a>').attr("href", "/withdraw/" + entry.playerid))));
+						.append(entry.can_withdraw ? $('<a>Withdraw</a>').attr("href", "/withdraw/" + entry.playerid) : '')));
 				}
 				$("#scoreboard").replaceWith(list); 
 			}

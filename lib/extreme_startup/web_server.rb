@@ -26,19 +26,19 @@ module ExtremeStartup
 
     get '/' do 
       haml :leaderboard, :locals => { 
-          :leaderboard => LeaderBoard.new(scoreboard, players, game_state), 
+          :leaderboard => LeaderBoard.new(scoreboard, players, game_state, request.ip),
           :players => players  }
     end
 
     get '/scores' do 
-      LeaderBoard.new(scoreboard, players, game_state).to_json
+      LeaderBoard.new(scoreboard, players, game_state, request.ip).to_json
     end
         
     class LeaderBoard
-      def initialize(scoreboard, players, game_state)
+      def initialize(scoreboard, players, game_state, ip)
         @entries = []
         scoreboard.leaderboard.each do |entry| 
-          @entries << LeaderBoardEntry.new(entry[0], players[entry[0]], entry[1])
+          @entries << LeaderBoardEntry.new(entry[0], players[entry[0]], entry[1], players[entry[0]].can_withdraw(ip))
         end
         @inplay = game_state.is_running?;
       end
@@ -53,18 +53,20 @@ module ExtremeStartup
     end
     
     class LeaderBoardEntry
-      attr_reader :playerid, :playername, :score
-      def initialize(id, name, score)
+      attr_reader :playerid, :playername, :score, :can_withdraw
+      def initialize(id, name, score, can_withdraw)
         @playerid = id;
         @playername = name;
         @score=score;
+        @can_withdraw=can_withdraw;
       end
       
       def to_json(*a)
         {
           'playerid'   => playerid,
           'playername' => playername,
-          'score' => score
+          'score' => score,
+          'can_withdraw' => can_withdraw,
         }.to_json(*a)
       end
     end
@@ -124,7 +126,8 @@ module ExtremeStartup
           :name => players[uuid].name, 
           :playerid => uuid, 
           :score => scoreboard.scores[uuid], 
-          :log => players[uuid].log[0..25] }
+          :log => players[uuid].log[0..25],
+          :can_withdraw => players[uuid].can_withdraw(request.ip)}
       end
     end
 
@@ -145,10 +148,12 @@ module ExtremeStartup
     end
     
     get %r{/withdraw/([\w]+)} do |uuid|
-      scoreboard.delete_player(players[uuid])
-      players.delete(uuid)
-      players_threads[uuid].kill
-      players_threads.delete(uuid)
+      if players[uuid].can_withdraw(request.ip)
+        scoreboard.delete_player(players[uuid])
+        players.delete(uuid)
+        players_threads[uuid].kill
+        players_threads.delete(uuid)
+      end
       redirect '/'
     end
     

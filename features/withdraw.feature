@@ -9,3 +9,8 @@ Feature: A team can withdraw from the game
     Then my name should not be on the leaderboard anymore
     And my player page should give a nice error
     And the game master should not send me anymore questions
+
+  Scenario: Someone else can't withdraw for me
+    Given I am playing
+    When someone else wants to withdraw for me
+    Then it is impossible to withdraw

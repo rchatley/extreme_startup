@@ -10,8 +10,9 @@
       Your score is:
       %span.score #{score}
 
-    %a{ :href => "/withdraw/#{playerid}" }
-      Withdraw
+    - if can_withdraw
+      %a{ :href => "/withdraw/#{playerid}" }
+        Withdraw
 
     %h2 Log:
     %ul
