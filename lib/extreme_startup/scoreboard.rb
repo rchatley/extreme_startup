@@ -5,13 +5,25 @@ module ExtremeStartup
     def initialize(lenient)
       @lenient = lenient
       @scores = Hash.new { 0 }
+      @correct_tally = Hash.new { 0 }
+      @incorrect_tally = Hash.new { 0 }
+      @request_counts = Hash.new { 0 }
     end
   
     def increment_score_for(player, question)
       increment = score(question, leaderboard_position(player))
       @scores[player.uuid] += increment
+      if (increment > 0)
+        @correct_tally[player.uuid] += 1
+      elsif (increment < 0)
+        @incorrect_tally[player.uuid] += 1
+      end
       puts "added #{increment} to player #{player.name}'s score. It is now #{@scores[player.uuid]}"
       player.log_result(question.id, question.result, increment)
+    end
+    
+    def record_request_for(player)
+      @request_counts[player.uuid] += 1
     end
   
     def new_player(player)
@@ -25,7 +37,19 @@ module ExtremeStartup
     def current_score(player)
       @scores[player.uuid]
     end
+    
+    def current_total_correct(player)
+      @correct_tally[player.uuid]
+    end
+    
+    def current_total_not_correct(player)
+       @incorrect_tally[player.uuid]
+    end
   
+    def total_requests_for(player)
+       @request_counts[player.uuid]
+    end
+    
     def leaderboard
       @scores.sort{|a,b| b[1]<=>a[1]}
     end

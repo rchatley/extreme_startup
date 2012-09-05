@@ -80,12 +80,40 @@ module ExtremeStartup
       }
     end
     
-    get %r{/players/([\w]+)/score} do |uuid|
+    get %r{/players/([\w]+)/metrics/score} do |uuid|
       if (players[uuid] == nil)
         haml :no_such_player
       else
         return "#{scoreboard.scores[uuid]}"
       end
+    end
+
+    get %r{/players/([\w]+)/metrics/correct} do |uuid|
+      if (players[uuid] == nil)
+        haml :no_such_player
+      else
+        return "#{scoreboard.current_total_correct(players[uuid])}"
+      end
+    end
+
+    get %r{/players/([\w]+)/metrics/incorrect} do |uuid|
+      if (players[uuid] == nil)
+        haml :no_such_player
+      else
+        return "#{scoreboard.current_total_not_correct(players[uuid])}"
+      end
+    end
+    
+    get %r{/players/([\w]+)/metrics/requestcount} do |uuid|
+      if (players[uuid] == nil)
+        haml :no_such_player
+      else
+        return "#{scoreboard.total_requests_for(players[uuid])}"
+      end
+    end
+    
+    get %r{/players/([\w]+)/metrics} do |uuid|
+        haml :metrics_index
     end
     
     get %r{/players/([\w]+)} do |uuid|
