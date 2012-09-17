@@ -40,4 +40,4 @@ Feature: Basic Scoring
       And the game is played for 1 second
       Then the scores should be:
         | player   | score |
-        | ernie    | -5    |
+        | ernie    | -50    |
