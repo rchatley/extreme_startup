@@ -4,10 +4,10 @@ require 'extreme_startup/player'
 
 module ExtremeStartup
   describe FibonacciQuestion do
-    let(:question) { FibonacciQuestion.new(Player.new, 2, nil) }
+    let(:question) { FibonacciQuestion.new(Player.new, 18, nil) }
     
     it "converts to a string" do
-      question.as_text.should =~ /what is the \d+th number in the Fibonacci sequence/i
+      question.as_text.should =~ /what is the 22nd number in the Fibonacci sequence/i
     end
     
     context "when the numbers are known" do

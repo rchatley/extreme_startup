@@ -22,7 +22,7 @@ module ExtremeStartup
         end
       rescue => exception
         puts exception
-        @problem = "no_answer"
+        @problem = "no_server_response"
       end
     end
 
@@ -69,7 +69,7 @@ module ExtremeStartup
     end
 
     def answer=(answer)
-      @answer = answer
+      @answer = answer.force_encoding("UTF-8")
     end
 
     def answer
@@ -282,7 +282,13 @@ module ExtremeStartup
   class FibonacciQuestion < BinaryMathsQuestion
     def as_text
       n = @n1 + 4
-      "what is the #{n}th number in the Fibonacci sequence"
+      if (n > 20 && n % 10 == 1)
+        return "what is the #{n}st number in the Fibonacci sequence"
+      end
+      if (n > 20 && n % 10 == 2)
+        return "what is the #{n}nd number in the Fibonacci sequence"
+      end
+      return "what is the #{n}th number in the Fibonacci sequence"  
     end
     def points
       50
@@ -291,7 +297,7 @@ module ExtremeStartup
     def correct_answer
       n = @n1 + 4
       a, b = 0, 1
-      (0...n).each { |_| a, b = b, a + b }
+      n.times { a, b = b, a + b }
       a
     end
   end
@@ -378,8 +384,8 @@ module ExtremeStartup
       %w{f h v w y}.each            {|l| scores[l] = 4 }
       %w{k}.each                    {|l| scores[l] = 5 }
       %w{j x}.each                  {|l| scores[l] = 8 }
-      %w{q, z}.each                 {|l| scores[l] = 10 }
-      return scores
+      %w{q z}.each                  {|l| scores[l] = 10 }
+      scores
     end
   end
 

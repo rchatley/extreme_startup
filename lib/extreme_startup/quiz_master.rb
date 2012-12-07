@@ -10,7 +10,7 @@ module ExtremeStartup
     MAX_REQUEST_INTERVAL_SECS = BigDecimal.new("20")
     REQUEST_DELTA_SECS = BigDecimal.new("0.1")
     
-    SLASHDOT_THRESHOLD_SCORE = 1000
+    SLASHDOT_THRESHOLD_SCORE = 2000
     
     def initialize
       @delay = BigDecimal.new("5")
@@ -91,6 +91,7 @@ module ExtremeStartup
           question = @question_factory.next_question(@player)
           question.ask(@player)
           puts "For player #{@player}\n#{question.display_result}"
+          @scoreboard.record_request_for(@player)
           @scoreboard.increment_score_for(@player, question)
           @rate_controller.wait_for_next_request(question)
           @rate_controller = @rate_controller.update_algorithm_based_on_score(@scoreboard.current_score(@player))

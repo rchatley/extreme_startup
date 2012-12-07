@@ -59,5 +59,6 @@ People Who've Run Extreme Startup Sessions
 * http://chatley.com/posts/05-27-2011/extreme-startup/
 * http://johannesbrodwall.com/2011/06/22/real-time-coding-competition-with-extreme-startup/
 * http://www.nilswloka.com/2011/08/17/code-dojo-extreme.html
+* http://blog.xebia.fr/2012/07/19/extreme-startup-chez-xebia/
   
 If you run this workshop, please write it up on the internet and send us a link to add to this list.

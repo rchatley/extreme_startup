@@ -3,7 +3,7 @@ require 'extreme_startup/scoreboard'
 
 module ExtremeStartup
   describe Scoreboard do
-    let(:scoreboard) { Scoreboard.new }
+    let(:scoreboard) { Scoreboard.new(false) }
     
     describe "#leaderboard_position" do
       let(:player_a) { stub(:uuid => 'a') }

@@ -1,12 +1,13 @@
 ---
 -
   anagram: listen
-  correct: inlets
+  correct: 
+  - inlets
+  - silent
   incorrect:
   - enlists
   - google
   - banana
-
 -
   anagram: war
   correct: raw
@@ -14,14 +15,12 @@
   - wharf
   - wary
   - rave
-
 -
   anagram: admirer
   correct: married
   incorrect:
   - mirror
   - admiter
-
 -
   anagram: master
   correct: 
@@ -30,3 +29,11 @@
   incorrect:
   - raster
   - sternum
+-
+  anagram: dictionary
+  correct: indicatory
+  incorrect:
+  - abdication
+  - incendiary
+  - butterfly
+
