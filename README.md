@@ -14,7 +14,7 @@ Getting started
   * ruby dk.rb init
   * Edit the file config.yml (Add the locations where ruby is installed e.g. c:\Ruby192)
   * ruby dk.rb install
-* (For Ubuntu 12.04 onwards)
+* (For Ubuntu 12.04 onwards)   
   * Remove existing installation of Ruby and ruby related packages (do not use sudo or Ubuntu Software centre or any other Ubuntu package manager to install Ruby or any of its components)
   * Remove rvm and related package from Ubuntu
   * Install RVM using the instructions on https://rvm.io/
@@ -26,12 +26,8 @@ Getting started
 ````
 cd ../<exstreme startup dir>
 gem install bundler
-bundle
+bundle install
 
-gem install sinatra
-gem install httparty
-gem install uuid
-gem install haml
 ````
 
 * Start the game server
