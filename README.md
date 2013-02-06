@@ -27,7 +27,6 @@ Getting started
 cd ../<exstreme startup dir>
 gem install bundler
 bundle install
-
 ````
 
 * Start the game server
