@@ -251,14 +251,14 @@ module ExtremeStartup
       if (x ==0)
         return true
       end
-      (x % Math.sqrt(x)) == 0
+      (x % (Math.sqrt(x).round(4))) == 0
     end
 
     def is_cube(x)
       if (x ==0)
         return true
       end
-      (x % Math.cbrt(x)) == 0
+      (x % (Math.cbrt(x).round(4))) == 0
     end
   end
 
