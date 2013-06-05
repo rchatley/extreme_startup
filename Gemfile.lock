@@ -70,6 +70,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   capybara
@@ -78,6 +79,7 @@ DEPENDENCIES
   haml
   httparty
   json
+  launchy
   rack-test
   rake
   rspec
