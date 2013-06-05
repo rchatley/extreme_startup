@@ -1,0 +1,41 @@
+---
+-
+  city: Paris
+  code: 12597155  
+- 
+  city: Toronto
+  code: 4118
+- 
+  city: New-York
+  code: 2459115
+- 
+  city: London
+  code: 44418
+-
+  city: Berlin
+  code: 638242
+- 
+  city: Stockholm
+  code: 906057
+- 
+  city: Brazzaville
+  code: 1279685
+- 
+  city: Moskva
+  code: 2122265
+- 
+  city: Beijing
+  code: 2151330
+- 
+  city: Tokyo
+  code: 1118370
+- 
+  city: Auckland
+  code: 2348079
+- 
+  city: Kuala Lumpur
+  code: 1154781
+-
+  city: Cape Town
+  code: 1591691
+  

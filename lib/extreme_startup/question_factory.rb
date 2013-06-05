@@ -15,7 +15,7 @@ module ExtremeStartup
       puts "GET: " + url
       begin
         response = get(url)
-        if (response.success?) then
+        if response.success? then
           self.answer = response.to_s
         else
           @problem = "error_response"
@@ -255,7 +255,7 @@ module ExtremeStartup
     end
 
     def is_cube(x)
-      if (x ==0)
+      if x ==0
         return true
       end
       (x % Math.cbrt(x).truncate) == 0
@@ -282,13 +282,13 @@ module ExtremeStartup
   class FibonacciQuestion < BinaryMathsQuestion
     def as_text
       n = @n1 + 4
-      if (n > 20 && n % 10 == 1)
+      if n > 20 && n % 10 == 1
         return "what is the #{n}st number in the Fibonacci sequence"
       end
-      if (n > 20 && n % 10 == 2)
+      if n > 20 && n % 10 == 2
         return "what is the #{n}nd number in the Fibonacci sequence"
       end
-      return "what is the #{n}th number in the Fibonacci sequence"  
+      "what is the #{n}th number in the Fibonacci sequence"
     end
     def points
       50
@@ -389,6 +389,180 @@ module ExtremeStartup
     end
   end
 
+  class Location
+    def initialize(name, weather)
+      @name = name
+      @weather = weather
+    end
+    
+    def name 
+      @name
+    end
+    
+    def weather
+      @weather
+    end
+    
+  end
+
+  require 'yahoo-weather'
+
+  # Superclass for all weather related questions
+  #
+  # Initializes globally the weather conditions for all cities so that they get initialized only once
+  #
+  # * Site with various APIs: http://www.meteorologic.net/donnees-meteo.php
+  # * details of Yahoo weather API: http://developer.yahoo.com/weather/
+  # * API for synop: http://blogdev.meteorologic.net/index.php?2008/03/19/10-synop-api-d-acces-aux-donnees
+  # * Stations list for synop: http://www.uradio.ku.dk/~ct/eurostationer.txt
+  # * One can also use yahoo-weather gem (code at https://github.com/shaper/yahoo-weather) 
+  class WeatherQuestion < Question
+
+    Sample_yahoo_response = <<-EOS
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<rss version="2.0" xmlns:yweather="http://xml.weather.yahoo.com/ns/rss/1.0" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
+<channel>
+  <title>Yahoo! Weather - Sunnyvale, CA</title>
+  <link>http://us.rd.yahoo.com/dailynews/rss/weather/Sunnyvale__CA/*http://weather.yahoo.com/forecast/USCA1116_f.html</link>
+  <description>Yahoo! Weather for Sunnyvale, CA</description>
+  <language>en-us</language>
+  <lastBuildDate>Fri, 18 Dec 2009 9:38 am PST</lastBuildDate>
+  <ttl>60</ttl>
+  <yweather:location city="Sunnyvale" region="CA"   country="United States"/>
+  <yweather:units temperature="F" distance="mi" pressure="in" speed="mph"/>
+  <yweather:wind chill="50"   direction="0"   speed="%d" />
+  <yweather:atmosphere humidity="94"  visibility="3"  pressure="%d"  rising="1" />
+  <yweather:astronomy sunrise="7:17 am"   sunset="4:52 pm"/>
+  <image>
+    <title>Yahoo! Weather</title>
+    <width>142</width>
+    <height>18</height>
+    <link>http://weather.yahoo.com</link>
+    <url>http://l.yimg.com/a/i/us/nws/th/main_142b.gif</url>
+  </image>
+  <item>
+    <title>Conditions for Sunnyvale, CA at 9:38 am PST</title>
+    <geo:lat>37.37</geo:lat>
+    <geo:long>-122.04</geo:long>
+    <link>http://us.rd.yahoo.com/dailynews/rss/weather/Sunnyvale__CA/*http://weather.yahoo.com/forecast/USCA1116_f.html</link>
+    <pubDate>Fri, 18 Dec 2009 9:38 am PST</pubDate>
+    <yweather:condition  text="Mostly Cloudy"  code="28"  temp="%d"  date="Fri, 18 Dec 2009 9:38 am PST" />
+    <description><![CDATA[
+<img src="http://l.yimg.com/a/i/us/we/52/28.gif"/><br />
+<b>Current Conditions:</b><br />
+Mostly Cloudy, 50 F<BR />
+<BR /><b>Forecast:</b><BR />
+Fri - Partly Cloudy. High: 62 Low: 49<br />
+Sat - Partly Cloudy. High: 65 Low: 49<br />
+<br />
+<a href="http://us.rd.yahoo.com/dailynews/rss/weather/Sunnyvale__CA/*http://weather.yahoo.com/forecast/USCA1116_f.html">Full Forecast at Yahoo! Weather</a><BR/><BR/>
+(provided by <a href="http://www.weather.com" >The Weather Channel</a>)<br/>
+]]></description>
+    <yweather:forecast day="Fri" date="18 Dec 2009" low="49" high="62" text="Partly Cloudy" code="30" />
+    <yweather:forecast day="Sat" date="19 Dec 2009" low="49" high="65" text="Partly Cloudy" code="30" />
+    <guid isPermaLink="false">USCA1116_2009_12_18_9_38_PST</guid>
+  </item>
+</channel>
+</rss>
+    EOS
+
+    def WeatherQuestion.random_weather
+        doc = Nokogiri::XML.parse(Sample_yahoo_response % [ rand * 100.0, 800.0 + (rand * 400.0), rand * 30])
+        YahooWeather::Response.new("12345", "http://some.host/", doc)
+    end
+    
+    def WeatherQuestion.weather_of(location)
+      begin
+        client = YahooWeather::Client.new
+        weather = client.lookup_by_woeid(location['code'],'c')
+  
+        print("weather of %s is %s\n" % [ location['city'], weather.to_s])
+      
+        Location.new(location['city'],weather)
+      rescue => exception
+        weather = WeatherQuestion.random_weather
+        print("got error %s trying to get weather for %s, setting to random weather %s\n" % [exception, location, weather.to_yaml])
+        Location.new(location['city'],weather)
+      end        
+    end
+
+    # A list of known cities is loaded from the current directory and their current weather 
+    # is looked up using Yahoo! Weather service
+    # see http://developer.yahoo.com/weather/
+    @@weather_in_cities = YAML.load_file(File.join(File.dirname(__FILE__), "locations.yaml"))
+                              .map { |location| weather_of(location) } 
+                              #.map { |location| Location.new(location['city'],nil) }
+              
+    def WeatherQuestion.weather_in_cities
+      @@weather_in_cities
+    end
+
+    # Initializes weather question for a given player
+    #
+    # +player+:: A +Player+ instance 
+    # +location+:: a +City+ object containing name of a location and its current weather (see YahooWeather)
+    # If +nil+, a sample city is selected from WeatherQuestion.weather_in_cities
+    def initialize(player, location=nil, error_margin = 0.10)
+      @error_margin = error_margin
+      if location
+        @location = location
+      else
+        @location = WeatherQuestion.weather_in_cities.sample
+      end
+    end
+
+    # A weather answer may be correct even if not exactly the required weather
+    # This question accepts a tolerance of +- 10% around the exact answer with an exponentially decaying 
+    # number of points earned for approximate answers.
+    #
+    # +answer+:: The answer, a string representing a decimal number
+    def answered_correctly?(answer)
+      answer.to_f > (correct_answer * (1 - @error_margin)) &&
+          answer.to_f < (correct_answer * (1 + @error_margin))
+    end
+
+    def points
+      100 / (1 + Math.exp(2 * (correct_answer - answer.to_f).abs))
+    end
+
+  end
+
+  class TemperatureQuestion < WeatherQuestion
+
+    def as_text
+      "what is the current (Celsius) temperature in #{@location.name}?"
+    end
+    
+    def correct_answer 
+      @location.weather.condition.temp
+    end
+    
+  end
+
+  class PressureQuestion < WeatherQuestion
+
+    def as_text
+      "what is the current (Millibar) pressure in #{@location.name}?"
+    end
+
+    def correct_answer
+      @location.weather.atmosphere.pressure
+    end
+
+  end
+
+  class WindQuestion < WeatherQuestion
+
+    def as_text
+      "what is the current (kph) speed of wind in #{@location.name}?"
+    end
+
+    def correct_answer
+      @location.weather.wind.speed
+    end
+
+  end
+
   class QuestionFactory
     attr_reader :round
 
@@ -404,10 +578,13 @@ module ExtremeStartup
         SubtractionQuestion,
         FibonacciQuestion,
         PowerQuestion,
+        TemperatureQuestion,
         AdditionAdditionQuestion,
         AdditionMultiplicationQuestion,
+        PressureQuestion,
         MultiplicationAdditionQuestion,
         AnagramQuestion,
+        WindQuestion,
         ScrabbleQuestion
       ]
     end
