@@ -9,7 +9,7 @@ Feature: Basic Scoring
        """
      And the correct answer to every question is '4' worth 10 points
      When the player is entered
-     And the game is played for 1 second
+     And the game is played for 2 second
      Then the scores should be:
        | player   | score |
        | bob      | 10    |
@@ -23,7 +23,7 @@ Feature: Basic Scoring
         """
       And the correct answer to every question is '4' worth 10 points
       When the player is entered
-      And the game is played for 1 second
+      And the game is played for 2 second
       Then the scores should be:
         | player   | score |
         | charlie  | -10   |
@@ -37,7 +37,7 @@ Feature: Basic Scoring
         """
       And the correct answer to every question is '4'
       When the player is entered
-      And the game is played for 1 second
+      And the game is played for 2 second
       Then the scores should be:
         | player   | score |
         | ernie    | -50    |

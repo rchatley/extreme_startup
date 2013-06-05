@@ -11,7 +11,7 @@ Feature: Warm up
        end
        """
      When the player is entered
-     And the game is played for 1 second
+     And the game is played for 2 second
      Then the scores should be:
        | player   | score |
        | bob      | 10    |
@@ -26,7 +26,7 @@ Feature: Warm up
       end
       """
     When the player is entered
-    And the game is played for 1 second
+    And the game is played for 2 second
     Then the scores should be:
       | player    | score |
       | Sébastian | 10    |

@@ -22,7 +22,7 @@ Feature: Penalty Rules
       """
     And the correct answer to every question is '0' worth 10 points
     When the players are entered
-    And the game is played for 1 second
+    And the game is played for 2 second
     Then the scores should be:
       | player         | score |
       | always-right   | 10    |
