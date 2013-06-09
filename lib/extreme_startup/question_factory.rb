@@ -563,6 +563,13 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
 
   end
 
+  # Some notes for geolocation questions
+  #
+  # * http://www.ncolomer.net/2011/06/use-openstreetmap-web-api/
+  # * http://services.gisgraphy.com/public/geocoding_worldwide.html
+  # * http://www.gisgraphy.com/documentation/user-guide.htm#geocodingservice
+  # * https://github.com/homelight/ruby-geocoder
+  
   class QuestionFactory
     attr_reader :round
 
