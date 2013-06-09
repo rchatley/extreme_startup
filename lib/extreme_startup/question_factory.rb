@@ -2,7 +2,9 @@ require 'set'
 require 'prime'
 
 module ExtremeStartup
-  class Question
+  class Question    
+    attr_reader :duration
+    
     class << self
       def generate_uuid
         @uuid_generator ||= UUID.new
@@ -23,6 +25,8 @@ module ExtremeStartup
       rescue => exception
         puts exception
         @problem = "no_server_response"
+      ensure
+        @duration = Time.now - start
       end
     end
 

@@ -2,8 +2,9 @@ module ExtremeStartup
   class Scoreboard
     attr_reader :scores
   
-    def initialize(lenient)
+    def initialize(lenient, events)
       @lenient = lenient
+      @events = events
       @scores = Hash.new { 0 }
       @correct_tally = Hash.new { 0 }
       @incorrect_tally = Hash.new { 0 }
@@ -18,7 +19,9 @@ module ExtremeStartup
       elsif (increment < 0)
         @incorrect_tally[player.uuid] += 1
       end
-      puts "added #{increment} to player #{player.name}'s score. It is now #{@scores[player.uuid]}"
+      
+      @events.increment_score(player,increment, @scores[player.uuid])
+      
       player.log_result(question.id, question.result, increment)
     end
     

@@ -8,6 +8,7 @@ require_relative 'game_state'
 require_relative 'scoreboard'
 require_relative 'player'
 require_relative 'quiz_master'
+require_relative 'events'
 
 Thread.abort_on_exception = true
 
@@ -17,13 +18,16 @@ module ExtremeStartup
 
     set :port, 3000
     set :static, true 
-    set :public, 'public'
+    set :logging, true
+    set :events, Events.new
+    
+    set :public_dir, 'public'
     set :players,    Hash.new
     set :players_threads, Hash.new
-    set :scoreboard, Scoreboard.new(ENV['LENIENT'])
+    set :scoreboard, Scoreboard.new(ENV['LENIENT'], events)
     set :question_factory, ENV['WARMUP'] ? WarmupQuestionFactory.new : QuestionFactory.new
     set :game_state, GameState.new
-
+      
     get '/' do 
       haml :leaderboard, :locals => { 
           :leaderboard => LeaderBoard.new(scoreboard, players, game_state), 
@@ -134,6 +138,8 @@ module ExtremeStartup
     
     post '/advance_round' do
       question_factory.advance_round
+
+      events.advance_round(question_factory)
     end
  
     post '/pause' do
@@ -145,10 +151,14 @@ module ExtremeStartup
     end
     
     get %r{/withdraw/([\w]+)} do |uuid|
+      player = players[uuid]
+      events.player_withdraw(player)
+
       scoreboard.delete_player(players[uuid])
       players.delete(uuid)
       players_threads[uuid].kill
       players_threads.delete(uuid)
+
       redirect '/'
     end
     
@@ -158,8 +168,11 @@ module ExtremeStartup
       players[player.uuid] = player
       
       player_thread = Thread.new do
-        QuizMaster.new(player, scoreboard, question_factory, game_state).start
+        QuizMaster.new(player, scoreboard, question_factory, game_state, events).start
       end
+      
+      events.player_started(player)
+            
       players_threads[player.uuid] = player_thread
 
       haml :player_added, :locals => { :playerid => player.uuid }
@@ -171,7 +184,7 @@ module ExtremeStartup
       UDPSocket.open {|s| s.connect("64.233.187.99", 1); s.addr.last}
     end
     
-    [:players, :players_threads, :scoreboard, :question_factory, :game_state].each do |setting|
+    [:players, :players_threads, :scoreboard, :question_factory, :game_state, :events].each do |setting|
       define_method(setting) do
         settings.send(setting)
       end

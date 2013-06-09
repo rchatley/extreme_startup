@@ -73,12 +73,13 @@ module ExtremeStartup
   end
 
   class QuizMaster
-    def initialize(player, scoreboard, question_factory, game_state)
+    def initialize(player, scoreboard, question_factory, game_state, events)
       @player = player
       @scoreboard = scoreboard
       @question_factory = question_factory
       @game_state = game_state
       @rate_controller = RateController.new
+      @events = events
     end
 
     def player_passed?(response)
@@ -90,7 +91,9 @@ module ExtremeStartup
         if (@game_state.is_running?)
           question = @question_factory.next_question(@player)
           question.ask(@player)
-          puts "For player #{@player}\n#{question.display_result}"
+          
+          @events.question(@player, question)
+          
           @scoreboard.record_request_for(@player)
           @scoreboard.increment_score_for(@player, question)
           @rate_controller.wait_for_next_request(question)
