@@ -78,7 +78,7 @@ module ExtremeStartup
     end
     
     def penalty(question, leaderboard_position)
-      -1 * question.points / leaderboard_position
+      -1 * question.base_points / leaderboard_position
     end
      
   end

@@ -87,6 +87,12 @@ module ExtremeStartup
     def points
       10
     end
+    
+    # Provides base value of this question disregarding actual answer if defined
+    # This method defaults to +points+ 
+    def base_points
+      points
+    end
   end
 
   class BinaryMathsQuestion < Question
@@ -525,10 +531,16 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
           answer.to_f < (correct_answer * (1 + @error_margin))
     end
 
+    # Score of weather questions follows sigmoid function around the base_points value.
+    # 
+    # Approximate answers within the error_margin still get exponentially decaying points.
     def points
-      100 / (1 + Math.exp(2 * (correct_answer - answer.to_f).abs))
+      ((2 * base_points) / (1 + Math.exp(2 * (correct_answer - answer.to_f).abs))).to_i
     end
 
+    def base_points
+      50
+    end
   end
 
   class TemperatureQuestion < WeatherQuestion
