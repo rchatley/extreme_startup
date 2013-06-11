@@ -12,11 +12,11 @@ module ExtremeStartup
       end
     end
 
-    def ask(player)
+    def ask(player, timeout = 10)
       url = player.url + '?q=' + URI.escape(self.to_s)
-      puts "GET: " + url
+      start = Time.now
       begin
-        response = get(url)
+        response = get(url, timeout)
         if response.success? then
           self.answer = response.to_s
         else
@@ -30,8 +30,8 @@ module ExtremeStartup
       end
     end
 
-    def get(url)
-      HTTParty.get(url)
+    def get(url, timeout = 10)
+      HTTParty.get(url, :timeout => timeout)
     end
 
     def result

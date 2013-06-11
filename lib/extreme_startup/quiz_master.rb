@@ -90,7 +90,8 @@ module ExtremeStartup
       while true
         if (@game_state.is_running?)
           question = @question_factory.next_question(@player)
-          question.ask(@player)
+          
+          question.ask(@player, 10)
           
           @events.question(@player, question)
           
