@@ -2,13 +2,13 @@
   %head
     %title Extreme Startup - Score Graph
     %link(rel="stylesheet" href="/css/style.css")
-    %script{:type => "text/javascript", :src  => "/js/smoothie.js"}
     %script{:type => "text/javascript", :src  => "/js/jquery-1.6.2.min.js"}
+    %script{:type => "text/javascript", :src  => "/js/jquery.flot.js"}
     %script{:type => "text/javascript", :src  => "/js/leaderboard.js"}
 
   %body
     .left
-      %canvas{:id => "mycanvas", :width => 500, :height => 500 }
+      %div{:id => "mycanvas" }
     .right
       %h1 Leader Board
       %ul{:id => "scoreboard" }

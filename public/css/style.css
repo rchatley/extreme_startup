@@ -1,22 +1,79 @@
-h1 {color:blue}
+h1 {
+    color: blue
+}
 
-.score {color:blue}
+.score {
+    color: blue
+}
 
-.left { float: left; width: 500px; }
-.right{ float: right; width: 500px; }
+.left {
+    float: left;
+    width: 500px;
+}
 
-li { display: block; }
+.right {
+    float: right;
+    width: 500px;
+}
 
-.logline {margin:2px; padding:3px; display:inline-block}
-.logline.id {width:100}
-.logline.result {width:200}
-.logline.points {width:200}
-.logline.correct {background-color:#7cfc00}
-.logline.pass {background-color:#eed5b7}
-.logline.wrong {background-color:#ffaa00}
-.logline.no_server_response {background-color:#ff4500}
-.logline.error_response {background-color:#ff4500}
+li {
+    display: block;
+}
 
-.ranking {margin:2px; padding:3px; display:inline-block; background-color:#eed5b7}
-.ranking.name {width:200}
-.ranking.points {width:200}
+.logline {
+    margin: 2px;
+    padding: 3px;
+    display: inline-block
+}
+
+.logline.id {
+    width: 100
+}
+
+.logline.result {
+    width: 200
+}
+
+.logline.points {
+    width: 200
+}
+
+.logline.correct {
+    background-color: #7cfc00
+}
+
+.logline.pass {
+    background-color: #eed5b7
+}
+
+.logline.wrong {
+    background-color: #ffaa00
+}
+
+.logline.no_server_response {
+    background-color: #ff4500
+}
+
+.logline.error_response {
+    background-color: #ff4500
+}
+
+.ranking {
+    margin: 2px;
+    padding: 3px;
+    display: inline-block;
+    background-color: #eed5b7
+}
+
+.ranking.name {
+    width: 200
+}
+
+.ranking.points {
+    width: 200
+}
+
+#mycanvas {
+    width: 650px;
+    height: 500px;
+}
