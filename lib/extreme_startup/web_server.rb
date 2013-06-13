@@ -17,6 +17,7 @@ module ExtremeStartup
   class WebServer < Sinatra::Base
 
     set :port, 3000
+    set :bind, "0.0.0.0"
     set :static, true 
     set :logging, true
     set :events, Events.new
