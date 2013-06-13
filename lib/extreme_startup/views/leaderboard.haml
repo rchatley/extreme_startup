@@ -1,18 +1,23 @@
 %html
   %head
     %title Extreme Startup - Leaderboard
+    %link(rel="stylesheet" href="/css/bootstrap.min.css")
     %link(rel="stylesheet" href="/css/style.css")
   %body
-    %a{ :href => '/players' }
-      I want to play!
-    %h1 Leaderboard 
-    %ul
-      - leaderboard.each do |entry|
-        %li.player
-          %div{:class => ["ranking", "name"]} #{html_escape(entry.playername)}
-          %div{:class => ["ranking", "points"]} #{entry.score}
-          
-    :javascript
-      refresh = function() { window.location.reload(); };
-      setTimeout(refresh, 10000);
+    %div{:class => ["hero-unit"]} 
+      %h1 Extreme Startup
+    %div{:class => ["span3 offset1"]}
+      %a{ :href => '/players', :class => ["btn btn-large btn-primary"] }
+        I want to play!
+    %div{:class => ["span7"]}
+      %h1 Leaderboard 
+      %ul
+        - leaderboard.each do |entry|
+          %li.player
+            %div{:class => ["ranking", "name"]} #{html_escape(entry.playername)}
+            %div{:class => ["ranking", "points"]} #{entry.score}
+            
+      :javascript
+        refresh = function() { window.location.reload(); };
+        setTimeout(refresh, 10000);
 

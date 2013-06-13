@@ -1,22 +1,27 @@
 %html
   %head
     %title Extreme Startup - #{name}
+    %link(rel="stylesheet" href="/css/bootstrap.min.css")
     %link(rel="stylesheet" href="/css/style.css")
   %body
-    %h1 Hello, #{name}! 
+    %div{:class => ["hero-unit"]} 
+      %h1 Extreme Startup
+      %h2 Hello, #{name}! 
     
-    %h2 
-      Your score is: 
-      %span.score #{score}
-    
-    %a{ :href => "/withdraw/#{playerid}" }
-      Withdraw
+    %div{:class => ["span5"]}
+      %h2 
+        Your score is: 
+        %span.score #{score}
       
-    %h2 Log:
-    %ul
-      - log.each do |logline|
-        %li 
-          %div{:class => ["logline", "id", logline.result]} #{logline.id}
-          %div{:class => ["logline", "result", logline.result]} result: #{logline.result}
-          %div{:class => ["logline", "points", logline.result]} points awarded: #{logline.points}
+      %a{ :href => "/withdraw/#{playerid}", :class => ["btn btn-large btn-primary"] }
+        Withdraw
+      
+    %div{:class => ["span10"]}
+      %h2 Log:
+      %ul
+        - log.each do |logline|
+          %li 
+            %div{:class => ["logline", "id", logline.result]} #{logline.id}
+            %div{:class => ["logline", "result", logline.result]} result: #{logline.result}
+            %div{:class => ["logline", "points", logline.result]} points awarded: #{logline.points}
           

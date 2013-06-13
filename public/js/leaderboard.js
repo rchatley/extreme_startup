@@ -50,9 +50,9 @@ $(document).ready(function () {
                     list.append(
                         $('<div/>').append(
                             $('<li/>', {class: "player"})
-                                .append($('<div>' + entry.playername + '</div>').addClass("ranking name").css("background-color", colourTable[entry.playerid]))
-                                .append($('<div>' + entry.score + '</div>').addClass("ranking points").css("background-color", colourTable[entry.playerid]))
-                                .append($('<a>Withdraw</a>').attr("href", "/withdraw/" + entry.playerid))));
+                                .append($('<span>' + entry.playername + '</span>').addClass("ranking name").css("background-color", colourTable[entry.playerid]))
+                                .append($('<span>' + entry.score + '</span>').addClass("ranking points").css("background-color", colourTable[entry.playerid]))
+                                .append($('<a>Withdraw</a>').attr("href", "/withdraw/" + entry.playerid).addClass("btn btn-warning"))));
                 }
                 $("#scoreboard").replaceWith(list);
             }
