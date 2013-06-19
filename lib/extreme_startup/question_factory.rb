@@ -500,8 +500,8 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
     # is looked up using Yahoo! Weather service
     # see http://developer.yahoo.com/weather/
     @@weather_in_cities = YAML.load_file(File.join(File.dirname(__FILE__), "locations.yaml"))
-                              .map { |location| weather_of(location) } 
-                              #.map { |location| Location.new(location['city'],nil) }
+                              .map { |location| Location.new(location['city'],nil) }
+                              #.map { |location| weather_of(location) } 
               
     def WeatherQuestion.weather_in_cities
       @@weather_in_cities
@@ -589,27 +589,33 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
   class QuestionFactory
     attr_reader :round
 
-    def initialize
+    def initialize(profile = nil)
       @round = 1
-      @question_types = [
-        AdditionQuestion,
-        MaximumQuestion,
-        MultiplicationQuestion,
-        SquareCubeQuestion,
-        GeneralKnowledgeQuestion,
-        PrimesQuestion,
-        SubtractionQuestion,
-        FibonacciQuestion,
-        PowerQuestion,
-        TemperatureQuestion,
-        AdditionAdditionQuestion,
-        AdditionMultiplicationQuestion,
-        PressureQuestion,
-        MultiplicationAdditionQuestion,
-        AnagramQuestion,
-        WindQuestion,
-        ScrabbleQuestion
-      ]
+      if profile.nil? 
+        @question_types = [
+          AdditionQuestion,
+          MaximumQuestion,
+          MultiplicationQuestion,
+          SquareCubeQuestion,
+          GeneralKnowledgeQuestion,
+          PrimesQuestion,
+          SubtractionQuestion,
+          FibonacciQuestion,
+          PowerQuestion,
+          TemperatureQuestion,
+          AdditionAdditionQuestion,
+          AdditionMultiplicationQuestion,
+          PressureQuestion,
+          MultiplicationAdditionQuestion,
+          AnagramQuestion,
+          WindQuestion,
+          ScrabbleQuestion
+        ]
+      else
+        File.open(profile,'r') do |file|
+          @question_types = load_profile(file)
+        end
+      end 
     end
 
     def next_question(player)
@@ -621,6 +627,20 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
 
     def advance_round
       @round += 1
+    end
+
+    def save_profile (stream = nil)
+      if stream.nil?
+        stream = File.open("question_factory.yaml", "w")
+      end
+
+      stream.write(@question_types.to_yaml)
+    ensure
+      stream.close
+    end
+
+    def load_profile (stream)
+      YAML.load(stream)
     end
 
   end
