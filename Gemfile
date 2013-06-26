@@ -14,5 +14,6 @@ gem 'capybara'
 gem 'launchy'
 gem 'json'
 
-gem 'yahoo-weather', '1.2.1'
+# needed for weather questions
+gem 'yahoo-weather'
 
