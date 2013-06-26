@@ -2,7 +2,7 @@ require 'set'
 require 'prime'
 
 module ExtremeStartup
-  class Question    
+  class Question
     attr_reader :duration
     
     class << self
@@ -261,14 +261,14 @@ module ExtremeStartup
       if (x ==0)
         return true
       end
-      (x % Math.sqrt(x)) == 0
+      (x % (Math.sqrt(x).round(4))) == 0
     end
 
     def is_cube(x)
       if x ==0
         return true
       end
-      (x % Math.cbrt(x).truncate) == 0
+      (x % (Math.cbrt(x).round(4))) == 0
     end
   end
 
@@ -592,30 +592,30 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
     def initialize(profile = nil)
       @round = 1
       if profile.nil? 
-        @question_types = [
-          AdditionQuestion,
-          MaximumQuestion,
-          MultiplicationQuestion,
-          SquareCubeQuestion,
-          GeneralKnowledgeQuestion,
-          PrimesQuestion,
-          SubtractionQuestion,
-          FibonacciQuestion,
-          PowerQuestion,
+      @question_types = [
+        AdditionQuestion,
+        MaximumQuestion,
+        MultiplicationQuestion,
+        SquareCubeQuestion,
+        GeneralKnowledgeQuestion,
+        PrimesQuestion,
+        SubtractionQuestion,
+        FibonacciQuestion,
+        PowerQuestion,
           TemperatureQuestion,
-          AdditionAdditionQuestion,
-          AdditionMultiplicationQuestion,
+        AdditionAdditionQuestion,
+        AdditionMultiplicationQuestion,
           PressureQuestion,
-          MultiplicationAdditionQuestion,
-          AnagramQuestion,
+        MultiplicationAdditionQuestion,
+        AnagramQuestion,
           WindQuestion,
-          ScrabbleQuestion
-        ]
+        ScrabbleQuestion
+      ]
       else
         File.open(profile,'r') do |file|
           @question_types = load_profile(file)
         end
-      end 
+    end
     end
 
     def next_question(player)

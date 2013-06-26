@@ -14,10 +14,10 @@
       %ul
         - leaderboard.each do |entry|
           %li.player
-            %div{:class => ["ranking", "name"]} #{html_escape(entry.playername)}
+            %div{:class => ["ranking", "name"]} 
+              &= entry.playername
             %div{:class => ["ranking", "points"]} #{entry.score}
             
       :javascript
         refresh = function() { window.location.reload(); };
         setTimeout(refresh, 10000);
-

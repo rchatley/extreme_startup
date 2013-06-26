@@ -4,9 +4,9 @@
     %link(rel="stylesheet" href="/css/bootstrap.min.css")
     %link(rel="stylesheet" href="/css/style.css")
   %body
-    %div{:class => ["hero-unit"]} 
+    %div{:class => ["hero-unit"]}
       %h1 Extreme Startup
-      %h2 Hello, #{name}! 
+      %h2 &= "Hello, #{name}!"
     
     %div{:class => ["span5"]}
       %h2 
@@ -24,4 +24,3 @@
             %div{:class => ["logline", "id", logline.result]} #{logline.id}
             %div{:class => ["logline", "result", logline.result]} result: #{logline.result}
             %div{:class => ["logline", "points", logline.result]} points awarded: #{logline.points}
-          
