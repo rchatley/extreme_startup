@@ -86,4 +86,4 @@ DEPENDENCIES
   sinatra
   thin
   uuid
-  yahoo-weather (= 1.2.1)
+  yahoo-weather
