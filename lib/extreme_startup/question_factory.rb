@@ -167,6 +167,16 @@ module ExtremeStartup
     end
   end
 
+  class PlusQuestion < BinaryMathsQuestion
+    def as_text
+      "what is #{@n1} + #{@n2}"
+    end
+  private
+    def correct_answer
+      @n1 + @n2
+    end
+  end
+
   class SubtractionQuestion < BinaryMathsQuestion
     def as_text
       "what is #{@n1} minus #{@n2}"
