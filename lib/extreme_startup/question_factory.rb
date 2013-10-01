@@ -217,6 +217,40 @@ module ExtremeStartup
     end
   end
 
+  # Generates arbitrary arithmetic questions with +, * and - symbols
+  # 
+  # Generated expression should be evaluated from left to right respecting usual precedence of 
+  # operators: * binds tighter than +. This means the expression 
+  #   12 + 3 * 4 + 5
+  #  
+  # evaluates to 29 and not 65.  
+  # 
+  class GeneralArithmeticQuestion < Question
+    def initialize(player, *tokens)
+      @tokens = tokens if tokens.any?
+    end
+
+    def points
+      60
+    end
+
+    def as_text
+      "what is " + expression
+    end
+
+    private
+
+    def expression 
+      @tokens.inject('') do |txt, tok|
+        txt + ("%s " % tok)
+      end
+    end
+
+    def correct_answer
+      eval(expression)
+    end
+  end
+
   class AdditionAdditionQuestion < TernaryMathsQuestion
     def as_text
       "what is #{@n1} plus #{@n2} plus #{@n3}"

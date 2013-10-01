@@ -78,4 +78,25 @@ module ExtremeStartup
     end
     
   end
+
+  describe GeneralArithmeticQuestion do
+    let(:question) { GeneralArithmeticQuestion.new(Player.new) }
+    
+    it "yields 60 points when answered correctly" do
+      question.points.should == 60
+    end
+    
+    context "when numbers and operators are known" do
+      let(:question) { GeneralArithmeticQuestion.new(Player.new, 12, '+', 3, '*', 4, '+', 5) }
+      
+      it "converts to a string" do
+        question.as_text.should =~ /what is 12 \+ 3 \* 4 \+ 5/      
+      end
+
+      it "identifies a correct answer" do
+        question.answered_correctly?("29").should be_true
+      end
+
+    end
+  end
 end
