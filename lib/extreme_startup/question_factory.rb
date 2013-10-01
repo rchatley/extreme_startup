@@ -207,6 +207,16 @@ module ExtremeStartup
     end
   end
 
+  class MultQuestion < BinaryMathsQuestion
+    def as_text
+      "what is #{@n1} * #{@n2}"
+    end
+  private
+    def correct_answer
+      @n1 * @n2
+    end
+  end
+
   class AdditionAdditionQuestion < TernaryMathsQuestion
     def as_text
       "what is #{@n1} plus #{@n2} plus #{@n3}"
