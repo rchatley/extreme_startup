@@ -2,6 +2,7 @@ require 'set'
 require 'prime'
 
 module ExtremeStartup
+  
   class Question
     attr_reader :duration
     
@@ -671,6 +672,7 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
         AdditionMultiplicationQuestion,
           PressureQuestion,
         MultiplicationAdditionQuestion,
+        GeneralArithmeticQuestion,
         AnagramQuestion,
           WindQuestion,
         ScrabbleQuestion
