@@ -218,7 +218,7 @@ module ExtremeStartup
     end
   end
 
-  # Generates arbitrary arithmetic questions with +, * and - symbols
+  # Generates arbitrary arithmetic questions with 'plus', 'times' and 'minus' operators.
   # 
   # Generated expression should be evaluated from left to right respecting usual precedence of 
   # operators: * binds tighter than +. This means the expression 
@@ -227,8 +227,15 @@ module ExtremeStartup
   # evaluates to 29 and not 65.  
   # 
   class GeneralArithmeticQuestion < Question
+
+    @@operators = ['plus', 'minus', 'times']
+
     def initialize(player, *tokens)
-      @tokens = tokens if tokens.any?
+      if tokens.any?
+        @tokens = tokens
+      else
+        @tokens = generate_expression()
+      end
     end
 
     def points
@@ -241,14 +248,36 @@ module ExtremeStartup
 
     private
 
-    def expression 
+    def generate_expression
+      exp = []
+      (rand(8) + 1).times { exp += [ rand(100), @@operators.sample ] } 
+      exp + [ rand(100) ]
+    end
+
+    def expression
       @tokens.inject('') do |txt, tok|
         txt + ("%s " % tok)
       end
     end
 
+    def evaluable_expression
+      @tokens.map do |tok|
+        if tok == "plus" then
+          "+"
+        elsif tok == "times"  then
+          "*"
+        elsif tok == "minus"  then
+          "-"
+        else 
+          tok
+        end 
+      end.inject('') do |txt, tok|
+        txt + ("%s " % tok)
+      end
+    end
+
     def correct_answer
-      eval(expression)
+      eval(evaluable_expression)
     end
   end
 
@@ -664,17 +693,19 @@ Sat - Partly Cloudy. High: 65 Low: 49<br />
         SquareCubeQuestion,
         GeneralKnowledgeQuestion,
         PrimesQuestion,
+        PlusQuestion,
         SubtractionQuestion,
         FibonacciQuestion,
         PowerQuestion,
-          TemperatureQuestion,
+        MinusQuestion,
+#          TemperatureQuestion,
         AdditionAdditionQuestion,
+        MultQuestion,
         AdditionMultiplicationQuestion,
-          PressureQuestion,
-        MultiplicationAdditionQuestion,
-        GeneralArithmeticQuestion,
+#          PressureQuestion,
         AnagramQuestion,
-          WindQuestion,
+        GeneralArithmeticQuestion,
+#          WindQuestion,
         ScrabbleQuestion
       ]
       else

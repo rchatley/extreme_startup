@@ -87,14 +87,23 @@ module ExtremeStartup
     end
     
     context "when numbers and operators are known" do
-      let(:question) { GeneralArithmeticQuestion.new(Player.new, 12, '+', 3, '*', 4, '+', 5) }
+      let(:question) { GeneralArithmeticQuestion.new(Player.new, 12, 'plus', 3, 'times', 4, 'plus', 5) }
       
       it "converts to a string" do
-        question.as_text.should =~ /what is 12 \+ 3 \* 4 \+ 5/      
+        question.as_text.should =~ /what is 12 plus 3 times 4 plus 5/      
       end
 
       it "identifies a correct answer" do
         question.answered_correctly?("29").should be_true
+      end
+
+    end
+
+    context "when numbers and operators are not known" do
+      let(:question) { GeneralArithmeticQuestion.new(Player.new) }
+
+      it "generates a random expression" do
+        question.as_text.should =~ /what is (\d+ (plus|minus|times))+ \d+/
       end
 
     end
