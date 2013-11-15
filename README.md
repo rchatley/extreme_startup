@@ -20,6 +20,8 @@ Getting started
   * Install RVM using the instructions on https://rvm.io/
   * In case RVM is broken it can be fixed by going to http://stackoverflow.com/questions/9056008/installed-ruby-1-9-3-with-rvm-but-command-line-doesnt-show-ruby-v/9056395#9056395 
   * Install Ruby and Rubygems using RVM only (for Rubygems use: 'rvm rubygems current' or 'rvm rubygems latest')
+  * See [Installing Nokogiri](http://nokogiri.org/tutorials/installing_nokogiri.html) for installing requierement
+    * sudo apt-get install libxslt-dev libxml2-dev
 
 * Install dependencies:
 
