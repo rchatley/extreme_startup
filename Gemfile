@@ -1,4 +1,5 @@
-source :rubygems
+source 'https://rubygems.org' 
+
 
 gem 'eventmachine', '1.0.0.beta.3'
 gem 'thin'
