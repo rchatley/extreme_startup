@@ -6,9 +6,9 @@ module ExtremeStartup
     let(:scoreboard) { Scoreboard.new(false) }
     
     describe "#leaderboard_position" do
-      let(:player_a) { stub(:uuid => 'a') }
-      let(:player_b) { stub(:uuid => 'b') }
-      
+      let(:player_a) { double(:uuid => 'a') }
+      let(:player_b) { double(:uuid => 'b') }
+
       it "when none of the players have any points, it sorts by the order they were added" do
         scoreboard.new_player player_a
         scoreboard.new_player player_b
