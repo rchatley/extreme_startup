@@ -6,13 +6,13 @@ NB don't show the players the code for this project until after the workshop as 
 
 Getting started
 ---------------
-* Install Ruby 1.9.2 and rubygems
+* Install Ruby 1.9.3 and rubygems
 * (For Windows)
   * Install [Ruby DevKit](http://rubyinstaller.org/downloads/)
   * Extract to (e.g.) c:\devkit
   * cd c:\devkit
   * ruby dk.rb init
-  * Edit the file config.yml (Add the locations where ruby is installed e.g. c:\Ruby192)
+  * Edit the file config.yml (Add the locations where ruby is installed e.g. c:\Ruby193)
   * ruby dk.rb install
 * (For Ubuntu 12.04 onwards)   
   * Remove existing installation of Ruby and ruby related packages (do not use sudo or Ubuntu Software centre or any other Ubuntu package manager to install Ruby or any of its components)
