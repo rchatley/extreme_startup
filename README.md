@@ -25,7 +25,7 @@ Getting started
 * (For Mac (Xcode 5.1 onwards))
   * In the install instructions below you may need to supply an additional argument to ensure that Xcode does not treat an inncorrect command line argument as a fatal error when installing Nokogiri.
   * The argument is: `ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future` and can be prepended to the install commands.
-  * Read more here: [https://developer.apple.com/library/ios/releasenotes/DeveloperTools/RN-Xcode/Introduction/Introduction.html]
+  * Read more here: https://developer.apple.com/library/ios/releasenotes/DeveloperTools/RN-Xcode/Introduction/Introduction.html
 
 * Install dependencies:
 
