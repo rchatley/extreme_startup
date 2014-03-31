@@ -48,7 +48,7 @@ Notes for facilitators
 * Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
 * We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
 
-* Warmup round: run the web server with the `WARMUP` environment variable set:
+* Warmup round: run the web server with the `WARMUP` environment variable set (note that the result of running with `WARMUP=0` is undefined):
 
 ````
 $ WARMUP=1 ruby web_server.rb
