@@ -22,11 +22,15 @@ Getting started
   * Install Ruby and Rubygems using RVM only (for Rubygems use: 'rvm rubygems current' or 'rvm rubygems latest')
   * See [Installing Nokogiri](http://nokogiri.org/tutorials/installing_nokogiri.html) for installing requierement
     * sudo apt-get install libxslt-dev libxml2-dev
+* (For Mac (Xcode 5.1 onwards))
+  * In the install instructions below you may need to supply an additional argument to ensure that Xcode does not treat an inncorrect command line argument as a fatal error when installing Nokogiri.
+  * The argument is: `ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future` and can be prepended to the install commands.
+  * Read more here: https://developer.apple.com/library/ios/releasenotes/DeveloperTools/RN-Xcode/Introduction/Introduction.html
 
 * Install dependencies:
 
 ````
-cd ../<exstreme startup dir>
+cd ../<extreme startup dir>
 gem install bundler
 bundle install
 ````
@@ -44,7 +48,7 @@ Notes for facilitators
 * Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
 * We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
 
-* Warmup round: run the web server with the `WARMUP` environment variable set:
+* Warmup round: run the web server with the `WARMUP` environment variable set (note that the result of running with `WARMUP=0` is undefined):
 
 ````
 $ WARMUP=1 ruby web_server.rb
