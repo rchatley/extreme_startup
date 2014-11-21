@@ -41,6 +41,16 @@ bundle install
 ruby web_server.rb
 ````
 
+* Or the docker way
+
+````
+#The first time
+docker build -t extreme_startup .
+docker run -d -p 3000:3000 --name extreme_startup extreme_startup
+````
+For more information on How to manage docker read [Docker user guide](https://docs.docker.com/userguide/)
+
+
 Notes for facilitators
 ----------------------
 
