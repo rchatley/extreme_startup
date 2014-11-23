@@ -1,6 +1,6 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem "eventmachine"
+gem 'eventmachine'
 gem 'thin'
 gem 'sinatra'
 gem 'httparty'
