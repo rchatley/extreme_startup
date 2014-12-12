@@ -46,10 +46,14 @@ ruby web_server.rb
 ````
 #The first time
 docker build -t extreme_startup .
-docker run -d -p 3000:3000 --name extreme_startup extreme_startup
+docker run -p 3000:3000 extreme_startup
 ````
-For more information on How to manage docker read [Docker user guide](https://docs.docker.com/userguide/)
+and for warmup round
+````
+docker run -p 3000:3000 -e WARMUP=1 extreme_startup
+````
 
+For more information on How to manage docker read [Docker user guide](https://docs.docker.com/userguide/)
 
 Notes for facilitators
 ----------------------
