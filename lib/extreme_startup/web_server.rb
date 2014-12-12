@@ -133,7 +133,7 @@ module ExtremeStartup
     end
     
     post '/advance_round' do
-      question_factory.advance_round
+      question_factory.advance_round.to_s
     end
  
     post '/pause' do
