@@ -20,10 +20,10 @@ Getting started
   * Install RVM using the instructions on https://rvm.io/
   * In case RVM is broken it can be fixed by going to http://stackoverflow.com/questions/9056008/installed-ruby-1-9-3-with-rvm-but-command-line-doesnt-show-ruby-v/9056395#9056395 
   * Install Ruby and Rubygems using RVM only (for Rubygems use: 'rvm rubygems current' or 'rvm rubygems latest')
-  * See [Installing Nokogiri](http://nokogiri.org/tutorials/installing_nokogiri.html) for installing requierement
+  * See [Installing Nokogiri](http://nokogiri.org/tutorials/installing_nokogiri.html) for installing requirement
     * sudo apt-get install libxslt-dev libxml2-dev
 * (For Mac (Xcode 5.1 onwards))
-  * In the install instructions below you may need to supply an additional argument to ensure that Xcode does not treat an inncorrect command line argument as a fatal error when installing Nokogiri.
+  * In the install instructions below you may need to supply an additional argument to ensure that Xcode does not treat an incorrect command line argument as a fatal error when installing Nokogiri.
   * The argument is: `ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future` and can be prepended to the install commands.
   * Read more here: https://developer.apple.com/library/ios/releasenotes/DeveloperTools/RN-Xcode/Introduction/Introduction.html
 
