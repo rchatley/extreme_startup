@@ -280,15 +280,25 @@ module ExtremeStartup
    end
 
   class FibonacciQuestion < BinaryMathsQuestion
+    def ordinal(number)
+      abs_number = number.to_i.abs
+      if (11..13).include?(abs_number% 100)
+        "th"
+      else
+        case abs_number % 10
+          when 1; "st"
+          when 2; "nd"
+          when 3; "rd"
+          else "th"
+        end
+      end
+    end
+    def ordinalize(number)
+      "#{number}#{ordinal(number)}"
+    end
     def as_text
       n = @n1 + 4
-      if (n > 20 && n % 10 == 1)
-        return "what is the #{n}st number in the Fibonacci sequence"
-      end
-      if (n > 20 && n % 10 == 2)
-        return "what is the #{n}nd number in the Fibonacci sequence"
-      end
-      return "what is the #{n}th number in the Fibonacci sequence"  
+      return "what is the #{ordinalize(n)} number in the Fibonacci sequence"
     end
     def points
       50
