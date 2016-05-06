@@ -316,6 +316,7 @@ module ExtremeStartup
     class << self
       def question_bank
         [
+          ["who created 'Il pulcino Pio'", "Lucio Scarpa"],
           ["who is the Prime Minister of Great Britain", "David Cameron"],
           ["which city is the Eiffel tower in", "Paris"],
           ["what currency did Spain use before the Euro", "peseta"],
@@ -396,6 +397,29 @@ module ExtremeStartup
     end
   end
 
+  require 'date'
+  class BeforeDateQuestion < Question
+    def initialize(player, date=nil)
+      if date 
+        @date = Date.strptime(date, '%d-%m-%Y')
+      else
+        @date = Date.new(2013,rand(11) + 1,rand(27)+1)
+      end
+    end
+
+    def points
+      30
+    end
+
+    def correct_answer
+      @date.prev_day().strftime('%d-%m-%Y')
+    end
+
+    def as_text
+      "what is the previous day of #{@date.strftime('%d-%m-%Y')}"
+    end
+  end
+
   class QuestionFactory
     attr_reader :round
 
@@ -407,6 +431,7 @@ module ExtremeStartup
         MultiplicationQuestion,
         SquareCubeQuestion,
         GeneralKnowledgeQuestion,
+        BeforeDateQuestion,
         PrimesQuestion,
         SubtractionQuestion,
         FibonacciQuestion,
