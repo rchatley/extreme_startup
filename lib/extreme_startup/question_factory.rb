@@ -316,7 +316,7 @@ module ExtremeStartup
     class << self
       def question_bank
         [
-          ["who is the Prime Minister of Great Britain", "David Cameron"],
+          ["who is the Prime Minister of Great Britain", "Theresa May"],
           ["which city is the Eiffel tower in", "Paris"],
           ["what currency did Spain use before the Euro", "peseta"],
           ["what colour is a banana", "yellow"],
