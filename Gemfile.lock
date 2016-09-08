@@ -9,18 +9,18 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 0.2.0)
       xpath (~> 0.1.4)
-    childprocess (0.1.9)
-      ffi (~> 1.0.6)
+    childprocess (0.5.9)
+      ffi (~> 1.0, >= 1.0.11)
     cucumber (1.3.10)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
       gherkin (~> 2.12)
       multi_json (>= 1.7.5, < 2.0)
       multi_test (>= 0.0.2)
-    daemons (1.1.9)
+    daemons (1.2.4)
     diff-lcs (1.2.5)
     eventmachine (1.0.3)
-    ffi (1.0.9)
+    ffi (1.9.14)
     gherkin (2.12.2)
       multi_json (~> 1.3)
     haml (4.0.5)
@@ -29,15 +29,19 @@ GEM
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
     json (1.8.1)
-    json_pure (1.5.2)
-    macaddr (1.6.5)
+    json_pure (1.8.3)
+    macaddr (1.7.1)
       systemu (~> 2.6.2)
-    mime-types (1.16)
-    multi_json (1.8.4)
-    multi_test (0.0.3)
+    mime-types (2.6.2)
+    mini_portile2 (2.1.0)
+    multi_json (1.12.1)
+    multi_test (0.1.2)
     multi_xml (0.5.5)
-    nokogiri (1.4.5)
-    rack (1.5.2)
+    nokogiri (1.6.8)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
+    pkg-config (1.1.7)
+    rack (1.6.4)
     rack-test (0.6.2)
       rack (>= 1.0)
     rspec (2.14.1)
@@ -48,21 +52,21 @@ GEM
     rspec-expectations (2.14.5)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
-    rubyzip (0.9.4)
-    selenium-webdriver (0.2.1)
-      childprocess (>= 0.1.7)
+    rubyzip (1.2.0)
+    selenium-webdriver (0.2.2)
+      childprocess (>= 0.1.9)
       ffi (>= 1.0.7)
       json_pure
       rubyzip
     sinatra (1.2.6)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
-    systemu (2.6.3)
+    systemu (2.6.5)
     thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
-    tilt (1.3.2)
+    tilt (1.4.1)
     uuid (2.3.7)
       macaddr (~> 1.0)
     xpath (0.1.4)
@@ -72,14 +76,19 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  capybara
-  cucumber
-  eventmachine
-  haml
-  httparty
-  json
-  rack-test
-  rspec
-  sinatra
-  thin
-  uuid
+  capybara (= 1.0.0)
+  cucumber (= 1.3.10)
+  eventmachine (= 1.0.3)
+  haml (= 4.0.5)
+  httparty (= 0.11.0)
+  json (= 1.8.1)
+  json_pure (= 1.8.3)
+  mime-types (= 2.6.2)
+  rack-test (= 0.6.2)
+  rspec (= 2.14.1)
+  sinatra (= 1.2.6)
+  thin (= 1.5.1)
+  uuid (= 2.3.7)
+
+BUNDLED WITH
+   1.12.5
