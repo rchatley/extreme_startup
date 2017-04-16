@@ -44,7 +44,7 @@ bundle exec ruby web_server.rb
 * Or the docker way
 
 ````
-#The first time
+# The first time
 docker build -t extreme_startup .
 docker run -p 3000:3000 extreme_startup
 ````
