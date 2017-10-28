@@ -1,5 +1,6 @@
 require 'set'
 require 'prime'
+require 'yaml'
 
 module ExtremeStartup
   class Question
@@ -313,14 +314,10 @@ module ExtremeStartup
   end
 
   class GeneralKnowledgeQuestion < Question
-    class << self
-      def question_bank
-        return YAML.load_file(File.join(File.dirname(__FILE__), "general-knowledge.yaml"))
-      end
-    end
+    @@quiz_cards = YAML.load_file(File.join(File.dirname(__FILE__), "general-knowledge.yaml"))
 
     def initialize(player)
-      quiz_card = GeneralKnowledgeQuestion.question_bank.sample
+      quiz_card = @@quiz_cards.sample
       @question = quiz_card["question"]
       @correct_answer = quiz_card["answer"]
     end
