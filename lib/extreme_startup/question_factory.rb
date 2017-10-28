@@ -315,20 +315,14 @@ module ExtremeStartup
   class GeneralKnowledgeQuestion < Question
     class << self
       def question_bank
-        [
-          ["in which year was Theresa May first elected as the Prime Minister of Great Britain", "2016"],
-          ["which city is the Eiffel tower in", "Paris"],
-          ["what currency did Spain use before the Euro", "peseta"],
-          ["what colour is a banana", "yellow"],
-          ["who played James Bond in the film Dr No", "Sean Connery"]
-        ]
+        return YAML.load_file(File.join(File.dirname(__FILE__), "general-knowledge.yaml"))
       end
     end
 
     def initialize(player)
-      question = GeneralKnowledgeQuestion.question_bank.sample
-      @question = question[0]
-      @correct_answer = question[1]
+      quiz_card = GeneralKnowledgeQuestion.question_bank.sample
+      @question = quiz_card["question"]
+      @correct_answer = quiz_card["answer"]
     end
 
     def as_text
