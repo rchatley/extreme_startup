@@ -36,7 +36,7 @@ module TestingApi
     def responsive?
       response = Net::HTTP.start('localhost', @port) { |http| http.get('/ping') }
       response.body == 'OK'
-    rescue Errno::ECONNREFUSED, Errno::EBADF
+    rescue Errno::ECONNREFUSED, Errno::EBADF, Errno::EADDRNOTAVAIL
       false
     end
 
