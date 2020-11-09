@@ -6,6 +6,68 @@ NB don't show the players the code for this project until after the workshop as 
 
 Getting started
 ---------------
+The simplest way to get Extreme Startup running is to run in Docker.
+
+```shell script
+# The first time
+docker build -t extreme_startup .         # ./build.sh
+docker run -d -p 80:3000 extreme_startup  # ./run.sh
+```
+and for warmup round
+```shell script
+docker run -d -p 80:3000 -e WARMUP=1 extreme_startup   # ./warmup.sh
+```
+
+You can even run the tests in Docker if you are making changes to the code
+```shell script
+docker run --rm -it --entrypoint=rake extreme_startup   # ./test.sh
+```
+
+For more information on How to manage docker read [Docker docs](https://docs.docker.com/get-started/overview/)
+
+See bottom for how to run this native (the hard way/the Rubyist way).
+
+Notes for facilitators
+----------------------
+
+* Run the server on your machine. It's a Sinatra app that by default runs on port 3000 (the docker scripts typically map to port 80).
+* Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
+* We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
+
+* Warmup round: run the web server with the `WARMUP` environment variable set (note that the result of running with `WARMUP=0` is undefined):
+
+```shell script
+WARMUP=1 ruby web_server.rb  # or ./warmup.sh
+````
+
+* In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly. @bodil has provided some [nice sample players in different languages](https://github.com/steria/extreme_startup_servers).
+
+* Real game: revert to using the full QuizMaster, and restart the server. This will clear any registered players, but that's ok.
+* As the game progresses, you can introduce new question types by moving to the next round. Visit /controlpanel and press the "Advance round" button. Do this when you feel like some of the teams are making good progress in the current round. Typically we've found this to be about every 10 mins. But you can go faster/slower as you like. There are 6 rounds available.
+* In case you want to 'stop the world' and reflect with the players
+  during the game, you can use the "Pause Game" button in /controlpanel.
+* Set a time limit so you know when to stop the game, declare the winner, and retrospect.
+
+
+-- Robert Chatley and Matt Wynne 2011.
+
+People Who've Run Extreme Startup Sessions
+------------------------------------------
+
+* http://chatley.com/posts/05-27-2011/extreme-startup/
+* http://johannesbrodwall.com/2011/06/22/real-time-coding-competition-with-extreme-startup/
+* http://www.nilswloka.com/2011/08/17/code-dojo-extreme.html
+* http://blog.xebia.fr/2012/07/19/extreme-startup-chez-xebia/
+* https://blog.codecentric.de/en/2015/06/extreme-startup-at-codecentric/
+
+If you run this workshop, please write it up on the internet and send us a link to add to this list.
+
+
+Running "natively" (without Docker)
+-----------------------------------
+
+If you want to run the workshop without Docker you need to get this running (not tested in a few years):
+
 * Install Ruby 1.9.3 and rubygems
 * (For Windows)
   * Install [Ruby DevKit](http://rubyinstaller.org/downloads/)
@@ -40,52 +102,3 @@ bundle install
 ````
 bundle exec ruby web_server.rb
 ````
-
-* Or the docker way
-
-````
-# The first time
-docker build -t extreme_startup .
-docker run -p 3000:3000 extreme_startup
-````
-and for warmup round
-````
-docker run -p 3000:3000 -e WARMUP=1 extreme_startup
-````
-
-For more information on How to manage docker read [Docker user guide](https://docs.docker.com/userguide/)
-
-Notes for facilitators
-----------------------
-
-* Run the server on your machine. It's a Sinatra app that by default runs on port 3000.
-* Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
-* We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
-
-* Warmup round: run the web server with the `WARMUP` environment variable set (note that the result of running with `WARMUP=0` is undefined):
-
-````
-$ WARMUP=1 ruby web_server.rb
-````
-
-* In the warmup round, just make sure that everyone has something technologically working, you just get the same request repeatedly. @bodil has provided some [nice sample players in different languages](https://github.com/steria/extreme_startup_servers).
-
-* Real game: revert to using the full QuizMaster, and restart the server. This will clear any registered players, but that's ok.
-* As the game progresses, you can introduce new question types by moving to the next round. Visit /controlpanel and press the "Advance round" button. Do this when you feel like some of the teams are making good progress in the current round. Typically we've found this to be about every 10 mins. But you can go faster/slower as you like. There are 6 rounds available.
-* In case you want to 'stop the world' and reflect with the players
-  during the game, you can use the "Pause Game" button in /controlpanel.
-* Set a time limit so you know when to stop the game, declare the winner, and retrospect.
-
-
--- Robert Chatley and Matt Wynne 2011.
-
-People Who've Run Extreme Startup Sessions
-------------------------------------------
-
-* http://chatley.com/posts/05-27-2011/extreme-startup/
-* http://johannesbrodwall.com/2011/06/22/real-time-coding-competition-with-extreme-startup/
-* http://www.nilswloka.com/2011/08/17/code-dojo-extreme.html
-* http://blog.xebia.fr/2012/07/19/extreme-startup-chez-xebia/
-* https://blog.codecentric.de/en/2015/06/extreme-startup-at-codecentric/
-  
-If you run this workshop, please write it up on the internet and send us a link to add to this list.
