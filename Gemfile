@@ -11,7 +11,7 @@ gem 'rspec', '2.14.1'
 gem 'cucumber', '1.3.10'
 gem 'rack-test', '0.6.2'
 gem 'capybara', '1.0.0'
-gem 'json', '1.8.1'
+gem 'json', '2.3.0'
 
 
 gem 'mime-types', '2.6.2'
