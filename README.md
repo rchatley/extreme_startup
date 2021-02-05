@@ -33,6 +33,7 @@ Notes for facilitators
 * Run the server on your machine. It's a Sinatra app that by default runs on port 3000 (the docker scripts typically map to port 80).
 * Everyone needs a computer connected to the same network, so that they can communicate. Check that everyone can see the leaderboard page served by the webapp running on your machine. Depending on the situation, we have used a local/ad-hoc network and that is ok for the game.
 * We have had trouble with things like firewalls, especially on some Windows laptops, so if there are problems, make sure you can ping clients from the server and vice versa.
+* You can also use [ngrok](https://ngrok.com/) to have a quick and dirty exposure of the servers on internet, it bypasses most firewalls and NATs
 
 * Warmup round: run the web server with the `WARMUP` environment variable set (note that the result of running with `WARMUP=0` is undefined):
 
