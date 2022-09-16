@@ -15,7 +15,7 @@ module ExtremeStartup
     
   class WebServer < Sinatra::Base
 
-    set :port, 3000
+    set :port, ENV['PORT'] || 3000
     set :static, true 
     set :public, 'public'
     set :players,    Hash.new
