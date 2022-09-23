@@ -4,11 +4,11 @@
     %h1 Add a new player
   
     %form{:action => "/players", :method => "post"}
-      %label{ :for => "name" }Name:
+      %label{ :for => "name" }Team Name:
       %input{ :type => "text", :id => "name", :name => "name" }
       
       %label{ :for => "name" }URL:
-      %input{ :type => "text", :id => "url", :name => "url", :placeholder => "http://..."}
+      %input{ :type => "text", :id => "url", :name => "url", :size => "40", :placeholder => "https://your-app.herokuapp.com"}
       
       %input{ :type => "submit", :value => "Submit"}
 

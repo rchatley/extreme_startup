@@ -27,9 +27,20 @@ module ExtremeStartup
 
     def initialize(params = {})  
       @name = params['name']
-      @url = params['url']
+      @url = sanitise(params['url'])
       @uuid = Player.generate_uuid
       @log = []
+    end
+
+    def sanitise(given_url)
+      url = given_url
+
+      if url.end_with? "/"
+        url = url.chop
+      end
+
+      url = (url.end_with? "/api") ? url : url + "/api"
+      url.gsub("https://", "http://")
     end
 
     def log_result(id, msg, points)
