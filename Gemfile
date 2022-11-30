@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 
 gem 'eventmachine', '1.0.3'
 gem 'thin', '1.5.1'
-gem 'sinatra', '1.2.6'
+gem 'sinatra', '2.2.3'
 gem 'httparty', '0.11.0'
 gem 'uuid', '2.3.7'
 gem 'haml', '4.0.5'
