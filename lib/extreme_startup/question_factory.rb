@@ -437,7 +437,7 @@ module ExtremeStartup
     end
   end
 
-  class WarmupQuestionFactory
+  class WarmupQuestionFactory < QuestionFactory
     def next_question(player)
       WarmupQuestion.new(player)
     end
